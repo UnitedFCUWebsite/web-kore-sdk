@@ -1,21 +1,7 @@
 ﻿# Kore.ai SDK
 Kore.ai offers Bots SDKs as a set of platform-specific client libraries that provide a quick and convenient way to integrate Kore.ai Bots chat capability into custom applications.
 
-With just few lines of code, you can embed our Kore.ai chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to
-
-[Bot SDKs](https://developer.kore.ai/docs/bots/kore-web-sdk/)
-
-[Web SDK Tutorial](https://developer.kore.ai/docs/bots/sdks/kore-ai-web-sdk-tutorial/)
-
-[Web Socket Endpoints and Events](https://developer.kore.ai/docs/bots/sdks/bots-platform-api-reference/)
-
-[SDK Security](https://developer.kore.ai/docs/bots/sdks/user-authorization-and-assertion/)
-
-[SDK App Registration](https://developer.kore.ai/docs/bots/sdks/sdk-app-registration/)
-
-[Message Templates](https://developer.kore.ai/docs/bots/sdks/message-templates/)
-
-
+With just few lines of code, you can embed our Kore.ai chat widget into your applications to enable end-users to interact with your applications using Natural Language. For more information, refer to https://developer.kore.ai/docs/bots/kore-web-sdk/
 
 # Kore.ai Web SDK for developers
 
@@ -283,9 +269,6 @@ Install node js if not installed  https://nodejs.org
 https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-browser.html#getting-started-browser-iam-role
 3.In kore-config.js set chatConfig.ttsInterface to "awspolly" and chatConfig.isTTSEnabled to "true"
 
-## How to integrate Agent Desktop features 
-1. Goto in index.html and uncomment AgentDesktop files agentdesktop.css,ac_webrtc.min.js,audio_player.js,config.js,libs/c2c.js and agentdesktop.js
-2. Include these files in gruntFile.js if you are using minifed SDK
 # How to implement minified SDK
     node js:
 	    Install node js if not installed  https://nodejs.org
@@ -304,104 +287,11 @@ https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-starte
 # How to resolve conflicts with existing libraries like jquery, require, etc..
 	1. Add "libs/kore-no-conflict-start.js" before kore SDK files which will stores your library references.
 	2.Add "libs/kore-no-conflict-end.js" after kore SDK files which will reassign your library references.
-	In our sample UI/index.html it is been included already.	
-# How to enable API based (webhook channel) message communication 
-	1. Enable the webhook channel by following the below link
-		https://developer.kore.ai/docs/bots/channel-enablement/adding-webhook-channel/
-	2.Configure the botOptions in kore-config.js with the values you get in above steps
-		botOptions.JWTUrl = "PLEASE_ENTER_JWTURL_HERE";//URL of the Service to generate JWT (JSON Web Tokens)
-		botOptions.userIdentity = 'PLEASE_ENTER_USER_EMAIL_ID';// Provide users email id here
-		botOptions.botInfo = { name: "PLEASE_ENTER_BOT_NAME", "_id": "PLEASE_ENTER_BOT_ID" }; // bot name is case sensitive
-		botOptions.clientId = "PLEASE_ENTER_CLIENT_ID";
-		botOptions.clientSecret = "PLEASE_ENTER_CLIENT_SECRET";
-	3.Un comment the following lines in UI/kore-config.js and provide the webhookURL which you get in the above steps
-	// for webhook based communication use following option 
-	// botOptions.webhookConfig={
-	//     enable:true,
-	//     webhookURL:'PLEASE_PROVIDE_WEBHOOK_URL',
-	//     apiVersion:2	
-	// }		
-# Release History
+	In our sample UI/index.html it is been included already.			
+
 ```
-v10.1.17 [Minor] on 06-Jan-2024: Master branch
-        Features
-                1.Added config for retries count for api reconnect on failure. Configuration available at chatConfig.maxReconnectionAPIAttempts
 
-v10.1.13 [Minor] on 04-Nov-2023: Master branch
-        Bugfixes
-                1.Table template bugfixes
-                2.White spaces to special characters issue fix from user
-
-v10.1.12 [Minor] on 14-Oct-2023: Master branch
-        Bugfixes
-                1.Chat input white spaces trim issue fix
-                2.Quick replies template console error issue fix
-                3.Agent desktop bot instance issue fix
-
-v10.1.10 [Minor] on 09-Sept-2023: Master branch
-	Features
-		1.Support for .log fileType for file uploads
-
-	Bugfixes
-                1.whitelisted Notes|notes protocol
-                2.Widgets immediate api call issue fix
-                3.fixed grunt issue for generating minified SDK 
-
-v10.1.9 [Minor] on 19-Aug-2023: Master branch
-	Features
-		1.Added a config to send acknowledgement on bot response.Configuration available at chatConfig.botOptions.enableAck
-		2.Support for .gif fileType
-                3.Feedback templates added
-                4.Solutions templates plugin added
-
-	Bugfixes
-		1.XSS bug fix
-                2.Styling issues fix
-
-v10.0.0 [Major] on 21-Jan-2023: Master branch
-	Features
-		1.Integrated Feedback Templates
-		2.Azure Speech to text introduced
-
-	Bugfixes
-		1.Google and WebAPI's STT bugfixes
-		2.indentation with unordered list markdown CSS fix
-		3.Supporting fileUrl and image in attachment template
-		4.Number parse issue for message node with large Integers
-		5.The dropdown template CSS issue fixed
-		6.Hiding end of chat history label for multipage apps
-
-
-V9.3.0 [Minor] on 23-July-2022: Master branch
-	1. Enhancement to link template to support download
-	2. Bug fixes
-	
-V9.1.8 [Minor] on 19-Feb-2021: Master branch
-    1.Theme customization
-    2.Agent Desktop plugin
-    3.jquery ui library upgrade
-    4.Added Advaned list, Advanced multilist, Card, Propose Times, Default card templates
-    5.Webhook and other bugfixes
-    
-V9.1.0 [Minor] on 29-Oct-2021: Master branch
-    1.Webhook support
- 	2.Bug fixes
-
-V9.0.0 [Minor] on 14-Aug-2021: Master branch
-    1.Bug fixes
-
-V8.1.0 [Minor] on 20-Feb-2021: Master branch
-    1.Bug fixes.
-    2.Added listWidget, tableList template.
-
-V8.0.0 [Major] on 31-OCT-2020: Master branch
-    1.i18n and RTL support added.
-    2.Support for multipage applications added.
-    3.Added "list" and "live_agent" message templates.
-    4.Added flexibility to override some of the methods of chatwindow.js and kore-bot-sdk-client.js. 
-    5.Minor bug fixes 
-    6.Added support to send metaTags.Older sdk's can take this specific change from here https://github.com/Koredotcom/web-kore-sdk/commit/aabd4ff87875728b3bc9b05176fe5fc5cb32bf18
-    
+###Release History:
 v7.3.0[Major] on 04-Jun-2020: Master branch:
 	1. Interactive UI Forms support
 	   Launch interactive UI form to collect input from the end-users and then submit it to the virtual agent for taking the necessary actions

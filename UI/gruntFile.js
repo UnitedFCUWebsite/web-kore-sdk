@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
-            '../libs/prefect-scrollbar.css',
+            '../libs/perfect-scrollbar.css',
             'kore-widgets.css'
         ]
 
@@ -35,7 +35,6 @@ module.exports = function (grunt) {
             'libs/jquery.js',
             'libs/jquery.tmpl.min.js',
             'libs/jquery-ui.min.js',
-            'libs/dompurify.js',
             '../libs/lodash.min.js',
             '../libs/d3.v4.min.js',
             '../libs/KoreGraphAdapter.js',
@@ -64,7 +63,7 @@ module.exports = function (grunt) {
             '../libs/purejscarousel.css',
             'chatWindow.css',
             'custom/customTemplate.css',
-            '../libs/prefect-scrollbar.css',
+            '../libs/perfect-scrollbar.css',
             'kore-widgets.css'
         ]
 
@@ -75,26 +74,21 @@ module.exports = function (grunt) {
             'libs/jquery.js',
             'libs/jquery.tmpl.min.js',
             'libs/jquery-ui.min.js',
-            'libs/dompurify.js',
+            '../libs/perfect-scrollbar.js',
+            'libs/moment.js',
+            '../libs/ie11CustomProperties.js',
             '../libs/lodash.min.js',
             '../libs/d3.v4.min.js',
             '../libs/KoreGraphAdapter.js',
             '../libs/anonymousassertion.js',
             '../kore-bot-sdk-client.js',
-            '../libs/perfect-scrollbar.js',
-            
-            //  Uncomment below lines for AgentDestop plugin
-            // '../plugins/agentdestop/libs/ac_webrtc.min.js',
-            // '../plugins/agentdestop/libs/audio_player.js',
-            // '../plugins/agentdestop/config.js',
-            // '../plugins/agentdestop/libs/c2c.js',
-            // '../plugins/agentdestop/agentdesktop.js',
-
             '../libs/emoji.js',
             '../libs/purejscarousel.js',
             'chatWindow.js',
+            'libs/jquery.daterangepicker.js',
+            'libs/jquery-clockpicker.js',
+            '../libs/kore-pickers.js',
             'custom/customTemplate.js',
-            '../libs/ie11CustomProperties.js',
             '../libs/recorder.js',
             '../libs/recorderWorker.js',
             '../libs/speech/app.js',
@@ -106,15 +100,15 @@ module.exports = function (grunt) {
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
-            'libs/emojione.sprites.css',
+            '../libs/emojione.sprites.css',
             '../libs/purejscarousel.css',
-            '../libs/prefect-scrollbar.css',
             'chatWindow.css',
+            'libs/daterangepicker.css',
+            'libs/jquery-clockpicker.css',
+            '../libs/kore-pickers.css',
             'custom/customTemplate.css',
-
-            //  Uncomment below lines for AgentDestop plugin
-            // '../plugins/agentdestop/agentdesktop.css'
-
+            '../libs/perfect-scrollbar.css',
+            '../libs/fonts.css'
         ]
     }
 

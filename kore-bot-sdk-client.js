@@ -2,7 +2,6 @@ requireKr=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof re
 var clients = require('./index.js');
 var EventEmitter = require('events');
 var inherits = require('inherits');
-var apis = require(15);//require('./apis/index');
 var lodash;
 if (require('lodash').bind) {
 	lodash = require('lodash');
@@ -13,7 +12,6 @@ var bind = lodash.bind;
 var isFunction = lodash.isFunction;
 var RTM_CLIENT_EVENTS = clients.CLIENT_EVENTS.RTM;
 var RTM_EVENTS = clients.RTM_EVENTS;
-var WEB_EVENTS=clients.CLIENT_EVENTS.WEB;
 var jstz = require('./jstz.js');
 var noop = lodash.noop;
 
@@ -35,20 +33,7 @@ function KoreBot() {
 	this.initialized = false;
 	this.clients = clients;
 	this.latestId = null; // latest messageId.
-  this.oldestId = null; // oldest messageId.
-  this.EventEmitter=EventEmitter;
-  //this.removeClass=removeClass;
-  this.lodash=lodash;
-
-  this.bind=bind;
-  this.isFunction=isFunction;
-  this.RTM_EVENTS=RTM_EVENTS;
-  this.RTM_CLIENT_EVENTS=RTM_CLIENT_EVENTS;
-  this.jstz=jstz;
-  this.noop=noop; 
-  this.debug=debug;
-  this.userLocation=userLocation;
-  //this.removeClass=removeClass;
+	this.oldestId = null; // oldest messageId.
 }
 var userLocation = {
     "city": "",
@@ -62,7 +47,6 @@ inherits(KoreBot, EventEmitter);
 
 KoreBot.prototype.emit = function emit() {
 	if(arguments && arguments[0] === 'history' && this.historySyncInProgress){
-    this.historySyncInProgress = false;		
     arguments[2]="historysync";
     this.cbBotChatHistory(arguments);
   }else if(!window._chatHistoryLoaded && arguments && arguments[0] === 'history') {
@@ -75,7 +59,7 @@ KoreBot.prototype.emit = function emit() {
             $('.disableFooter').removeClass('disableFooter');
         });
 	}
-  this.EventEmitter.prototype.emit.apply(this, arguments);
+  KoreBot.super_.prototype.emit.apply(this, arguments);
 };
 
 /*
@@ -141,7 +125,7 @@ sends a message to bot.
 KoreBot.prototype.sendMessage = function(message,optCb) {
 	debug("sending message to bot");
 	if(this.initialized){
-		message["resourceid"] = message.resourceid || '/bot.message';
+		message["resourceid"] = '/bot.message';
 		message["botInfo"] = this.options.botInfo || {};
 		message["client"] = this.options.client || "sdk";
 		message["meta"] = {
@@ -160,160 +144,6 @@ KoreBot.prototype.sendMessage = function(message,optCb) {
 	
 };
 
-KoreBot.prototype.sendMessageViaWebhook = function(messagePayload,successCb,failureCb) {
-  var client=this.WebClient;
-  var me=this;
-  messagePayload.opts={
-    authorization:'bearer '+this.options.webhookConfig.token 
-  }
-  client.makeAPICall(this.options.webhookConfig.webhookURL, messagePayload, function(error,resBody){
-  if(error){
-    failureCb(resBody);
-  }else{
-      if(resBody.pollId){
-        me.startPollForWebhookResponse(resBody.pollId,successCb);
-      } 
-      successCb(me.convertWebhookResposeToMessages(resBody));
-    }
-
-  });
-	
-};
-KoreBot.prototype.getBotMetaData = function (successCb, failureCb,) {
-  var client = this.WebClient;
-  var me = this;
-  var payload={}
-  payload.opts = {
-    authorization: 'bearer ' + this.options.webhookConfig.token,
-    type:'GET'
-  }
-  client.makeAPICall('botmeta/' + me.options.botInfo.taskBotId, payload, function (error, resBody) {
-    if (error) {
-      failureCb(resBody);
-    } else {
-      me.options.botInfo.icon=resBody.icon;
-      successCb(resBody);
-    }
-  });
-};
-KoreBot.prototype.convertWebhookResposeToMessages=function(resBody){
-  var msgData;
-  var textData = resBody.text;
-  var msgsData=[];
-  var me=this;
-  var icon=me.options.botInfo.icon;
-  function isJson(entry) {
-    try {
-        entry = JSON.parse(entry);
-    } catch (e) {
-        return entry
-    }
-    return entry;
-  }
-
-  if(resBody._v==='v2'){
-    textData=resBody.data;
-  }
-  if (textData instanceof Array) {
-      console.log("it is array")
-      textData.forEach(function(entry,index) {
-          var clientMessageId = new Date().getTime()+index;
-          var textORJSON=isJson(entry.val || entry);
-          msgData = {
-              'type': "bot_response",
-              'messageId':entry.messageId || clientMessageId,
-              'icon': icon,//'https://dlnwzkim0wron.cloudfront.net/f-828f4392-b552-5702-8bd0-eff267925ddb.png',
-              'createdOn': entry.createdOn,
-              "message": [{
-                  'type': 'text',
-                  'cInfo': {
-                      'body': entry.val || entry,//for v2 and v1 respectively 
-                      'attachments': ""
-                  },
-                  "component":{}
-                  //'clientMessageId': clientMessageId
-              }],
-
-          };
-          if(textORJSON.payload){
-            msgData.message[0].component.payload=textORJSON.payload;
-            msgData.message[0].component.type=textORJSON.type;
-          }else if(textORJSON.text){
-            msgData.message[0].component.payload={
-              text:textORJSON.text
-            }
-            msgData.message[0].component.type='template'
-          }else{
-            msgData.message[0].component.payload={
-              text:textORJSON
-            }
-            msgData.message[0].component.type='text'
-          }
-          if (msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.text) {
-              msgData.message[0].cInfo.body = msgData.message[0].component.payload.text;
-          }
-          if(msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)){
-            msgData.message[0].cInfo.body = msgData.message[0].component.payload.text || "";
-          }
-          msgsData.push(msgData);
-      });
-  } else {
-      console.log("its Object");
-      var clientMessageId = new Date().getTime();
-      msgData = {
-          'type': "bot_response",
-          'messageId': entry.messageId || clientMessageId,
-          'createdOn': entry.createdOn,
-          'icon': icon,
-          "message": [{
-              'type': 'text',
-              'cInfo': {
-                  'body': isJson(textData),
-                  'attachments': ""
-              },
-              "component": isJson(textData),
-              //'clientMessageId': clientMessageId
-          }],
-
-      };
-      msgsData.push(msgData);
-     
-  }
-  return msgsData;
-  
-}
-KoreBot.prototype.startPollForWebhookResponse = function(pId,successCb) {
-
-  var POOL_INTERVAL=1000;//1 SEC
-  var me=this;
-  var envUrl=me.options.koreAPIUrl
-  envUrl=envUrl.substring(0, envUrl.length - 5);//to exclude '/api'
-  var apiUrl=envUrl+'/chatbot/v2/webhook/'+me.options.webhookConfig.streamId+'/poll/'+pId;
-  var client=this.WebClient;
-  var payload={};
-  payload.opts={
-    authorization:'bearer '+this.options.webhookConfig.token,
-    type:'GET'   
-  }
-
-
-  client.makeAPICall(apiUrl, payload, function(error,resBody){
-    if(error){
-      //failureCb(resBody);
-    }else{
-        if(resBody.pollId){
-     
-          setTimeout(function(){
-            me.startPollForWebhookResponse(resBody.pollId,successCb);
-          },POOL_INTERVAL);
-        }
-        if(resBody.data){
-          successCb(me.convertWebhookResposeToMessages(resBody));
-        }
-      }
-  })
-
-}
 /*
 emits a message event on message from the server.
 */
@@ -325,25 +155,8 @@ KoreBot.prototype.onMessage = function(msg) {
 		this.oldestId = this.oldestId || msg.messageId;
 	}
 
-  this.sendAck(msg);
 	this.emit(RTM_EVENTS.MESSAGE, msg);
 };
-
-KoreBot.prototype.sendAck = function(msg) {
-  if (this.options?.enableAck.delivery) {
-    if (msg.data && JSON.parse(msg.data)?.type == "bot_response") {
-      var reply = {};
-      reply["clientMessageId"] = JSON.parse(msg.data).timestamp;
-      reply["type"] = "ack",
-      reply["replyto"] = JSON.parse(msg.data).timestamp;
-      reply["status"] = "delivered";
-      reply["key"] = JSON.parse(msg.data)?.key;
-      this.RtmClient.sendMessage(reply, (err) => {
-        console.log('Error occurred in sending ack: ', err);
-      });
-    }
-  }
-}
 
 /*
 close's the WS connection.
@@ -470,7 +283,7 @@ KoreBot.prototype.onBackWardHistory = function(err, data) {
 /*
 gets the history of the conversation.
 */
-KoreBot.prototype.getHistory = function(opts,config) {
+KoreBot.prototype.getHistory = function(opts) {
 	debug("get history");
 	opts = opts || {};
 	//opts.limit = 10;
@@ -491,20 +304,15 @@ KoreBot.prototype.getHistory = function(opts,config) {
 
 	__opts__.botInfo = this.options.botInfo;
   __opts__.authorization = "bearer " + this.WebClient.user.accessToken;
-
-  if(config && config.webhookConfig && config.webhookConfig.enable){
-    __opts__.authorization = 'bearer '+this.options.webhookConfig.token
-  }
-
   if(opts.forHistorySync){
     this.historySyncInProgress=true;
     delete __opts__.msgId;
   }
 
 	if (__opts__.forward)
-		this.WebClient.history.history(__opts__, bind(this.onForwardHistory, this),config);
+		this.WebClient.history.history(__opts__, bind(this.onForwardHistory, this));
 	else
-		this.WebClient.history.history(__opts__, bind(this.onBackWardHistory, this),config);
+		this.WebClient.history.history(__opts__, bind(this.onBackWardHistory, this));
 };
 
 /*
@@ -540,13 +348,13 @@ KoreBot.prototype.onLogIn = function(err, data) {
 		}
 		console.error(err && err.stack);
 	} else {
+    if(this.options && this.options.jwtgrantSuccessCB){
+      this.options.jwtgrantSuccessCB(data);
+    }
 		this.accessToken = data.authorization.accessToken;
 		this.options.accessToken = this.accessToken;
 		this.WebClient.user.accessToken = this.accessToken;
 		this.userInfo = data;
-    if (this.options && this.options.jwtgrantSuccessCB) {
-      this.options.jwtgrantSuccessCB(data);
-    }
 		this.cbBotDetails(data,this.options.botInfo);
 		this.RtmClient = new clients.KoreRtmClient({}, this.options);
 		this.emit("rtm_client_initialized");
@@ -554,14 +362,7 @@ KoreBot.prototype.onLogIn = function(err, data) {
 			"botInfo": this.options.botInfo
 		});
 		this.RtmClient.on(RTM_EVENTS.MESSAGE, bind(this.onMessage, this));
-    this.RtmClient.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, bind(this.onOpenWSConnection, this));
-    //Propagating the events triggered on this.RtmClient to KoreBot instance with ":rtm" prefix
-    var _me=this;
-    Object.keys(RTM_CLIENT_EVENTS).forEach(function(rtmClientEvent){
-      _me.RtmClient.on(RTM_CLIENT_EVENTS[rtmClientEvent],function(eventData){
-        _me.emit("rtm:"+RTM_CLIENT_EVENTS[rtmClientEvent],eventData);
-      });
-    });
+		this.RtmClient.on(RTM_CLIENT_EVENTS.RTM_CONNECTION_OPENED, bind(this.onOpenWSConnection, this));
 	}
 };
 
@@ -581,17 +382,7 @@ KoreBot.prototype.logIn = function(err, data) {
 		this.cbErrorToClient = data.handleError || noop;
 		this.cbBotDetails = data.botDetails || noop;
 		this.cbBotChatHistory = data.chatHistory || noop;
-    if(this.options.webhookConfig && this.options.webhookConfig.enable){
-      this.options.webhookConfig.token=this.options.assertion;
-      this.emit(WEB_EVENTS.WEB_HOOK_READY);
-      if(this.options.loadHistory && !_chatHistoryLoaded){
-        this.getHistory({},data);
-      }else{
-        this.emit(WEB_EVENTS.WEB_HOOK_RECONNECTED);
-      }
-    }else{
-      this.WebClient.login.login({"assertion":data.assertion,"botInfo":this.options.botInfo}, bind(this.onLogIn, this));
-    }   
+		this.WebClient.login.login({"assertion":data.assertion,"botInfo":this.options.botInfo}, bind(this.onLogIn, this));
 	}
 
 };
@@ -629,60 +420,12 @@ KoreBot.prototype.init = function(options,messageHistoryLimit) {
 			console.error("koreAnonymousFn is not a function");
 		}
 	}
-  this.reWriteWebhookConfig(options)
 };
 
-
-KoreBot.prototype.reWriteWebhookConfig=function (config){
-  if(config && config.webhookConfig && config.webhookConfig.enable){
-    var streamId=config.botInfo.taskBotId;
-    var channelType='ivr';
-    var webhookURL=config.webhookConfig.webhookURL;
-    //check for mulitple webhook url version
-    var patternStr='hookInstance/'
-    if(webhookURL.indexOf(patternStr)>-1){
-      channelType=webhookURL.substring(webhookURL.indexOf(patternStr)+patternStr.length,webhookURL.length)
-    }
-    config.webhookConfig.streamId=streamId;
-    config.webhookConfig.channelType=channelType;
-  }
-}
-var _instance;
 module.exports.instance = function(){
 	_chatHistoryLoaded = false;
-	  _instance=new KoreBot();
-    /*
-      Adding KoreBot,KoreRTMClient function to instance 
-      so developers can override the prototype methods of KoreBot from out of this file 
-      
-      Example:overriding the KoreBot.prototype.onMessage
-        var bot = requireKr('/KoreBot.js').instance();
-        bot.KoreBot.onMessage = function(msg) {
-          //write your implementation here
-        };
-      */
-      _instance.KoreBot=KoreBot;
-      _instance.KoreRTMClient=clients.KoreRtmClient;
-
-      /*
-      adding dependent module functions to instance
-      as on this time of writing following are the dependents
-        "KoreRtmClient", 
-        "RtmApi", 
-        "LogInApi", 
-        "AnonymousLogin",
-        "HistoryApi"
-      Developers can override methods of these modules also via
-        bot.moduleName.methodName  
-      */
-      Object.keys(apis).forEach(function(apikey){
-        _instance[apikey]=apis[apikey];
-      });
-      return _instance;
+	return new KoreBot();
 };
-module.exports.singletoninstance = function(){
-  return _instance;
-}
 },{"./index.js":1,"./jstz.js":2,"debug":21,"events":30,"inherits":23,"lodash":24}],1:[function(require,module,exports){
 var events = require('./lib/clients/events');
 
@@ -1134,8 +877,11 @@ BaseAPIClient.prototype._callTransport = function _callTransport(task, queueCb) 
         //   }
         cb(httpErr, body);
       }
-    } else {        
-        cb(null, body);
+    } else { 
+      if(body && body.userInfo){
+        window.jwtDetails = body;
+      }      
+      cb(null, body);
     }
 
     queueCb();
@@ -1147,10 +893,9 @@ BaseAPIClient.prototype._callTransport = function _callTransport(task, queueCb) 
 };
 
 BaseAPIClient.prototype.makeAPICall = function makeAPICall(endpoint, optData, optCb) {
-  var urlPattern = /^((http|https):\/\/)/;
   var apiCallArgs = helpers.getAPICallArgs(this._token, optData, optCb);
   var args = {
-    url: urlPattern.test(endpoint)?endpoint:urlJoin(this.koreAPIUrl, endpoint),
+    url: urlJoin(this.koreAPIUrl, endpoint),
     data: apiCallArgs.data,
     headers: {
       'User-Agent': this.userAgent,
@@ -1178,9 +923,7 @@ module.exports = BaseAPIClient;
  */
 
 module.exports.WEB = {
-  RATE_LIMITED: 'rate_limited',
-  WEB_HOOK_READY:'webhook_ready',
-  WEB_HOOK_RECONNECTED:'webhook_reconnected'
+  RATE_LIMITED: 'rate_limited'
 };
 
 module.exports.RTM = {
@@ -1367,7 +1110,6 @@ var BaseAPIClient = require('../client');
 var RtmApi = require('../web/apis').RtmApi;
 var makeMessageEventWithSubtype = require('../events/utils').makeMessageEventWithSubtype;
 var wsSocketFn = require('../transports/ws');
-var CLIENT_EVENTS = require(4);
 
 function KoreRTMClient(token, opts) {
   var clientOpts = opts || {};
@@ -1389,11 +1131,7 @@ function KoreRTMClient(token, opts) {
   this._pendingMessages = {};
   this._connAttempts = 0;
   this._connecting = false;
-  this._reconnecting = clientOpts.maintainContext || false;
-  if(clientOpts.forceReconnecting){
-    this._reconnecting=true;
-    clientOpts.forceReconnecting=false;
-  }
+  this._reconnecting = false;
   if (clientOpts.hasOwnProperty("_reconnecting") && clientOpts._reconnecting) {
     this._reconnecting = clientOpts._reconnecting;
     clientOpts._reconnecting=false;
@@ -1401,8 +1139,6 @@ function KoreRTMClient(token, opts) {
   this.user = {};
   this.user.accessToken = clientOpts.accessToken;
   this.botInfo = clientOpts.botInfo || {};
-  this.CLIENT_EVENTS=CLIENT_EVENTS.RTM;
-  this.debug=debug;
 }
 
 inherits(KoreRTMClient, BaseAPIClient);
@@ -1446,7 +1182,7 @@ KoreRTMClient.prototype._onStart = function _onStart(err, data) {
     console.log(e && e.stack);
   }
   if(data && data.errors && (data.errors[0].code === 'TOKEN_EXPIRED' || data.errors[0].code === 401 || data.errors[0].msg === 'token expired')){
-      KoreSDK.dependencies.jQuery(".reload-btn").trigger('click',{isReconnect:true});
+      $(".reload-btn").trigger('click',{isReconnect:true});
       data.error='token_expired';
   }
   if (err || !data.url) {
@@ -1755,7 +1491,6 @@ var inherits = require('inherits');
 function AnonymousLogin(client) {
   this.name = 'anonymouslogin';
   this.client = client;
-  this.BaseApi=BaseApi;
 }
 
 inherits(AnonymousLogin, BaseApi);
@@ -1777,23 +1512,17 @@ var inherits = require('inherits');
 function HistoryApi(client) {
   this.name = 'history';
   this.client = client;
-  this.BaseApi=BaseApi;
 }
 
 inherits(HistoryApi, BaseApi);
 
-HistoryApi.prototype.history = function history(opts, optCb,config) {
+HistoryApi.prototype.history = function history(opts, optCb) {
   opts = opts || {};
   var args = {
     opts: opts,
     type: "GET"
   };
 	var _api = '/botmessages/rtm';
-
-  if(config && config.webhookConfig && config.webhookConfig.enable){
-    _api='/chathistory/'+config.webhookConfig.streamId+'/'+config.webhookConfig.channelType
-  }
-
 	var del = false;
 	var x = '?';
 
@@ -1875,7 +1604,6 @@ var inherits = require('inherits');
 function LogInApi(client) {
   this.name = 'login';
   this.client = client;
-  this.BaseApi = BaseApi;
 }
 
 inherits(LogInApi, BaseApi);
@@ -1897,7 +1625,6 @@ var inherits = require('inherits');
 function RtmApi(client) {
   this.name = 'rtm';
   this.client = client;
-  this.BaseApi = BaseApi;
 }
 
 inherits(RtmApi, BaseApi);
@@ -1933,7 +1660,7 @@ function WebAPIClient(token, opts) {
   BaseAPIClient.call(this, token, clientOpts);
   this.claims = opts.claims;
   this.retryConfig = clientOpts.retryConfig || {
-    retries: clientOpts.maxReconnectionAPIAttempts || 5,
+    retries: 5,
     factor: 3.9
   };
   this.user = {};
@@ -3326,7 +3053,7 @@ function request(options, callback) {
       options.body = JSON.stringify(options.body)
   }
   
-  //BEGIN QS
+  //BEGIN QS Hack
   var serialize = function(obj) {
     var str = [];
     for(var p in obj)
@@ -3344,9 +3071,9 @@ function request(options, callback) {
         options.uri = options.uri+'?'+qs;
     }
   }
-  //END QS
+  //END QS Hack
   
-  //BEGIN FORM
+  //BEGIN FORM Hack
   var multipart = function(obj) {
     //todo: support file type (useful?)
     var result = {};
@@ -3388,7 +3115,7 @@ function request(options, callback) {
         }
     }
   }
-  //END FORM
+  //END FORM Hack
 
   // If onResponse is boolean true, call back immediately when the response is known,
   // not when the full request is complete.
@@ -3833,7 +3560,7 @@ function formatArgs() {
  */
 
 function log() {
-  // this is required for IE8/9, where
+  // this hackery is required for IE8/9, where
   // the `console.log` function doesn't have 'apply'
   return 'object' === typeof console
     && console.log
