@@ -181,7 +181,7 @@
 
         // UFCU - we need functionality to trigger chat button expansion through js.
         // Since there is no straightforward API to do this, we will just simulate this button click.
-        KoreSDK.expandChatBubble = function(){
+        window.openChat = function(){
             document
                 .getElementsByClassName('kore-chat-window')[0]
                 .getElementsByClassName('minimized-title')[0]
