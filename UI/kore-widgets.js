@@ -196,13 +196,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       _self.getServerDataGen("/widgetsdk/" + config.botOptions.botInfo._id + "/panels?resolveWidgets=true&from="+config.botOptions.userIdentity, 'get').done(function (response) {
         //_self.getServerDataGen("/api/1.1/ka/users/:userId/panels?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function (response) {
         // getServerData("/api/1.1/ka/users/:userId/widgets?tz=" + currentTimezone + "&lat=" + latitude + "&lon=" + longitude, 'get').done(function(response){
-          if(response && response.length){
-            response.sort(function(a, b) {
-              var c = new Date(a.lMod).getTime();
-              var d = new Date(b.lMod).getTime();
-              return d-c;
-          });
-          }
         initialWidgetData.panels = response;
         var panelData = [];
 
@@ -2644,7 +2637,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       makeAPICall = true;
 
-      if (localPanelDetail[panelName] !== undefined && (panelName === oldPanelName)) {
+      if (localPanelDetail[panelName] !== undefined) {
         var currTime = new Date().getTime();
         var deffTime = currTime - localPanelDetail[panelName];
         var seconds = Math.floor(deffTime / 1000);
@@ -3095,14 +3088,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             var xhrObject = {};
             xhrObject.passedkey = {};
             xhrObject.passedkey = err.passedkey;
-            if (err && typeof err === 'object' && err.responseJSON && err.responseJSON.errors && err.responseJSON.errors.length) {
-              xhrObject.templateType = 'somthingWentWrong';
-              xhrObject.errMsg = err.responseJSON.errors[0].msg || ''; // responseData.errMsgDiscription = responseCopy;
-            } 
-            if(err && err.status == '429'){
-              xhrObject.templateType = 'somthingWentWrong';
-              xhrObject.errMsg = err.responseText || 'Too many tries, please wait for sometime'; 
-            }
             var dataHTML = $(_self.getTemplate("ErrorTemplate")).tmplProxy({
               'tempdata': xhrObject,
               'panelDetail': xhrObject.passedkey
@@ -4046,7 +4031,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
             'helpers': helpers,
             'panelDetail': xhrObject.passedkey
           });
-          _self.bindTemplateEvents(dataHTML, 'webForm');
+          _self.bindTemplateEvents(dataHTML, 'webForm',);
         } else {
           //#todo:deviation : making "defaultFilesTemplate" as default template, naming should correct though
           //var dataHTML = $(_self.getTemplate("defaultTemplate")).tmplProxy({
@@ -4475,14 +4460,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           var xhrObject = {};
           xhrObject.passedkey = {};
           xhrObject.passedkey = err.passedkey;
-          if (err && typeof err === 'object' && err.responseJSON && err.responseJSON.errors && err.responseJSON.errors.length) {
-            xhrObject.templateType = 'somthingWentWrong';
-            xhrObject.errMsg = err.responseJSON.errors[0].msg || ''; // responseData.errMsgDiscription = responseCopy;
-          } 
-          if(err && err.status == '429'){
-            xhrObject.templateType = 'somthingWentWrong';
-            xhrObject.errMsg = err.responseText || 'Too many tries, please wait for sometime'; 
-          }
           var dataHTML = $(_self.getTemplate("ErrorTemplate")).tmplProxy({
             'tempdata': xhrObject,
             'panelDetail': xhrObject.passedkey
@@ -4881,8 +4858,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         eData.payload = actionObj.payload;
       }
 
-      if (actionObj.nlmeta || actionObj.nlMeta) {
-        eData.nlmeta = actionObj.nlmeta || actionObj.nlMeta;
+      if (actionObj.nlmeta) {
+        eData.nlmeta = actionObj.nlmeta;
       }
 
       if (actionObj.customdata) {
@@ -4970,8 +4947,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         eData.payload = actionObjJson.payload;
       }
 
-      if (actionObjJson.nlmeta || actionObjJson.mlMeta) {
-        eData.nlmeta = actionObjJson.nlmeta || actionObjJson.nlMeta;
+      if (actionObjJson.nlmeta) {
+        eData.nlmeta = actionObjJson.nlmeta;
       }
 
       if (actionObjJson.customdata) {

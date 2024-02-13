@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/Koredotcom/web-kore-sdk#readme",
   "dependencies": {
-    "express": "~4.9.0"
+    "express": "~4.9.0",
+    "grunt": "^1.6.1"
   }
 }

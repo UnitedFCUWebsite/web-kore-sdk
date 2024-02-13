@@ -17,9 +17,9 @@
 var apiKey = apiKey || {};
 var gapi = gapi || {};
 var gapiLoaded = false;
+
 /* eslint-disable no-unused-vars */
 function initGapi () {
-  apiKey = chatContainerConfig.config.stt.google.apiKey;
   if (!apiKey) {
     return false;
   }
@@ -27,7 +27,7 @@ function initGapi () {
   gapi.client.setApiKey(apiKey);
 
   // Load the speech client library and present the demo UI
-  gapi.client.load('speech', 'v1', function () {
+  gapi.client.load('speech', 'v1beta1', function () {
     console.log('gapi loaded');
     gapiLoaded = true;
   });
@@ -39,7 +39,6 @@ function initGapi () {
  */
 /* eslint-disable no-unused-vars */
 function handleFile () {
-  var $=jQuery || (window.KoreSDK && window.KoreSDK.dependencies && window.KoreSDK.dependencies.jQuery);
   var selectedFile = $('#inputFile')[0].files[0];
   sendBlobToSpeech(selectedFile, 'flac', 16000);
 }
@@ -69,7 +68,6 @@ function handleFile () {
       }
   }
 function uiCallback (r) {
-  var $=jQuery || (window.KoreSDK && window.KoreSDK.dependencies && window.KoreSDK.dependencies.jQuery);
   if (r.results && r.results[0]) {
     $('.chatInputBox').html($('.chatInputBox').html() + ' ' + r.results[0].alternatives[0].transcript);
       setTimeout(function () {
@@ -94,7 +92,6 @@ function uiCallback (r) {
  * @param rate the encoding rate, ideally 16000.
  */
 function sendBlobToSpeech (blob, encoding, rate) {
-  var $=jQuery || (window.KoreSDK && window.KoreSDK.dependencies && window.KoreSDK.dependencies.jQuery);
     if(!gapiLoaded) {
         if ($('.recordingMicrophone').is(':visible')) {
             $('.recordingMicrophone').trigger('click');
@@ -118,20 +115,17 @@ function sendBlobToSpeech (blob, encoding, rate) {
  * @param callback A function to send result data to.
  */
 function sendBytesToSpeech (bytes, encoding, rate, callback) {
-  var $=jQuery || (window.KoreSDK && window.KoreSDK.dependencies && window.KoreSDK.dependencies.jQuery);
   if(gapi.client && gapi.client.speech) {
-      var _params = {
-      audio: {
-        content: bytes,
-      },
+    gapi.client.speech.speech.syncrecognize({
       config: {
         encoding: encoding,
-        languageCode: chatContainerConfig.config.stt.google.recognitionLanguage,
-        sampleRateHertz: rate,
+        sampleRate: rate,
+        "languageCode": "en_US"
       },
-    };
-
-    gapi.client.speech.speech.recognize(_params).execute(function (r) {
+      audio: {
+        content: bytes
+      }
+    }).execute(function (r) {
       callback(r);
     });
   }
