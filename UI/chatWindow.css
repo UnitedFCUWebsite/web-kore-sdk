@@ -840,15 +840,15 @@
     color: var(--sdk-chat-widow-primary-font-color);
     min-height: 42px;
     border-radius: 21px;
-    /* box-shadow: inset 0 0 5px 2px rgba(86, 86, 86, 0.22); */
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
     margin: 0;
     padding: 14px 20px;
     margin-right: 10px;
     font-size: 12px;
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
     position: relative;
-    left: 7px;
+    left: 12px;
 }
 
 .kore-chat-window .kore-chat-footer .chatInputBoxPlaceholder {
