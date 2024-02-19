@@ -26,7 +26,7 @@
 				'helpers': this.helpers,
 				'extension': this.extension
 			});
-			this.bindEvents(messageHtml);
+			this.bindEvents(messageHtml,msgData);
 		} else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "like_dislike") {
 			messageHtml = $(this.getChatTemplate("likeDislikeTemplate")).tmpl({
 				'msgData': msgData,
@@ -107,7 +107,7 @@
 						'Authorization': "bearer " + window.jwtDetails.authorization.accessToken,
 						'Accept-Language': 'en_US',
 						'Accepts-version': '1',
-						'botId': this.cfg.botOptions.botInfo._id,
+						'botId': this.cfg.botOptions.universalBotId,
 						'state': 'published',
 						'segmentId': msgData.message[0].component.payload.meta.custSegId
 					},
@@ -166,6 +166,22 @@
                 'extension': this.extension
             });
             this.resetPinTemplateEvents(messageHtml, msgData);
+        }
+		else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "multiattachment_template") {
+            messageHtml = $(this.getChatTemplate("multiattachment_template")).tmpl({
+                'msgData': msgData,
+                'helpers': this.helpers,
+                'extension': this.extension
+            });
+			this.multiAttachmentTemplateEvents(messageHtml, msgData);
+        }
+		else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "galleryTemplate") {
+            messageHtml = $(this.getChatTemplate("galleryTemplate")).tmpl({
+                'msgData': msgData,
+                'helpers': this.helpers,
+                'extension': this.extension
+            });
+			this.galleryTemplateEvents(messageHtml, msgData);
         }
 
 		else if (msgData && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.body && this.toCheckBankingFeedbackTemplate(msgData)) {
@@ -281,10 +297,11 @@
 					<div class = "listTmplContent"> \
                         {{if msgData.createdOn}}<div class="extra-info">${helpers.formatDate(msgData.createdOn)}</div>{{/if}} \
 						{{if msgData.icon}}<div class="profile-photo"> <div class="user-account avtar" style="background-image:url(${msgData.icon})"></div> </div> {{/if}} \
-						<ul class="{{if msgData.message[0].component.payload.fromHistory}} dummy listTmplContentBox  {{else}} listTmplContentBox{{/if}} "> \
+						<ul class="{{if msgData.message[0].component.payload.fromHistory}} dummy listTmplContentBox  {{else}} listTmplContentBox multi-search-select-wrapper{{/if}} "> \
 							{{if msgData.message[0].component.payload.title || msgData.message[0].component.payload.heading}} \
 								<li class="listTmplContentHeading"> \
 									{{if msgData.type === "bot_response" && msgData.message[0].component.payload.heading}} {{html helpers.convertMDtoHTML(msgData.message[0].component.payload.heading, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgData.message[0].component.payload.text, "user")}} {{/if}} \
+									{{if msgData.message[0].component.payload.sliderView}} <button class="close-button" title="Close"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>{{/if}}\
 									{{if msgData.message[0].cInfo && msgData.message[0].cInfo.emoji}} \
 										<span class="emojione emojione-${msgData.message[0].cInfo.emoji[0].code}">${msgData.message[0].cInfo.emoji[0].title}</span> \
 									{{/if}} \
@@ -292,7 +309,7 @@
 							{{/if}} \
 							{{each(key, msgItem) msgData.message[0].component.payload.elements}} \
 								{{if msgData.message[0].component.payload.buttons}} \
-									<li class="listTmplContentChild noMargin {{if key > 4}}hide{{/if}}"> \
+									<li class="listTmplContentChild noMargin {{if key > 4 || (msgData.message[0].component.payload.displayLimit < key)}}hide{{/if}}"> \
 										<div class="checkbox checkbox-primary styledCSS checkboxesDiv"> \
 											<input  class = "checkInput" type="checkbox" text = "${msgItem.title}" value = "${msgItem.value}" id="${msgItem.value}${msgData.messageId}"> \
 											<label for="${msgItem.value}${msgData.messageId}">{{html helpers.convertMDtoHTML(msgItem.title, "bot")}}</label> \
@@ -300,14 +317,14 @@
                                     </li> \
                                 {{/if}} \
                             {{/each}} \
-                            {{if msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload &&  msgData.message[0].component.payload.elements && msgData.message[0].component.payload.elements.length > 5}}\
+                            {{if msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload &&  msgData.message[0].component.payload.elements && msgData.message[0].component.payload.elements.length > 5 || (msgData.message[0].component.payload.displayLimit < msgData.message[0].component.payload.elements)}}\
                             <li class="listTmplContentChild listTmplContentChild_show_more"> \
-                                  <div classs="show-more">Show More</div>\
+                                  <div class="show-more">Show More</div>\
                              </li> \
                             {{/if}}\
                             <div class="{{if msgData.message[0].component.payload.fromHistory}} hide  {{else}} checkboxButtons {{/if}} "> \
                                 {{each(key, buttonData) msgData.message[0].component.payload.buttons}} \
-                                    <div class="checkboxBtn {{if buttonData.payload === "Cancel"}}cancel-btn{{/if}}" value=${buttonData.payload} title="${buttonData.title}"> \
+                                    <div class="checkboxBtn {{if buttonData.payload === "Cancel"}}cancel-btn{{/if}}" {{if buttonData.styles}}style="{{each(stylekey,style) buttonData.styles}}${stylekey}:${style};{{/each}}"{{/if}} value=${buttonData.payload} title="${buttonData.title}"> \
                                         ${buttonData.title} \
                                     </div> \
                                 {{/each}} \
@@ -369,8 +386,7 @@
 	}
 	print(JSON.stringify(message)); */
 	
-	
-
+		
 var formTemplate='<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 {{if msgData.message}} \
 <li {{if msgData.type !== "bot_response"}} id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon"> \
@@ -412,7 +428,6 @@ var formTemplate='<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 </li> \
 {{/if}} \
 </script>';
-
 
 /* Sample template structure for Advanced Multi Select Checkbox 
  var message = {
@@ -743,27 +758,52 @@ print(JSON.stringify(message)); */
 					{{/if}} \
 					<div class="listItems">\
 						{{each(key, msgItem) msgData.message[0].component.payload.elements}} \
-							{{if (msgData.message[0].component.payload.seeMore && key < msgData.message[0].component.payload.moreCount) || (!msgData.message[0].component.payload.seeMore)}}\
-								<li class="listViewTmplContentChild"> \
-									{{if msgItem.image_url}} \
-										<div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
-											<img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
-										</div> \
-									{{/if}} \
-									<div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.payload}"> \
-										<span class="titleDesc">\
-											<div class="listViewItemTitle" title="${msgItem.title}">{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.title, "user")}} {{/if}}</div> \
-											{{if msgItem.subtitle}}<div class="listViewItemSubtitle" title="${msgItem.subtitle}">{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
-										</span>\
-										{{if msgItem.value}}<div class="listViewItemValue" {{if msgItem && msgItem.color}}style="color:${msgItem.color}"{{/if}} title=${msgItem.value}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.value, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.value, "user")}} {{/if}}</div>{{/if}} \
-									</div>\
-								</li> \
-							{{/if}}\
+						{{if (msgData.message[0].component.payload.seeMore && (!msgData.message[0].component.payload.seeMoreAction && (key < msgData.message[0].component.payload.moreCount)) || (msgData.message[0].component.payload.seeMoreAction &&  msgData.message[0].component.payload.seeMoreAction !=="slider") || (msgData.message[0].component.payload.seeMoreAction &&  (msgData.message[0].component.payload.seeMoreAction ==="slider") && (key < msgData.message[0].component.payload.moreCount ))) || (!msgData.message[0].component.payload.seeMore)}}\
+						   <div class="list-element">\
+							<li class="listViewTmplContentChild {{if msgData.message[0].component.payload.seeMore && (key > msgData.message[0].component.payload.moreCount-1)}}hide{{/if}}"> \
+								{{if msgItem.image_url}} \
+									<div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
+										<img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
+									</div> \
+								{{/if}} \
+								<div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.payload}"> \
+									<span class="titleDesc">\
+										<div class="listViewItemTitle" {{if !msgItem.tooltip}}title="${msgItem.title}"{{/if}}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.title, "user")}} {{/if}}</div> \
+										{{if msgItem.subtitle}}<div class="listViewItemSubtitle" {{if !msgItem.tooltip}}title="${msgItem.subtitle}"{{/if}}>{{if msgItem.tooltip}}<span class="tooltiptext">{{html helpers.convertMDtoHTML(msgItem.tooltip, "bot")}}</span>{{/if}}{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
+									</span>\
+									{{if msgItem.value}}<div class="listViewItemValue" {{if msgItem && msgItem.color}}style="color:${msgItem.color}"{{/if}} title=${msgItem.value}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.value, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.value, "user")}} {{/if}}</div>{{/if}} \
+									{{if msgItem && msgItem.subElements && msgItem.subElements.length}}\
+									   <span class="carrot-down rotate-icon"><img src="{{if msgItem.collapseIcon}}${msgItem.collapseIcon}{{else}}data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAHCAYAAAA8sqwkAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABdSURBVHgBjctNDYAwDIbhNkUAoKAZCOCIHBwhASzgCAfDQelhh2Xrfr5Tkz4vgDF2y8VuPa0fWRgEDz33cZ748/4pBhEOwy2NqIztiOo4j7CN407uQTGDyNsVqP0BaHUk0IS2sYcAAAAASUVORK5CYII={{/if}}"></span>\
+									{{/if}}\
+								</div>\
+							</li> \
+								{{if msgItem && msgItem.subElements && msgItem.subElements.length}}\
+									<ul class="subelements-group listViewTmplContentBox hide">\
+										{{each(subKey,subMsgItem) msgItem.subElements}}\
+												<li class="listViewTmplContentChild"> \
+													{{if subMsgItem && subMsgItem.image_url}} \
+														<div class="listViewRightContent" {{if subMsgItem.default_action && subMsgItem.default_action.url}}url="${subMsgItem.default_action.url}"{{/if}} {{if subMsgItem.default_action && subMsgItem.default_action.title}}data-value="${subMsgItem.default_action.title}"{{/if}} {{if subMsgItem.default_action && subMsgItem.default_action.type}}type="${subMsgItem.default_action.type}"{{/if}} {{if subMsgItem.default_action && subMsgItem.default_action.payload}} value="${subMsgItem.default_action.payload}"{{/if}}> \
+															<img alt="image" src="${subMsgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
+														</div> \
+													{{/if}} \
+													<div class="listViewLeftContent" {{if subMsgItem && subMsgItem.default_action}}data-url="${subMsgItem.default_action.url}" data-title="${subMsgItem.default_action.title}" data-value="${subMsgItem.default_action.payload}" {{/if}}> \
+														<span class="titleDesc">\
+															<div class="listViewItemTitle" {{if !subMsgItem.tooltip}}title="${subMsgItem.title}"{{/if}}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(subMsgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(subMsgItem.title, "user")}} {{/if}}</div> \
+															{{if subMsgItem.subtitle}}<div class="listViewItemSubtitle" {{if !subMsgItem.tooltip}}title="${subMsgItem.subtitle}"{{/if}}>{{if subMsgItem.tooltip}}<span class="tooltiptext">{{html helpers.convertMDtoHTML(subMsgItem.tooltip, "bot")}}</span>{{/if}}{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(subMsgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(subMsgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
+														</span>\
+														{{if subMsgItem.value}}<div class="listViewItemValue" {{if subMsgItem && subMsgItem.color}}style="color:${subMsgItem.color}"{{/if}} title=${subMsgItem.value}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(subMsgItem.value, "bot")}} {{else}} {{html helpers.convertMDtoHTML(subMsgItem.value, "user")}} {{/if}}</div>{{/if}} \
+													</div>\
+												</li> \
+										{{/each}}\
+									</ul>\
+								{{/if}}\
+							</div>\
+						{{/if}}\
 						{{/each}} \
 					</div>\
 					{{if msgData.message[0].component.payload.seeMore}}\
 						<li class="seeMore"> \
-							<span class="seeMoreList">Show more</span> \
+							<span class="seeMoreList">{{if  msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.seeMoreTitle}}${msgData.message[0].component.payload.seeMoreTitle} {{else}}Show more{{/if}}</span> \
 						</li> \
 					{{/if}}\
 				</ul> \
@@ -1544,10 +1584,22 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
                     {{if msgData.message[0].component.payload.otpButtons}}\
                        <div class="otp-btn-group">\
                             {{each(key,btn) msgData.message[0].component.payload.otpButtons}}\
-                               <button class="{{if btn.type ==="submit"}}otp-btn disabled{{else btn.type ==="resend"}}otp-resend{{/if}}" {{if btn.payload}}value="${btn.payload}"{{/if}}><span class="button-title">${btn.title}</span>{{if btn.icon}}<img src="${btn.icon}">{{/if}}</button>\
+                               <button class="{{if btn.type ==="submit"}}otp-btn disabled{{else btn.type ==="resend"}}otp-resend{{/if}}" {{if btn.payload}}value="${btn.payload}"{{/if}} {{if btn.styles}}style="{{each(stylekey,style) btn.styles}}${stylekey}:${style};{{/each}}"{{/if}} title="${btn.title}"><span class="button-title">${btn.title}</span>{{if btn.icon}}<img src="${btn.icon}">{{/if}}</button>\
                             {{/each}}\
                        </div>\
                     {{/if}}\
+					{{if msgData.message[0].component.payload.moreOptions}}\
+					    <div class="otp-more-options">\
+							{{each(key,moreOption) msgData.message[0].component.payload.moreOptions}}\
+							   {{if moreOption.elementType && moreOption.elementType=== "button"}}\
+							      <button class="otp-more-option otp-btn" type="${moreOption.type}" payload="${moreOption.payload}" data-value="${moreOption.title}">${moreOption.title}</div>\
+							   {{/if}}\
+							   {{if moreOption.elementType && moreOption.elementType=== "text"}}\
+							   		<div class="otp-more-option" type="${moreOption.type}" {{if moreOption.styles}}style="{{each(stylekey,style) moreOption.styles}}${stylekey}:${style};{{/each}}"{{/if}} payload="${moreOption.payload}" data-value="${moreOption.title}">${moreOption.title}</div>\
+							   {{/if}}\
+							{{/each}}\
+						</div>\
+					{{/if}}\
                   </div>\
                 {{else  msgData.message[0].component.payload.type ==="resetPin"}}\
                     <div class="reset-pin-generation">\
@@ -1605,6 +1657,14 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 									<input type="password" class="input-item" maxlength="1">\
 									<input type="password" class="input-item" maxlength="1">\
 								</div>\
+							{{else msgData.message[0].component.payload.pinLength == 5}}\
+								<div class="enter-pin-inputs">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+								</div>\
 							{{else msgData.message[0].component.payload.pinLength == 6}}\
 								<div class="enter-pin-inputs">\
 									<input type="password" class="input-item" maxlength="1">\
@@ -1620,6 +1680,14 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
                             <div class="reenter-pin-title">${msgData.message[0].component.payload.reEnterPinTitle}</div>\
 							{{if msgData.message[0].component.payload.pinLength === 4}}\
 								<div class="reenter-pin-inputs">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+									<input type="password" class="input-item" maxlength="1">\
+								</div>\
+							{{else msgData.message[0].component.payload.pinLength == 5}}\
+								<div class="reenter-pin-inputs">\
+									<input type="password" class="input-item" maxlength="1">\
 									<input type="password" class="input-item" maxlength="1">\
 									<input type="password" class="input-item" maxlength="1">\
 									<input type="password" class="input-item" maxlength="1">\
@@ -1651,7 +1719,71 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
     {{/if}} \
     </script>';
 
-	
+		var multiattachment_template = '<script id="attachmentTeplateV2" type="text/x-jqury-tmpl"> \
+    			{{if msgData && msgData.message && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload}} \
+					<li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{else}} id="${msgData.messageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} {{if msgData.icon}}with-icon{{/if}}multiattachment-template"> \
+					<div class="attachment-wrapper-data">\
+					    <div class="title-block">\
+						 	<div class="title">{{html helpers.convertMDtoHTML(msgData.message[0].component.payload.title, "bot")}}</div>\
+							<div class="description">{{html helpers.convertMDtoHTML(msgData.message[0].component.payload.description, "bot")}}</div>\
+							{{if msgData.message[0].component.payload.sliderView}} <button class="close-button" title="Close"><img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>{{/if}}\
+						</div>\
+						{{if  msgData.message[0].component.payload.buttons}}\
+							<div class="select-file-block">\
+							   {{each(btnKey,btn) msgData.message[0].component.payload.buttons}}\
+									<button class="inputfile-btn" data-type="${btn.type}">\
+										{{if btn.icon}}\
+										  <img src="${btn.icon}" class="type-img">\
+										{{/if}}\
+										<span>${btn.title}</span>\
+										<input type="file"/ id="${msgData.messageId+btn.type}" data-type="${btn.type}">\
+									</button>\
+								{{/each}}\
+							</div>\
+						{{/if}}\
+						<div class="uploaded-attachment-data">\
+						</div>\
+						<button class="proceed-upload hide">Submit</button>\
+					</div>\
+					</li>\
+				{{/if}} \
+			</script>';
+
+
+			var galleryTemplate= '<script id="galleryTemplatev2" type="text/x-jqury-tmpl"> \
+			{{if msgData && msgData.message && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload}} \
+					<li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{else}} id="${msgData.messageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} {{if msgData.icon}}with-icon{{/if}} _gallery_template"> \
+					    <div class="title">{{html helpers.convertMDtoHTML(msgData.message[0].component.payload.title, "bot")}}</div>\
+						<div class="content-info">\
+							{{if msgData.message[0].component.payload.elements}}\
+								<div class="gallery-elements">\
+									{{each(key,element) msgData.message[0].component.payload.elements}}\
+										{{if key <2}}\
+									 	<img class="gallery-ele"src="${element}">\
+										 {{/if}}\
+									{{/each}}\
+									<div class="over-lay">+${msgData.message[0].component.payload.elements.length -2}</div>\
+								</div>\
+							{{/if}}\
+							{{if msgData.message[0].component.payload.description}}\
+								<div class="description-elements">\
+									{{each(key,desc) msgData.message[0].component.payload.description}}\
+									    <div class="desc-text">{{html helpers.convertMDtoHTML(desc, "bot")}}</div>\
+									{{/each}}\
+								</div>\
+							{{/if}}\
+						</div>\
+						{{if msgData.message[0].component.payload.buttons}}\
+						   <div class="btn-group">\
+								{{each(btnKey,btn) msgData.message[0].component.payload.buttons}}\
+									<div class="btn" type="${btn.type}" {{if btn.payload}}value="${btn.payload}"{{else btn.url}}url="${btn.url}"{{/if}} title="${btn.title}">{{html helpers.convertMDtoHTML(btn.title, "bot")}}</div>\
+								{{/each}}\
+							</div>\
+						{{/if}}\
+					</li>\
+					{{/if}} \
+			</script>';
+
 		if (tempType === "dropdown_template") {
 			return dropdownTemplate;
 		} else if (tempType === "checkBoxesTemplate") {
@@ -1686,6 +1818,12 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		else if (tempType == "resetPinTemplate") {
             return resetPinTemplate;
         }
+		else if(tempType == "multiattachment_template"){
+			return multiattachment_template
+		}
+		else if(tempType === 'galleryTemplate'){
+			return galleryTemplate;
+		}
 		else {
 			return "";
 		}
@@ -1704,8 +1842,9 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
         });
     };
 
-	customTemplate.prototype.bindEvents = function (messageHtml) {
+	customTemplate.prototype.bindEvents = function (messageHtml,messageData) {
 		$(messageHtml).off('click', '.listTmplContentChild_show_more').on('click', '.listTmplContentChild_show_more', function (e) {
+			    if(messageData.message[0].component.payload.seemoreAction === 'inline'){
            		 var _parentElement = e.currentTarget.parentElement;
            		 var hiddenElementsArray = $(_parentElement).find('.hide');
             		for (var i = 0; i < hiddenElementsArray.length; i++) {
@@ -1715,7 +1854,24 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
            		 }
            		 var currentTarget = e.currentTarget;
            		 $(currentTarget).addClass('hide');
-	        });
+				}else{
+					messageData.message[0].component.payload.displayLimit = messageData.message[0].component.payload.buttons.length;
+					messageData.message[0].component.payload.sliderView = true;
+					var element  = $(customTemplate.prototype.getChatTemplate("checkBoxesTemplate")).tmpl({
+						'msgData': messageData,
+						'helpers': helpers,
+					});
+					bottomSliderAction('show',element)
+					$(element).find('.hide').removeClass('hide');
+					$(element).find('.listTmplContentChild_show_more').css('display','none');
+					$(element).find('.extra-info').addClass('hide');
+					customTemplate.prototype.bindEvents(element,messageData);
+					$(element).find(".close-button").on('click', function (event) {
+						bottomSliderAction('hide');
+					});
+				}
+				
+	    });
 
 		chatInitialize=this.chatInitialize;
 		helpers=this.helpers;
@@ -1783,9 +1939,9 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 						}
 					} else {
 						$(messageHtml).find('.errorMessage').removeClass('hide');
-						setTimeout(function(){
+						setTimeout(function() {
 							$(messageHtml).find('.errorMessage').addClass('hide');
-						},5000);
+						}, 5000);
 						return false;
 					}
 
@@ -1979,14 +2135,24 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 				});
 				$(messageHtml).find(".listViewTmplContent .extra-info").hide();
 				bottomSliderAction('show',messageHtml);
-				$(messageHtml).off('click', ".listViewLeftContent").on('click',".listViewLeftContent" ,function () {
+				$(messageHtml).off('click', ".listViewLeftContent").on('click',".listViewLeftContent" ,function (e) {
 					var _self=this;
-					valueClick(_self);
+					var subGroupElememts = $(e.currentTarget).closest('.list-element').find('.subelements-group');
+					var subGroupElememtsLength = subGroupElememts.length;
+					if(!subGroupElememtsLength){
+						valueClick(_self);
+					}else{
+						$(e.currentTarget).closest('.list-element').find('.carrot-down').toggleClass('rotate-icon')
+						$(subGroupElememts).toggle(300);
+					}
 				});
 			}
 		});
 		$(messageHtml).find(".listViewLeftContent").on('click', function (e) {
 		var me = this; 	
+		var subGroupElememts = $(e.currentTarget).closest('.list-element').find('.subelements-group');
+		var subGroupElememtsLength = subGroupElememts.length;
+		if(!subGroupElememtsLength){
 		if($(this).attr('data-url')){
 			var a_link = $(this).attr('data-url');
 			if (a_link.indexOf("http:") < 0 && a_link.indexOf("https:") < 0) {
@@ -1998,8 +2164,14 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 			var _innerText= $(this).attr('data-value') || $(this).attr('data-title');
 			var postBack=$(this).attr('data-title');
 			chatInitialize.sendMessage($('.chatInputBox').text(_innerText), postBack);
-			$(".listViewTmplContentBox").css({"pointer-events":"none"});
+			if(_innerText){
+				$(".listViewTmplContentBox .listItems").css({"pointer-events":"none"});
+			}
 		 }
+		}else{
+			$(e.currentTarget).closest('.list-element').find('.carrot-down').toggleClass('rotate-icon')
+			$(subGroupElememts).toggle(300);
+		}
 		 });
 		/* New List Template click functions ends here*/
 		$(messageHtml).off('click', '.listViewItemValue.actionLink.action,.listTableDetailsDesc').on('click', '.listViewItemValue.actionLink.action,.listTableDetailsDesc', function () {
@@ -2213,15 +2385,16 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 				if (a_link.indexOf("http:") < 0 && a_link.indexOf("https:") < 0) {
 					a_link = "http:////" + a_link;
 				}
-				//this.openExternalLink(a_link);
-                		customTemplate.prototype.openExternalLink(a_link);
+				customTemplate.prototype.openExternalLink(a_link);
 			 }else{
 				var _innerText= $(_self).attr('data-value');
 				var postBack=$(_self).attr('data-title');
 				chatInitialize.sendMessage($('.chatInputBox').text(_innerText), postBack);
 			 $(".kore-action-sheet .list-template-sheet").animate({ height: 'toggle' });
-             bottomSliderAction("hide");
-			 $(".listViewTmplContentBox").css({"pointer-events":"none"});
+			 if(_innerText){
+				bottomSliderAction("hide");
+				$(".listViewTmplContentBox .listItems").css({"pointer-events":"none"});
+			 }
 			 }
 		}
 
@@ -2619,6 +2792,9 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 			var messagePinLength = msgData.message[0].component.payload.pinLength;
 			if ($(e.currentTarget).val() && $(e.currentTarget).val().length === messagePinLength) {
 				$(messageHtml).find('.otp-validations .otp-btn-group .otp-btn').removeClass('disabled');
+				if(e.keyCode === 13){
+					$(messageHtml).find('.otp-btn').trigger('click');
+				}
 			} else {
 				$(messageHtml).find('.otp-validations .otp-btn-group .otp-btn').addClass('disabled');
 			}
@@ -2662,11 +2838,21 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 
 		$(messageHtml).off('click', '.otp-validations .otp-btn-group .otp-resend').on('click', '.otp-validations .otp-btn-group .otp-resend', function (e) {
 			var payload = $(e.currentTarget).attr('value');
+			var messageToDisplay = $(e.currentTarget).attr('title');
 			$('.chatInputBox').text(payload);
-			chatInitialize.sendMessage($('.chatInputBox'), payload, msgData, true);
+			chatInitialize.sendMessage($('.chatInputBox'), messageToDisplay, msgData, false);
 			bottomSliderAction('hide');
 		});
 
+		$(messageHtml).off('click','.otp-validations .otp-more-options .otp-more-option').on('click', '.otp-validations .otp-more-options .otp-more-option', function (e) {
+			if($(e.currentTarget).attr('type') === 'postback'){
+				var payload = $(e.currentTarget).attr('payload');
+				var messageToDisplay = $(e.currentTarget).attr('data-value') ||   $(e.currentTarget).text();
+				$('.chatInputBox').text(payload);
+				chatInitialize.sendMessage($('.chatInputBox'), messageToDisplay, msgData, false);
+				bottomSliderAction('hide');
+			}
+		})
 	}
 
 	/* otpValidationTemplateEvents ends here */
@@ -2774,6 +2960,704 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 
 	/* ResetTemplateEvents ends here */
 
+	/* Multi attachment template Events */
+	customTemplate.prototype.multiAttachmentTemplateEvents = function (messageHtml, msgData) {
+		var koreAPIUrl = chatWindowInstance.config.botOptions.koreAPIUrl
+		var appConsts = {};
+		appConsts.CHUNK_SIZE = 1024 * 1024;
+		var kfrm = {};
+		kfrm.net = {};
+		var multipartTimeInterval = null;
+		var attachmentFiles = [];
+		var uploadingInProgress = false;
+		+function () {
+			function getHTTPConnecton() {
+				var xhr = false;
+				xhr = new XMLHttpRequest();
+				if (xhr) {
+					return xhr;
+				} else if (typeof XDomainRequest !== "undefined") {
+					return new XDomainRequest();
+				}
+				return xhr;
+			}
+
+			function HttpRequest() {
+				var xhr = getHTTPConnecton();
+				if (!xhr) {
+					throw "Unsupported HTTP Connection";
+				}
+				try {
+					xhr.withCredentials = true;
+				} catch (e) {
+				}
+				xhr.onreadystatechange = function () {
+					return xhr.onReadyStateChange && xhr.onReadyStateChange.call(xhr);
+				};
+				return xhr;
+			}
+			kfrm.net.HttpRequest = HttpRequest;
+		}();
+		var accessToken = chatWindowInstance.config.botOptions.accessToken;
+		function MultipartData() {
+			this.boundary = "--------MultipartData" + Math.random();
+			this._fields = [];
+		}
+		MultipartData.prototype.append = function (key, value) {
+			this._fields.push([key, value]);
+		};
+		MultipartData.prototype.toString = function () {
+			var boundary = this.boundary;
+			var body = "";
+			this._fields.forEach(function (field) {
+				body += "--" + boundary + "\r\n";
+				// file upload
+				if (field[1].data) {
+					var file = field[1];
+					if (file.fileName) {
+						body += "Content-Disposition: form-data; name=\"" + field[0] + "\"; filename=\"" + file.fileName + "\"";
+					} else {
+						body += "Content-Disposition: form-data; name=\"" + field[0] + "\"";
+					}
+					body += "\r\n";
+					if (file.type) {
+						body += "Content-Type: UTF-8; charset=ISO-8859-1\r\n";
+					}
+					body += "Content-Transfer-Encoding: base64\r\n";
+					body += "\r\n" + file.data + "\r\n"; //base64 data
+				} else {
+					body += "Content-Disposition: form-data; name=\"" + field[0] + "\";\r\n\r\n";
+					body += field[1] + "\r\n";
+				}
+			});
+			body += "--" + boundary + "--";
+			return body;
+		};
+
+		$(messageHtml).off('click', '.title-block .close-button').on('click', '.title-block .close-button', function (e) {
+			bottomSliderAction('hide');
+		})
+		$(messageHtml).off('click', '.attachment-wrapper-data .proceed-upload').on('click', '.attachment-wrapper-data .proceed-upload', function (e) {
+			if (!uploadingInProgress) {
+				var uploadedElements = $(messageHtml).find('.uploaded-attachment-data .uploaded-item');
+				var payload = [];
+				var clientMessageId = new Date().getTime();
+				var msgData = {};
+				if (uploadedElements.length) {
+					for (var i = 0; i < uploadedElements.length; i++) {
+						var ele = uploadedElements[i];
+						var _payload = {
+							fileId: $(ele).attr('data-value'),
+							fileName: $(ele).attr('data-name'),
+							fileType: $(ele).attr('data-type')
+						};
+						if (_payload) {
+							payload.push(_payload)
+						}
+					}
+					if (payload && payload.length) {
+						var messageToBot = {};
+						messageToBot["clientMessageId"] = clientMessageId;
+						messageToBot["message"] = { attachments: payload };
+						// messageToBot["message"] = { body: '' };
+						messageToBot["resourceid"] = '/bot.message';
+
+						if (msgData && msgData.customdata) {
+							messageToBot["message"].customdata = msgData.customdata;
+						}
+						chatWindowInstance.bot.sendMessage(messageToBot, function messageSent(err) {
+							if (err && err.message) {
+								setTimeout(function () {
+									$('.kore-chat-window [data-time="' + clientMessageId + '"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
+								}, 350);
+							}
+						});
+						bottomSliderAction('hide')
+					}
+
+				}
+			} else {
+				alert('Uploading in Progress')
+			}
+		})
+		$(messageHtml).off('click', '.select-file-block .inputfile-btn').on('click', '.select-file-block .inputfile-btn', function (e) {
+			if (!uploadingInProgress) {
+				var type = $(e.currentTarget).attr('data-type');
+				$(e.currentTarget).find('input').val(null)
+			} else {
+				alert('Uploading in Progress')
+			}
+		})
+		if (msgData.message[0].component.payload.buttons) {
+			for (var i = 0; i < msgData.message[0].component.payload.buttons.length; i++) {
+				var btn = msgData.message[0].component.payload.buttons[i];
+				var fileSizelimit = msgData.message[0].component.payload.fileSizelimit;
+				var batchSize = parseInt(msgData.message[0].component.payload.batchSizeLimit);
+				$(messageHtml).off('change', '.select-file-block .inputfile-btn #' + msgData.messageId + btn.type).on('change', '.select-file-block .inputfile-btn #' + msgData.messageId + btn.type, function (e) {
+					var selectedFile = $(e.currentTarget).prop('files')[0];
+					if (!checkForExistingSameFile(selectedFile, messageHtml)) {
+						var type = $(e.currentTarget).attr('data-type');
+						var selectedFileName = selectedFile.name;
+						var selectedFileSize = bytesToMB(selectedFile.size);
+						selectedFile.sizeInMb = selectedFileSize;
+						var selectedFileFormat = selectedFileName.split('.').pop().toLowerCase();
+						if (type === 'image') {
+							var supportedFormats = msgData.message[0].component.payload.supportedImageFormats;
+							if (supportedFormats.indexOf(selectedFileFormat) > -1) {
+								if (checkForSize(selectedFile.sizeInMb, fileSizelimit)) {
+									var currentBatchSize = 0;
+									var uploadedElemets = $(messageHtml).find('.uploaded-attachment-data .uploaded-item');
+									if (uploadedElemets.length) {
+										for (var i = 0; i < uploadedElemets.length; i++) {
+											var currentFileSize = Number($(uploadedElemets[i]).attr('file-size'));
+											currentBatchSize = currentBatchSize + currentFileSize;
+										}
+									}
+									currentBatchSize = currentBatchSize + selectedFile.sizeInMb;
+									if (checkForSize(currentBatchSize, batchSize)) {
+										proceedToUpload(selectedFile, messageHtml, type, $(e.currentTarget));
+									} else {
+										alert('Exceeded total limit ' + fileSizelimit);
+									}
+								} else {
+									alert('Please select file size less than ' + fileSizelimit);
+								}
+							} else {
+								alert('Please select ' + supportedFormats.toString());
+							}
+						} else if (type === 'file') {
+							var supportedFileFormats = msgData.message[0].component.payload.supportedFileFormats;
+							if (supportedFileFormats.indexOf(selectedFileFormat) > -1) {
+								if (checkForSize(selectedFile.sizeInMb, fileSizelimit)) {
+									var currentBatchSize = 0;
+									var uploadedElemets = $(messageHtml).find('.uploaded-attachment-data .uploaded-item');
+									if (uploadedElemets.length) {
+										for (var i = 0; i < uploadedElemets.length; i++) {
+											var currentFileSize = Number($(uploadedElemets[i]).attr('file-size'));
+											currentBatchSize = currentBatchSize + currentFileSize;
+										}
+									}
+									currentBatchSize = currentBatchSize + selectedFile.sizeInMb;
+									if (checkForSize(currentBatchSize, batchSize)) {
+										proceedToUpload(selectedFile, messageHtml, type, $(e.currentTarget));
+									} else {
+										alert('Exceeded total limit ' + fileSizelimit);
+									}
+								} else {
+									alert('Please select file size less than ' + fileSizelimit);
+								}
+							} else {
+								alert('Please select ' + supportedFileFormats.toString());
+							}
+						} else {
+							alert('same file uploaded already');
+						}
+					} else {
+						alert('Same file already exists');
+					}
+				})
+			}
+		}
+
+		function createElement(selectedFile, messageHtml) {
+			var element = $('<div class="uploaded-item" id=' + selectedFile.uniqueId + '>\
+				<div class="img-block"></div>\
+				<div class="content-data">\
+					<h1>'+ selectedFile.name + '</h1>\
+					<div class="progress-percentage">\
+						<div class="percentage"></div>\
+					</div>\
+					<p class="file-size">'+ selectedFile.sizeInMb + 'MB</p>\
+					<div class="info-error-msg">\
+						<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9Ikljb24gLyBJbmZvIj4KPHBhdGggaWQ9IkluZm8iIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOCAxQzQuMTM0MDEgMSAxIDQuMTM0MDEgMSA4QzEgMTEuODY2IDQuMTM0MDEgMTUgOCAxNUMxMS44NjYgMTUgMTUgMTEuODY2IDE1IDhDMTUgNC4xMzQwMSAxMS44NjYgMSA4IDFaTTguMDAwMDcgMi4wMzcxMUMxMS4yOTMzIDIuMDM3MTEgMTMuOTYzIDQuNzA2ODIgMTMuOTYzIDguMDAwMDdDMTMuOTYzIDExLjI5MzMgMTEuMjkzMyAxMy45NjMgOC4wMDAwNyAxMy45NjNDNC43MDY4MiAxMy45NjMgMi4wMzcxMSAxMS4yOTMzIDIuMDM3MTEgOC4wMDAwN0MyLjAzNzExIDQuNzA2ODIgNC43MDY4MiAyLjAzNzExIDguMDAwMDcgMi4wMzcxMVpNOC4wMjE0NSA0LjkzMzU5QzguMzAzMTEgNC45MzM1OSA4LjUzNDQxIDUuMTQwNjYgOC41NTkyNCA1LjQwNDkyTDguNTYxNDUgNS40NTIxMVY1LjVDOC41NjE0NSA1Ljc4NjM3IDguMzE5NjggNi4wMTg1MiA4LjAyMTQ1IDYuMDE4NTJDNy43Mzk3OCA2LjAxODUyIDcuNTA4NDggNS44MTE0NSA3LjQ4MzY1IDUuNTQ3Mkw3LjQ4MTQ1IDUuNVY1LjQ1MjExQzcuNDgxNDUgNS4xNjU3NCA3LjcyMzIxIDQuOTMzNTkgOC4wMjE0NSA0LjkzMzU5Wk03Ljk5OTk2IDdDOC4yNzA0MiA3IDguNDkyNTIgNy4yMDcwNyA4LjUxNjM2IDcuNDcxMzJMOC41MTg0OCA3LjUxODUyVjExLjM4MjhDOC41MTg0OCAxMS42NjkyIDguMjg2MzMgMTEuOTAxMyA3Ljk5OTk2IDExLjkwMTNDNy43Mjk1IDExLjkwMTMgNy41MDc0MSAxMS42OTQyIDcuNDgzNTYgMTEuNDNMNy40ODE0NSAxMS4zODI4VjcuNTE4NTJDNy40ODE0NSA3LjIzMjE1IDcuNzEzNTkgNyA3Ljk5OTk2IDdaIiBmaWxsPSIjRUY0NDQ0Ii8+CjwvZz4KPC9zdmc+Cg==" />\
+						<span>Upload failed</span>\
+					</div>\
+				</div>\
+				<button class="delete-upload">\
+						<img src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+" alt="remove" />\
+				</button>\
+			</div>');
+			$(messageHtml).find('.uploaded-attachment-data').append(element);
+			$(messageHtml).find('.uploaded-attachment-data').find('.delete-upload').on('click', function (e) {
+				if (!uploadingInProgress) {
+					$(e.currentTarget).closest('.uploaded-item').remove();
+					var uploadedElements = $(messageHtml).find('.uploaded-attachment-data .uploaded-item');
+					if (!uploadedElements.length) {
+						$(messageHtml).find('.attachment-wrapper-data .proceed-upload').addClass('hide');
+					}
+					var uploadedElementsLength = $(messageHtml).find('.uploaded-item').length;
+					if (uploadedElementsLength < msgData.message[0].component.payload.fileLimit) {
+						$(messageHtml).find('.select-file-block').removeClass('disabled-buttons');
+					}
+				} else {
+					alert('Uploading in Progress')
+				}
+			});
+		}
+
+		function checkForExistingSameFile(selectedFile, messageHtml) {
+			if ($(messageHtml).find('.uploaded-attachment-data .uploaded-item').length) {
+				var existingFileNames = [];
+				var uploadedElemets = $(messageHtml).find('.uploaded-attachment-data .uploaded-item');
+				if (uploadedElemets.length) {
+					for (var i = 0; i < uploadedElemets.length; i++) {
+						existingFileNames.push($(uploadedElemets[i]).attr('data-name'));
+					}
+					if (existingFileNames.length) {
+						return existingFileNames.some(function (val) { return val === selectedFile.name });
+					}
+				}
+			} else {
+				return false;
+			}
+		}
+
+		function proceedToUpload(selectedFile, messageHtml, fileType, element) {
+			var recState = {};
+			recState = selectedFile;
+			recState.name = selectedFile.name;
+			recState.uniqueId = getUID();
+			recState.fileType = selectedFile.name.split('.').pop().toLowerCase();
+			uploadingInProgress = true;
+			if (fileType === 'image') {
+				var imgRd = new FileReader();
+				imgRd.onload = function (e) {
+					var blob = new Blob([e.target.result], { type: selectedFile.type }), // create a blob of buffer
+						url = (URL || webkitURL).createObjectURL(blob); // create o-URL of blob
+					var img = new Image();
+					img.src = url;
+					img.onload = function () {
+						recState.resulttype = getDataURL(img);
+						getFileToken(selectedFile, messageHtml);
+					};
+				};
+				imgRd.readAsArrayBuffer(selectedFile);
+			} else if (fileType === 'file') {
+				getFileToken(selectedFile, messageHtml);
+			}
+
+		}
+		function getFileToken(selectedFile, messageHtml) {
+			var auth = "bearer " + window.jwtDetails.authorization.accessToken;
+			var _self = this;
+			$.ajax({
+				type: "POST",
+				url: koreAPIUrl + "/1.1/attachment/file/token",
+				dataType: "json",
+				headers: {
+					Authorization: auth
+				},
+				success: function (response) {
+					selectedFile.fileToken = response.fileToken;
+					prepareUploadConfig(selectedFile, messageHtml);
+				},
+				error: function (msg) {
+
+				}
+			});
+		}
+		function getUID(pattern) {
+			var _pattern = pattern || 'xxxxyx';
+			_pattern = _pattern.replace(/[xy]/g, function (c) {
+				var r = Math.random() * 16 | 0,
+					v = c === 'x' ? r : (r & 0x3 | 0x8);
+				return v.toString(16);
+			});
+			return _pattern;
+		};
+
+		function checkForSize(val, limit) {
+			return val <= limit
+		}
+
+		function prepareUploadConfig(selectedFile, messageHtml) {
+			var uploadConfig = getfileuploadConf(selectedFile);
+			uploadConfig.chunkSize = appConsts.CHUNK_SIZE;
+			uploadConfig.chunkUpload = selectedFile.size > appConsts.CHUNK_SIZE;
+			uploadConfig.file = selectedFile;
+			if (uploadConfig.chunkUpload) {
+				createElement(selectedFile, messageHtml);
+				ele = $(messageHtml).find('#' + selectedFile.uniqueId);
+				initiateRcorder(selectedFile, ele);
+				ele.multifileuploader(uploadConfig);
+			} else {
+				var reader = new FileReader();
+				reader.onloadend = function (evt) {
+					if (evt.target.readyState === FileReader.DONE) { // DONE == 2
+						var converted = reader.result.replace(/^.*;base64,/, '');
+						var resultGet = converted;
+						selectedFile.resulttype = resultGet;
+						acceptFileRecording(selectedFile, messageHtml);
+					}
+				};
+				reader.readAsDataURL(selectedFile);
+			}
+		}
+
+
+		function getfileuploadConf(selectedFile) {
+			appConsts.UPLOAD = {
+				"FILE_ENDPOINT": koreAPIUrl + "/1.1/attachment/file",
+				"FILE_TOKEN_ENDPOINT": koreAPIUrl + "/1.1/attachment/file/token",
+				"FILE_CHUNK_ENDPOINT": koreAPIUrl + "/1.1/attachment/file/:fileID/chunk"
+			};
+			_accessToken = "bearer " + accessToken;
+			_uploadConfg = {};
+			_uploadConfg.url = appConsts.UPLOAD.FILE_ENDPOINT.replace(':fileID', selectedFile.fileToken);
+			_uploadConfg.tokenUrl = appConsts.UPLOAD.FILE_TOKEN_ENDPOINT;
+			_uploadConfg.chunkUrl = appConsts.UPLOAD.FILE_CHUNK_ENDPOINT.replace(':fileID', selectedFile.fileToken);
+			_uploadConfg.fieldName = 'file';
+			_uploadConfg.data = {
+				'fileExtension': selectedFile.fileType,
+				'fileContext': 'workflows',
+				thumbnailUpload: false,
+				filename: selectedFile.name
+			};
+			_uploadConfg.headers = {
+				Authorization: _accessToken
+			};
+			return _uploadConfg;
+		}
+
+		function acceptFileRecording(selectedFile, messageHtml) {
+			var _uc = getfileuploadConf(selectedFile),
+				_imageCntn = selectedFile.resulttype;
+			createElement(selectedFile, messageHtml);
+			_uc.data[_uc.fieldName] = {
+				fileName: selectedFile.name,
+				data: _imageCntn,
+				type: 'image/png'
+			};
+			_uc.data.thumbnail = {
+				fileName: selectedFile.name + '_thumb',
+				data: _imageCntn,
+				type: 'image/png'
+			};
+			ele = $(messageHtml).find('#' + selectedFile.uniqueId);
+			initiateRcorder(selectedFile, ele);
+			ele.multifileuploader(_uc);
+		};
+		function getDataURL(src) {
+			var thecanvas = document.createElement("canvas");
+			thecanvas.height = 180;
+			thecanvas.width = 320;
+
+			var context = thecanvas.getContext('2d');
+			context.drawImage(src, 0, 0, thecanvas.width, thecanvas.height);
+			var dataURL = thecanvas.toDataURL();
+			return dataURL;
+		};
+		function initiateRcorder(selectedFile, ele) {
+			ele = ele;
+			ele.on('success.ke.multifileuploader', function (e) {
+				onFileToUploaded(e, selectedFile);
+				uploadingInProgress = false;
+			});
+			ele.on('error.ke.multifileuploader', function (e) {
+				onUploadError(e);
+				uploadingInProgress = false;
+			});
+		};
+		function onFileToUploaded(evt, _recState) {
+			var _data = evt.params;
+			if (!_data || !_data.fileId) {
+				onError();
+				return;
+			} else {
+				clearTimeout(multipartTimeInterval);
+				multipartTimeInterval = null;
+				if ($(evt.currentTarget).find('.percentage')) {
+					var progressbar = $(evt.currentTarget).find('.percentage');
+					$(progressbar).css({ 'width': 100 + '%' });
+					$(evt.currentTarget).attr('data-value', _data.fileId);
+					$(evt.currentTarget).attr('data-name', _recState.name);
+					$(evt.currentTarget).attr('file-size', _recState.sizeInMb);
+					if (_recState.type.includes('image')) {
+						$(evt.currentTarget).attr('data-type', 'image');
+					} else {
+						$(evt.currentTarget).attr('data-type', 'attachment');
+					}
+				}
+				if ($(evt.currentTarget).closest('.attachment-wrapper-data').find('.proceed-upload').hasClass('hide')) {
+					$(evt.currentTarget).closest('.attachment-wrapper-data').find('.proceed-upload').removeClass('hide')
+				}
+				var uploadedElementsLength = $(messageHtml).find('.uploaded-item').length;
+				if (msgData.message[0].component.payload.fileLimit === uploadedElementsLength) {
+					$(messageHtml).find('.select-file-block').addClass('disabled-buttons');
+				}
+			}
+			if (_recState.uniqueId) {
+				var _tofileId = _data.fileId;
+				// notifyfileCmpntRdy(_this, _recState, _tofileId);
+			}
+		};
+		function onUploadError(evt, _recState) {
+			if ($(evt.currentTarget).find('.percentage')) {
+				var progressbar = $(evt.currentTarget).find('.percentage');
+				$(progressbar).css({ 'background': '#FF0000' });
+				$(evt.currentTarget).find('.info-error-msg').css({'display':'block'});
+				$(evt.currentTarget).find('.file-size').css({'display':'none'});
+			}
+		};
+
+		function bytesToMB(bytes) {
+			const mb = bytes / (1024 * 1024);
+			return Number(mb.toFixed(2));
+		}
+		function onError() {
+			alert("Failed to upload content. Try again");
+			attachmentInfo = {};
+			$('.attachment').html('');
+			$('.sendButton').addClass('disabled');
+			fileUploaderCounter = 0;
+		};
+
+		var _multifileuploader = $.fn.multifileuploader;
+
+		$.fn.multifileuploader = function (option) {
+			var _args = Array.prototype.slice.call(arguments, 1);
+			return this.each(function () {
+				var $this = $(this),
+					data = '';//$this.data('ke.multiFileUploader'),
+				options = typeof option === 'object' && option;
+
+				if (!data) {
+					$this.data('ke.multiFileUploader', (data = new multiFileUploader($this, options)));
+				} else if (option) {
+					if (typeof option === 'string' && data[option]) {
+						data[option].apply(data, _args);
+					} else if (options) {
+						startUpload(setOptions(data, options));
+					}
+				}
+				return option && data[option] && data[option].apply(data, _args);
+			});
+		};
+
+		$.fn.uploader.Constructor = multiFileUploader;
+
+		$.fn.uploader.noConflict = function () {
+			$.fn.uploader = old;
+			return this;
+		};
+		var _cls = multiFileUploader.prototype;
+		_cls.events = {
+			error: $.Event('error.ke.multifileuploader'),
+			progressChange: $.Event('progress.ke.multifileuploader'),
+			success: $.Event('success.ke.multifileuploader')
+		};
+		function multiFileUploader(element, options) {
+			this.options = options;
+			this.$element = element;
+			if (element.find('.percentage')) {
+				var progressbar = element.find('.percentage');
+				multipartTimeInterval = setInterval(function () {
+					progressbar.css({ 'width': 10 * 2 + '%' });
+				})
+			}
+			if (!this.options.chunkUpload) {
+				startUpload(this);
+			} else {
+				startChunksUpload(this);
+			}
+		}
+		function startUpload(_this) {
+			var _scope = _this;
+			_conc = getConnection(_this),
+				_mdat = new MultipartData();
+			if (_conc.upload && _conc.upload.addEventListener) {
+				_conc.upload.addEventListener('progress', function (evt) {
+					progressListener(_scope, evt);
+				}, false);
+			}
+			_conc.addEventListener('load', function (evt) {
+				if (_scope.$element.parent().length) {
+					multiFileUploadListener(_scope, evt);
+				}
+			}, false);
+			_conc.addEventListener('error', function (evt) {
+				errorListener(_scope, evt);
+			}, false);
+			_conc.withCredentials = false;
+			_conc.open('POST', _this.options.url);
+
+			if (_this.options.headers) {
+				for (var header in _this.options.headers) {
+					_conc.setRequestHeader(header, _this.options.headers[header]);
+				}
+			}
+			if (_this.options.data) {
+				for (var key in _this.options.data) {
+					_mdat.append(key, _this.options.data[key]);
+				}
+			}
+			_conc.setRequestHeader('Content-Type', "multipart/form-data; boundary=" + _mdat.boundary);
+			_conc.send(_mdat.toString());
+		};
+		function startChunksUpload(_this) {
+			var _scope = _this,
+				_conc = getConnection(_this);
+			_conc.addEventListener('error', function (evt) {
+				errorListener(_scope, evt);
+			}, false);
+			_conc.addEventListener('load', function (evt) {
+				if (evt.target.status === 200) {
+					_scope.messageToken = JSON.parse(evt.target.response).fileToken;
+					_scope.totalChunks = Math.floor(_scope.options.file.size / _scope.options.chunkSize) + 1;
+					_scope.currChunk = 0;
+					_scope.options.chunkUrl = _scope.options.chunkUrl.replace(':token', _scope.messageToken);
+					if (_scope.$element.parent().length) {
+						initUploadChunk(_scope);
+					}
+				} else {
+					errorListener(_scope, evt);
+				}
+			}, false);
+			_conc.withCredentials = false;
+			_conc.open('POST', _this.options.tokenUrl);
+			if (_this.options.headers) {
+				for (var header in _this.options.headers) {
+					_conc.setRequestHeader(header, _this.options.headers[header]);
+				}
+			}
+			_conc.send();
+		};
+		function getConnection(_this) {
+			return new kfrm.net.HttpRequest();
+		};
+
+
+		function progressListener(_this, evt) {
+		};
+
+		function multiFileUploadListener(_this, evt) {
+			_this.events.success.params = $.parseJSON(evt.target.response);
+			_this.$element.trigger(_this.events.success);
+		};
+		function errorListener(_this, evt) {
+			_this.events.error.params = evt;
+			_this.$element.trigger(_this.events.error);
+		};
+
+		function setOptions(_this, opts) {
+			_this.options = opts;
+			return _this;
+		};
+		function initUploadChunk(_this) {
+			var _scope = _this;
+			var file = _scope.options.file;
+			var start = _scope.options.chunkSize * (_scope.currChunk);
+			var stop = (_scope.currChunk === _scope.totalChunks - 1) ? file.size : (_scope.currChunk + 1) * _scope.options.chunkSize;
+			var reader = new FileReader();
+			var blob = file.slice(start, stop);
+			reader.onloadend = function (evt) {
+				if (evt.target.readyState === FileReader.DONE && _scope.$element.parent().length) { // DONE == 2
+					_scope.chunk = evt.target.result;
+					_scope.chunk = _scope.chunk.replace(/data:;base64,/, '');
+					if (_scope.currChunk < _scope.totalChunks && _scope.$element.parent().length) {
+						uploadChunk(_scope);
+					}
+				} else {
+					errorListener(_scope, evt);
+				}
+			};
+			reader.readAsDataURL(blob);
+		};
+		function uploadChunk(_this) {
+			var _scope = _this,
+				_conc = getConnection(_this),
+				_mdat = new MultipartData();
+			_conc.addEventListener('load', function (evt) {
+				if (evt.target.status === 200) {
+					_scope.currChunk++;
+					if (!_scope.$element.parent().length) {
+						return;
+					} else if (_scope.currChunk === _scope.totalChunks) {
+						commitFile(_scope);
+					} else {
+						initUploadChunk(_scope);
+					}
+				} else {
+					errorListener(_scope, evt);
+				}
+			}, false);
+			_conc.addEventListener('error', function (evt) {
+				errorListener(_scope, evt);
+			}, false);
+			_conc.withCredentials = false;
+			_conc.open('POST', _this.options.chunkUrl);
+
+			if (_this.options.headers) {
+				for (var header in _this.options.headers) {
+					_conc.setRequestHeader(header, _this.options.headers[header]);
+				}
+			}
+			_mdat.append('chunkNo', _scope.currChunk);
+			_mdat.append('messageToken', _scope.messageToken);
+			_mdat.append('chunk', {
+				data: _scope.chunk,
+				fileName: _scope.options.file.name
+			});
+			_conc.setRequestHeader('Content-Type', "multipart/form-data; boundary=" + _mdat.boundary);
+			_conc.send(_mdat.toString());
+		};
+		function commitFile(_this) {
+			var _scope = _this,
+				_conc = getConnection(_this),
+				_mdat = new MultipartData();
+			_conc.addEventListener('load', function (evt) {
+				if (evt.target.status === 200) {
+					if (_scope.$element.parent().length) {
+						multiFileUploadListener(_scope, evt);
+					}
+				} else {
+					errorListener(_scope, evt);
+				}
+			}, false);
+			_conc.addEventListener('error', function (evt) {
+				errorListener(_scope, evt);
+			}, false);
+			_conc.withCredentials = false;
+			_conc.open('PUT', _this.options.chunkUrl.replace(/\/chunk/, ''));
+
+			if (_this.options.headers) {
+				for (var header in _this.options.headers) {
+					_conc.setRequestHeader(header, _this.options.headers[header]);
+				}
+			}
+			_mdat.append('totalChunks', _scope.totalChunks);
+			_mdat.append('messageToken', _scope.messageToken);
+			if (_this.options.data) {
+				for (var key in _this.options.data) {
+					_mdat.append(key, _this.options.data[key]);
+				}
+			}
+			_conc.setRequestHeader('Content-Type', "multipart/form-data; boundary=" + _mdat.boundary);
+			_conc.send(_mdat.toString());
+		};
+	}
+	/* Multi attachment Template Events */
+
+	/* Gallery template Events */
+	customTemplate.prototype.galleryTemplateEvents = function (messageHtml, msgData) {
+		chatInitialize = this.chatInitialize;
+		helpers = this.helpers;
+		$(messageHtml).on('click', '.btn-group .btn', function (e) {
+			var type = $(e.currentTarget).attr('type');
+			if (type === 'postback') {
+				var payload = $(e.currentTarget).attr('value') || $(e.currentTarget).attr('title');
+				$('.chatInputBox').text(payload);
+				chatInitialize.sendMessage($('.chatInputBox'), $(e.currentTarget).attr('title'), msgData);
+			} else if (type === 'url' || type === 'web_url') {
+				valueClick($(e.currentTarget));
+			}
+		});
+
+
+
+	}
+	/* Gallery template Events */
+
 	    window.customTemplate=customTemplate;	
 
 	return {
@@ -2782,3 +3666,4 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		valueClick:valueClick
 	}
 })($);
+

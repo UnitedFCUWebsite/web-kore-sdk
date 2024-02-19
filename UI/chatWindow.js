@@ -17,17 +17,14 @@
             //fall back to clients jquery version
             koreJquery = window.jQuery;
         }
-        var KRPerfectScrollbar;
-        if (window.PerfectScrollbar && typeof PerfectScrollbar === 'function') {
-            KRPerfectScrollbar = window.PerfectScrollbar;
-        }
-        return (function ($,KRPerfectScrollbar) {
+        
+        return (function ($) {
 
             //Actual  chatwindow.js koreBotChat function code starts here
 
             var bot = requireKr('/KoreBot.js').instance();
             var botMessages = {
-                message: "How can I help you?",
+                message: "Message...",
                 connecting: "Connecting...",
                 reconnecting: "Reconnecting..."
             };
@@ -89,6 +86,7 @@
             window.linechartCount = 0;
             var available_charts = [];
             var chatInitialize;
+            window.chatInitialize=chatInitialize;
             var customTemplateObj = {};
             window.chartColors = ['#75b0fe', '#f78083', '#99ed9e', '#fde296', '#26344a', '#5f6bf7', '#b3bac8', '#99a1fd', '#9cebf9', '#f7c7f4'];
             /**************************File upload variable end here **************************/
@@ -488,8 +486,11 @@
                             txtArr[i] = '\r\n';
                             _lineBreakAdded = true;
                         } else if (txtArr[i].indexOf('*') === 0) {
-                            if (!isEven(txtArr[i].split('*').length - 1)) {
+                            if (!isEven(txtArr[i].split('*').length - 1) && KoreSDK.chatConfig.masking) {    // Not sure what is the impact
                                 txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(1);
+                                _lineBreakAdded = true;
+                            } else  {
+                                txtArr[i] = txtArr[i];
                                 _lineBreakAdded = true;
                             }
                         } else if (txtArr[i].indexOf('>>') === 0) {
@@ -864,7 +865,7 @@
                     var btnsParentDiv = quickReplyDivs[i].querySelectorAll('.quick_replies_btn_parent');
                     var leftScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyLeftIcon');
                     var rightScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyRightIcon');
-                    if(btnsParentDiv && btnsParentDiv[0] && btnsParentDiv[0].hasChildNodes()) {
+                    if(btnsParentDiv[0].hasChildNodes()) {
                         if(btnsParentDiv[0].scrollLeft > 0) {
                             leftScrollBtn[0].classList.remove('hide');
                         }
@@ -875,9 +876,9 @@
                             rightScrollBtn[0].classList.remove('hide');
                         }
                         else {
-                            if(rightScrollBtn && rightScrollBtn[0]){
+                            if(rightScrollBtn &&  rightScrollBtn[0]){
                                 rightScrollBtn[0].classList.add('hide');
-                            }
+                            }   
                         }
                     }
                 }   
@@ -1012,20 +1013,17 @@
                 if(!me.config.minimizeMode){
                     bot.init(me.config.botOptions,me.config.messageHistoryLimit);
                 }else{
-                    setTimeout(function(){
-                        $(".kore-chat-window").addClass('minimize');
-                        chatWindowHtml.find('.minimized-title').html("Talk to " + me.config.chatTitle);
-                        me.skipedInit=true;
-                    });
-                    
+                    chatWindowHtml.addClass('minimize');
+                    chatWindowHtml.find('.minimized-title').html("Talk to " + me.config.chatTitle);
+                    me.skipedInit=true;
                 }
                 if (me.config.allowLocation) {
                     bot.fetchUserLocation();
                 }
                 me.render(chatWindowHtml);
                 unfreezeUIOnHistoryLoadingFail();
-                
             };
+            chatWindow.prototype.bot = bot;
             chatWindow.prototype.destroy = function () {
                 var me = this;
                 $('.kore-chat-overlay').hide();
@@ -1039,7 +1037,7 @@
                         me.config.chatContainer.remove();
                     }else{
                         me.config.chatContainer.find('.kore-chat-header .header-title').html(me.config.botMessages.reconnecting);
-                        me.config.chatContainer.find(".kore-chat-window").addClass('minimize');
+                        me.config.chatContainer.addClass('minimize');
                         me.skipedInit=true;                
                     }
                 }
@@ -1101,6 +1099,30 @@
                 });
                 _chatContainer.off('click', '.botResponseAttachments').on('click', '.botResponseAttachments', function (event) {
                     window.open($(this).attr('fileid'), '_blank');
+                });
+                _chatContainer.off('keydown', '.text-as-password').on('keydown', '.text-as-password', function (event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        if ($('.text-as-password').val().length > 0) {
+                            var message = $('.text-as-password').val();
+                            var messageCopy = $('.text-as-password').val();
+                            if(KoreSDK.chatConfig.piiReductionChar){
+                                var piiReductionChar = KoreSDK.chatConfig.piiReductionChar;
+                                message = piiReductionChar + message + piiReductionChar;
+                                var renderMessage = messageCopy.replace(/\w/g, "*");
+                                me.sendMessage($('.chatInputBox').text(message), renderMessage);
+                            }else{
+                                var _renderMessage = messageCopy.replace(/[^\w\s]/gi, '*');
+                                _renderMessage = _renderMessage.replace(/\w/g, "*");
+                                me.sendMessage($('.chatInputBox').text(message), _renderMessage);
+                            }
+
+                            KoreSDK.chatConfig.piiReductionChar = '';
+                            $('.text-as-password').val('');
+                            $('.text-as-password').css('display', 'none');
+                            $('.chatInputBox').css('display','block');
+                        }
+                    }
                 });
                 /*_chatContainer.off('click', '.attachments').on('click', '.attachments', function (event) {
                     var attachFileID = $(this).attr('fileid');
@@ -1222,7 +1244,21 @@
                             return;
                         }
                     }
-                    cnvertFiles(this, file);
+                    if (checkForFileValidation(file)) {
+                        cnvertFiles(this, file);
+                    } else {
+                        alert("Sorry, the file you tried to attach is not supported. Please attach a valid pdf or image file");
+                    }
+                  //  cnvertFiles(this, file);
+                    function checkForFileValidation(file) {
+                        var workbenchAllowedFileTypes = [".pdf", ".jpg", ".jpeg", ".jpe", ".jig", ".jfif", ".jfi", ".heif", ".png", ".img", ".webp"];
+                        var extension = file.name.substring(file.name.lastIndexOf('.'));
+                        if (workbenchAllowedFileTypes.indexOf(extension.toLowerCase()) > -1) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
                 });
                 _chatContainer.off('paste', '.chatInputBox').on('paste', '.chatInputBox', function (event) {
                     event.preventDefault();
@@ -1293,17 +1329,15 @@
                         type = type.toLowerCase();
                     }
                     if (type == "postback" || type == "text") {
-                        $('.chatInputBox').text($(this).attr('actual-value') || $(this).attr('value'));
+                        $('.chatInputBox').text($(this).attr('value') || $(this).attr('actual-value'));
                         //var _innerText = $(this)[0].innerText.trim() || $(this).attr('data-value').trim();
                         if($('.quickReply') && $('.quickReply').length){
-                            var _innerText = $(this).attr('value');
+                            var _innerText = $(this).attr('actual-value');
 			   // _innerText = toTitleCase(_innerText);
                         } else {
                             var _innerText = ($(this)[0] && $(this)[0].innerText) ? $(this)[0].innerText.trim():"" || ($(this) && $(this).attr('data-value'))?$(this).attr('data-value').trim():"";
                         }
                         me.sendMessage($('.chatInputBox'), _innerText);
-                        var parentElement = (e).currentTarget.closest('li');
-                        $(parentElement).css('pointer-events','none');
                     } else if (type == "url" || type == "web_url") {
                         if($(this).attr('msgData')!==undefined){
                             var msgData;
@@ -1317,7 +1351,6 @@
                                    msgData.message[0].component.payload.formData = msgData.message[0].component.formData;
                                 }
                                 me.renderWebForm(msgData);
-                                $(this).hide();
                                 return;
                             }
                         }
@@ -1339,15 +1372,38 @@
                     }
 
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'checkboxBtn') {
-                        var checkboxSelection = $(e.currentTarget.parentElement.parentElement).find('.checkInput:checked')
-                        var selectedValue = [];
-                        var toShowText = [];
-                        for (var i = 0; i < checkboxSelection.length; i++) {
-                            selectedValue.push($(checkboxSelection[i]).attr('value'));
-                            toShowText.push($(checkboxSelection[i]).attr('text'));
+                        if(e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[1] && e.currentTarget.classList[1] === 'cancel-btn'){
+                            var checkboxSelection = $(e.currentTarget.parentElement.parentElement).find('.checkInput:checked')
+                            var selectedValue = [];
+                            var toShowText = [];
+                            for (var i = 0; i < checkboxSelection.length; i++) {
+                                $(checkboxSelection[i]).prop("checked", false);
+                            }
+                            me.sendMessage(   $('.chatInputBox').text($(e.currentTarget).attr('value')),$(e.currentTarget).attr('title'));
+                            if($(e.currentTarget).closest('.kore-action-sheet')){
+                                bottomSliderAction('hide');
+                            }
+
+                        }else{
+                            var checkboxSelection = $(e.currentTarget.parentElement.parentElement).find('.checkInput:checked')
+                            var selectedValue = [];
+                            var toShowText = [];
+                            for (var i = 0; i < checkboxSelection.length; i++) {
+                                selectedValue.push($(checkboxSelection[i]).attr('value'));
+                                toShowText.push($(checkboxSelection[i]).attr('text'));
+                            }
+                            // $('.chatInputBox').text($(this).attr('title') +': '+ selectedValue.toString());
+                            if (selectedValue && selectedValue.length) {
+                                $('.chatInputBox').text($(this).attr('title') + ': ' + selectedValue.toString());
+                            } else {
+                                $('.chatInputBox').text($(this).attr('title'));
+                            }
+                            me.sendMessage($('.chatInputBox'),toShowText.toString());
+                            if($(e.currentTarget).closest('.kore-action-sheet').length){
+                                bottomSliderAction('hide');
+                            }
                         }
-                        $('.chatInputBox').text($(this).attr('title') +': '+ selectedValue.toString());
-                        me.sendMessage($('.chatInputBox'),toShowText.toString());
+
                     }   
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'quickReply') {
                         var _parentQuikReplyEle = e.currentTarget.parentElement.parentElement;
@@ -1393,7 +1449,7 @@
                             });*/
                         }
                     } else {
-                        $(".kore-chat-window").addClass("minimize");
+                        _chatContainer.addClass("minimize");
                         if (me.expanded === false && _chatContainer.hasClass("ui-draggable")) {
                             //_chatContainer.draggable("destroy");
                         }
@@ -1522,7 +1578,7 @@
                     }
                 });
                 _chatContainer.off('click', '.minimized').on('click', '.minimized,.minimized-title', function (event) {
-                    $(".kore-chat-window").removeClass("minimize");
+                    _chatContainer.removeClass("minimize");
                     me.minimized = false;
                     if(me.skipedInit){
                         bot.init(me.config.botOptions,me.config.messageHistoryLimit);
@@ -1547,13 +1603,13 @@
                     $(this).addClass("disabled").prop('disabled', true);
                     $(".close-btn").addClass("disabled").prop('disabled', true);
                     setTimeout(function(){
-                        if(customData && customData.isReconnect){
-                            me.resetWindow(true);
-                            me.defaultWelcomeMsg();
-                        }else{
+                        // if(customData && customData.isReconnect){
+                        //     me.resetWindow(true);
+                        //     //me.defaultWelcomeMsg();
+                        // }else{
                             me.resetWindow();
-                            me.defaultWelcomeMsg();
-                        }
+                            //me.defaultWelcomeMsg();
+                        // }
                     });
                     $('.recordingMicrophone').trigger('click');
                     if (ttsAudioSource) {
@@ -1607,9 +1663,9 @@
                             $('.disableFooter').removeClass('disableFooter');
                         });
                     }
-                    // if(!me.config.botOptions._reconnecting){
-                    //     me.defaultWelcomeMsg();
-                    // }
+                    if(!me.config.botOptions._reconnecting){
+                       // me.defaultWelcomeMsg();
+                    }
                 });
 
                 bot.on("message", function (message) {
@@ -1708,8 +1764,9 @@
                                 if(tempData.message[0].component.payload.showdueDate){
                                 
                                     korePicker.pickerSubconfig.dateConfig.paymentDue="Payment Due Date";
-                                    
-                                    korePicker.pickerSubconfig.dateConfig.paymentDue=tempData.message[0].component.payload.paymentDue;
+                                    if(tempData.message[0].component.payload.paymentDue){
+                                        korePicker.pickerSubconfig.dateConfig.paymentDue=tempData.message[0].component.payload.paymentDue;
+                                    }
                                 }
                                 
                                 if(tempData.message[0].component.payload.title){
@@ -1812,9 +1869,6 @@
                     $(me.config.chatContainer).addClass('pos-absolute');
                 }
                 setCollapsedModeStyles();
-                me.chatPSObj=new KRPerfectScrollbar(me.config.chatContainer.find('.chat-container').get(0), {
-                    suppressScrollX: true
-                  });
                 me.bindEvents();
             };
 
@@ -1870,7 +1924,7 @@
                 });
             }
 
-            chatWindow.prototype.sendMessage = function (chatInput, renderMsg,msgObject) {
+            chatWindow.prototype.sendMessage = function (chatInput, renderMsg,msgObject,isMessageTobeHidden) {
                 var me = this;
                 if (chatInput.text().trim() === "" && $('.attachment').html().trim().length == 0) {
                     return;
@@ -1939,14 +1993,14 @@
                     messageToBot["message"].nlmeta=msgObject.nlmeta;
                 }
                 attachmentInfo = {};
-                $('.kore-chat-body ul li:last').css('pointer-events', 'none');
                 bot.sendMessage(messageToBot, function messageSent(err) {
                     if (err && err.message) {
                         setTimeout(function () {
-                            $('.kore-chat-window [data-time="'+clientMessageId+'"]').find('.messageBubble').append('<div class="errorMsg">Your session expired. Please refresh to start again</div>');
+                            $('.kore-chat-window [data-time="'+clientMessageId+'"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
                         }, 350);
                     }
                 });
+                $('.kore-chat-body ul li').css({'pointer-events': 'none','opacity':'0.8'});
                 chatInput.html("");
                 $('.sendButton').addClass('disabled');
                 _bodyContainer.css('bottom', _footerContainer.outerHeight());
@@ -1956,11 +2010,13 @@
                     $('.typingIndicatorContent').css('display', 'none');
                 }, 10000);
                 if (renderMsg && typeof renderMsg === 'string') {
-                  //  msgData.message[0].cInfo.body = messageToBot["message"].body;
-		             msgData.message[0].cInfo.body = renderMsg;
+                   //msgData.message[0].cInfo.body = messageToBot["message"].body;
+		   msgData.message[0].cInfo.body = renderMsg;
                 }
                 msgData.message[0].cInfo.ignoreCheckMark=ignoreCheckMark;
-                me.renderMessage(msgData);
+                if(!isMessageTobeHidden){
+                    me.renderMessage(msgData);
+                }
             };
 
             chatWindow.prototype.renderMessage = function (msgData) {
@@ -1972,7 +2028,7 @@
                 if (msgData.type === "bot_response") {
                     waiting_for_message = false;
                     setTimeout(function () {
-                        //$('.typingIndicator').css('background-image', "url(" + msgData.icon + ")");
+                        $('.typingIndicator').css('background-image', "url(" + msgData.icon + ")");
                     }, 500);
                     setTimeout(function () {
                         if (!waiting_for_message) {
@@ -1984,9 +2040,6 @@
                     waiting_for_message = false;
                 }
                 var _chatContainer = $(me.config.chatContainer).find('.chat-container');
-                if(msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.body === "Login Form is successfully submitted." || msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.body === "UserDetails Form is successfully submitted."){
-                    return false;   
-                }
                 if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
                     extension = strSplit(msgData.message[0].cInfo.attachments[0].fileName);
                 }
@@ -2569,11 +2622,26 @@
                         },7000);
                     } 
                     else {
+                        if(KoreSDK.chatConfig.masking){
+                            KoreSDK.chatConfig.masking = false;
+                            if(msgData.type !== "bot_response"){
+                                msgData.message[0].cInfo.body = msgData.message[0].cInfo.body.replace(/\w/g, "*");
+                            }
+                        }
                         messageHtml = $(me.getChatTemplate("message")).tmpl({
                             'msgData': msgData,
                             'helpers': helpers,
                             'extension': extension
                         });
+                    }
+                    if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.masking){
+                        KoreSDK.chatConfig.masking = true;
+                        if(msgData.message[0].component.payload.piiReductionChar){
+                            KoreSDK.chatConfig.piiReductionChar =  msgData.message[0].component.payload.piiReductionChar;
+                        }
+                        $('.text-as-password').css('display','block');
+                        $('.text-as-password').focus();
+                        $('.chatInputBox').css('display','none');
                     }
                 }
                 _chatContainer.find('li').attr('aria-live','off');
@@ -2740,10 +2808,10 @@
                         {{if userAgentIE}} \
                         <div role="textbox" class="chatInputBox inputCursor" aria-label="Message"aria-label="Message" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{else}} \
+                        <input type="password" class="text-as-password" placeholder="${botMessages.message}">\
                         <div role="textbox" class="chatInputBox" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{/if}} \
                     <div class="footerIonsContainer">\
-                    <div class="attachment"></div> \
                     {{if isTTSEnabled}} \
                         <div class="sdkFooterIcon ttspeakerDiv ttsOff"> \
                             <button class="ttspeaker" title="Text to Speech"> \
@@ -2767,30 +2835,30 @@
                     {{/if}}\
                     <div class="sdkFooterIcon"> \
                         <button class="sdkAttachment attachmentBtn" title="Attachment"> \
-                            <i class="paperclip"></i> \
+                            <div class="attachmentIcon"></div> \
                         </button> \
                         <input type="file" name="Attachment" class="filety" id="captureAttachmnts" title="Upload attachment"> \
                     </div> \
                     {{if !(isSendButton)}}<div class="chatSendMsg">Press enter to send</div>{{/if}} \
                     </div>\
+                     <div class="attachment"></div> \
                 </div>';
 
                 var chatWindowTemplate = '<script id="chat_window_tmpl" type="text/x-jqury-tmpl"> \
-                    <div class="kr-sdkMainContainer">\
-                    <div class="kore-chat-window droppable liteTheme-one"> \
+                    <div class="kore-chat-window droppable liteTheme-one {{if isSendButton}}mobile-browser-enabled{{/if}}"> \
                     <div class="kr-wiz-menu-chat defaultTheme-kore">\
                     </div>	\
                         <div class="minimized-title"></div> \
                         <div class="minimized"><span class="messages"></span></div> \
                         <div class="kore-chat-header"> \
-                            <div class="logo-icon"></div>\
                             <div id="botHeaderTitle" aria-labelledby="botHeaderTitle" class="header-title" title="${chatTitle}">${chatTitle}</div> \
                             <div class="chat-box-controls"> \
-                                <button class="reload-btn hide" title="Reconnect"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTNweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTMgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5yZWxvYWQ8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zNTcuMDAwMDAwLCAtMjQxLjAwMDAwMCkiIGZpbGw9IiM4QTk1OUYiIHN0cm9rZT0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJyZWxvYWQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM1OC4wMDAwMDAsIDI0Mi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMC44LDUuMjczNTc2NTggQzEwLjgsMi4zNjU3MTQyIDguMzc3NTg1NzEsMCA1LjQwMDAyMzg3LDAgQzIuNDIyNDYyMDMsMCAwLDIuMzY1NzE0MiAwLDUuMjczNTc2NTggQzAsNS40NDYzMTE0MiAwLjE0MzQwNjM1Myw1LjU4NjM1OTc2IDAuMzIwMjgyOTQyLDUuNTg2MzU5NzYgQzAuNDk3MTU5NTMsNS41ODYzNTk3NiAwLjY0MDU2NTg4Myw1LjQ0NjI4ODEgMC42NDA1NjU4ODMsNS4yNzM1NzY1OCBDMC42NDA1NjU4ODMsMi43MTA2NDc2NSAyLjc3NTY0MjI2LDAuNjI1NTg5NjY4IDUuNCwwLjYyNTU4OTY2OCBDOC4wMjQzNTc3NCwwLjYyNTU4OTY2OCAxMC4xNTk0MzQxLDIuNzEwNjcwOTYgMTAuMTU5NDM0MSw1LjI3MzU3NjU4IEMxMC4xNTk0MzQxLDcuODM2NDU4ODkgOC4wMjQzNTc3NCw5LjkyMTU0MDE4IDUuNCw5LjkyMTU0MDE4IEw0Ljg0NDMyNzI0LDkuOTIxNTQwMTggTDUuNjM4ODc1MzEsOS4wNTI5NzAwMyBDNS43NTY3MzczMyw4LjkyNDE1OTEyIDUuNzQ1MzAyMDYsOC43MjY0MDgxNiA1LjYxMzQwMjYsOC42MTEzMDYgQzUuNDgxNTAzMTMsOC40OTYyMDM4NSA1LjI3ODk4NjcyLDguNTA3Mzk0NjYgNS4xNjExNDg1Nyw4LjYzNjIwNTU2IEw0LjAyNTM1Njg4LDkuODc3ODAyNzYgQzMuODM5NDMyMzUsMTAuMDgxMDU1OSAzLjgzOTQzMjM1LDEwLjM4NzU5MDggNC4wMjUzNTY4OCwxMC41OTA4NDQgTDUuMTYxMTQ4NTcsMTEuODMyNDQxMiBDNS4yMjQ0MzY0NCwxMS45MDE2Mzc3IDUuMzEyMDc0OTgsMTEuOTM2ODQyMSA1LjQwMDExOTM3LDExLjkzNjg0MjEgQzUuNDc2MDYwMDQsMTEuOTM2ODQyMSA1LjU1MjMxMTA2LDExLjkxMDU5MDMgNS42MTM0MDI2LDExLjg1NzM0MDcgQzUuNzQ1MzI1OTQsMTEuNzQyMjM4NiA1Ljc1NjczNzMzLDExLjU0NDQ4NzYgNS42Mzg4NzUzMSwxMS40MTU2NzY3IEw0Ljg0NDMyNzI0LDEwLjU0NzEwNjUgTDUuNCwxMC41NDcxMDY1IEM4LjM3NzU4NTcxLDEwLjU0NzEwNjUgMTAuOCw4LjE4MTM5MjM0IDEwLjgsNS4yNzM1NzY1OCBaIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="></button> \
+                                <button class="reload-btn" title="Reconnect"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTNweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTMgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5yZWxvYWQ8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zNTcuMDAwMDAwLCAtMjQxLjAwMDAwMCkiIGZpbGw9IiM4QTk1OUYiIHN0cm9rZT0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJyZWxvYWQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDM1OC4wMDAwMDAsIDI0Mi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMC44LDUuMjczNTc2NTggQzEwLjgsMi4zNjU3MTQyIDguMzc3NTg1NzEsMCA1LjQwMDAyMzg3LDAgQzIuNDIyNDYyMDMsMCAwLDIuMzY1NzE0MiAwLDUuMjczNTc2NTggQzAsNS40NDYzMTE0MiAwLjE0MzQwNjM1Myw1LjU4NjM1OTc2IDAuMzIwMjgyOTQyLDUuNTg2MzU5NzYgQzAuNDk3MTU5NTMsNS41ODYzNTk3NiAwLjY0MDU2NTg4Myw1LjQ0NjI4ODEgMC42NDA1NjU4ODMsNS4yNzM1NzY1OCBDMC42NDA1NjU4ODMsMi43MTA2NDc2NSAyLjc3NTY0MjI2LDAuNjI1NTg5NjY4IDUuNCwwLjYyNTU4OTY2OCBDOC4wMjQzNTc3NCwwLjYyNTU4OTY2OCAxMC4xNTk0MzQxLDIuNzEwNjcwOTYgMTAuMTU5NDM0MSw1LjI3MzU3NjU4IEMxMC4xNTk0MzQxLDcuODM2NDU4ODkgOC4wMjQzNTc3NCw5LjkyMTU0MDE4IDUuNCw5LjkyMTU0MDE4IEw0Ljg0NDMyNzI0LDkuOTIxNTQwMTggTDUuNjM4ODc1MzEsOS4wNTI5NzAwMyBDNS43NTY3MzczMyw4LjkyNDE1OTEyIDUuNzQ1MzAyMDYsOC43MjY0MDgxNiA1LjYxMzQwMjYsOC42MTEzMDYgQzUuNDgxNTAzMTMsOC40OTYyMDM4NSA1LjI3ODk4NjcyLDguNTA3Mzk0NjYgNS4xNjExNDg1Nyw4LjYzNjIwNTU2IEw0LjAyNTM1Njg4LDkuODc3ODAyNzYgQzMuODM5NDMyMzUsMTAuMDgxMDU1OSAzLjgzOTQzMjM1LDEwLjM4NzU5MDggNC4wMjUzNTY4OCwxMC41OTA4NDQgTDUuMTYxMTQ4NTcsMTEuODMyNDQxMiBDNS4yMjQ0MzY0NCwxMS45MDE2Mzc3IDUuMzEyMDc0OTgsMTEuOTM2ODQyMSA1LjQwMDExOTM3LDExLjkzNjg0MjEgQzUuNDc2MDYwMDQsMTEuOTM2ODQyMSA1LjU1MjMxMTA2LDExLjkxMDU5MDMgNS42MTM0MDI2LDExLjg1NzM0MDcgQzUuNzQ1MzI1OTQsMTEuNzQyMjM4NiA1Ljc1NjczNzMzLDExLjU0NDQ4NzYgNS42Mzg4NzUzMSwxMS40MTU2NzY3IEw0Ljg0NDMyNzI0LDEwLjU0NzEwNjUgTDUuNCwxMC41NDcxMDY1IEM4LjM3NzU4NTcxLDEwLjU0NzEwNjUgMTAuOCw4LjE4MTM5MjM0IDEwLjgsNS4yNzM1NzY1OCBaIiBpZD0iUGF0aCI+PC9wYXRoPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="></button> \
                                 <button class="minimize-btn" title="Minimize"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIycHgiIHZpZXdCb3g9IjAgMCAxNCAyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1Mi4zICg2NzI5NykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+bWluaW1pemU8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMjYuMDAwMDAwLCAtMjMzLjAwMDAwMCkiIGZpbGw9IiM4QTk1OUYiPgogICAgICAgICAgICA8ZyBpZD0ibWluaW1pemUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMyNi4wMDAwMDAsIDIzMy4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJQYXRoIiBwb2ludHM9IjAgMCAxMy45Mzk5OTk2IDAgMTMuOTM5OTk5NiAxLjk5OTk5OTk0IDAgMS45OTk5OTk5NCI+PC9wb2x5Z29uPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="></button> \
-                                <button class="expand-btn hide" title="Expand"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5leHBhbmQ8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMDUuMDAwMDAwLCAtMjUyLjAwMDAwMCkiIGZpbGw9IiM4QTk1OUYiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxnIGlkPSJleHBhbmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwNS4wMDAwMDAsIDI1Mi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xLjg2NjY2NjY3LDkuMzMzMzMzMzMgTDAsOS4zMzMzMzMzMyBMMCwxNCBMNC42NjY2NjY2NywxNCBMNC42NjY2NjY2NywxMi4xMzMzMzMzIEwxLjg2NjY2NjY3LDEyLjEzMzMzMzMgTDEuODY2NjY2NjcsOS4zMzMzMzMzMyBaIE0wLDQuNjY2NjY2NjcgTDEuODY2NjY2NjcsNC42NjY2NjY2NyBMMS44NjY2NjY2NywxLjg2NjY2NjY3IEw0LjY2NjY2NjY3LDEuODY2NjY2NjcgTDQuNjY2NjY2NjcsMCBMMCwwIEwwLDQuNjY2NjY2NjcgWiBNMTIuMTMzMzMzMywxMi4xMzMzMzMzIEw5LjMzMzMzMzMzLDEyLjEzMzMzMzMgTDkuMzMzMzMzMzMsMTQgTDE0LDE0IEwxNCw5LjMzMzMzMzMzIEwxMi4xMzMzMzMzLDkuMzMzMzMzMzMgTDEyLjEzMzMzMzMsMTIuMTMzMzMzMyBaIE05LjMzMzMzMzMzLDAgTDkuMzMzMzMzMzMsMS44NjY2NjY2NyBMMTIuMTMzMzMzMywxLjg2NjY2NjY3IEwxMi4xMzMzMzMzLDQuNjY2NjY2NjcgTDE0LDQuNjY2NjY2NjcgTDE0LDAgTDkuMzMzMzMzMzMsMCBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>\
+                                <button class="expand-btn" title="Expand"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5leHBhbmQ8L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iQXJ0Ym9hcmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMDUuMDAwMDAwLCAtMjUyLjAwMDAwMCkiIGZpbGw9IiM4QTk1OUYiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxnIGlkPSJleHBhbmQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMwNS4wMDAwMDAsIDI1Mi4wMDAwMDApIj4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0xLjg2NjY2NjY3LDkuMzMzMzMzMzMgTDAsOS4zMzMzMzMzMyBMMCwxNCBMNC42NjY2NjY2NywxNCBMNC42NjY2NjY2NywxMi4xMzMzMzMzIEwxLjg2NjY2NjY3LDEyLjEzMzMzMzMgTDEuODY2NjY2NjcsOS4zMzMzMzMzMyBaIE0wLDQuNjY2NjY2NjcgTDEuODY2NjY2NjcsNC42NjY2NjY2NyBMMS44NjY2NjY2NywxLjg2NjY2NjY3IEw0LjY2NjY2NjY3LDEuODY2NjY2NjcgTDQuNjY2NjY2NjcsMCBMMCwwIEwwLDQuNjY2NjY2NjcgWiBNMTIuMTMzMzMzMywxMi4xMzMzMzMzIEw5LjMzMzMzMzMzLDEyLjEzMzMzMzMgTDkuMzMzMzMzMzMsMTQgTDE0LDE0IEwxNCw5LjMzMzMzMzMzIEwxMi4xMzMzMzMzLDkuMzMzMzMzMzMgTDEyLjEzMzMzMzMsMTIuMTMzMzMzMyBaIE05LjMzMzMzMzMzLDAgTDkuMzMzMzMzMzMsMS44NjY2NjY2NyBMMTIuMTMzMzMzMywxLjg2NjY2NjY3IEwxMi4xMzMzMzMzLDQuNjY2NjY2NjcgTDE0LDQuNjY2NjY2NjcgTDE0LDAgTDkuMzMzMzMzMzMsMCBaIiBpZD0iU2hhcGUiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>\
                                 <button class="close-btn" title="Close"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button> \
                             </div> \
+                            <div class="logo-icon"></div>\
                             <div class="sdkThemeContainer" title="Themes">\
                                 <i class="icon-More dropbtnWidgt sdkThemeIcon drpdown_theme"></i>\
                                 <ul class="dropdown-contentWidgt rmpmW themeContent" style="list-style:none;">\
@@ -2834,7 +2902,6 @@
                         </div>\
                         <div class="kr-wiz-content-chat defaultTheme-kore">\
                         </div>\
-                    </div> \
                     </div>\
                 </script>';
 
@@ -3205,17 +3272,17 @@
                                     <div class="quick_replies_btn_parent"><div class="autoWidth">\
                                         {{if msgData.message[0].component.payload.quick_replies && msgData.message[0].component.payload.quick_replies.length}} \
                                             {{each(key, msgItem) msgData.message[0].component.payload.quick_replies}} \
-                                                <div class="buttonTmplContentChild quickReplyDiv"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} class="quickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.content_type}">\
-                                                    {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
-                                                </div> \
-                                            {{/each}} \
+                                        <div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} class="quickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.content_type}">\
+                                            {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
+                                        </div> \
+                                    {{/each}} \
                                         {{/if}} \
                                         {{if msgData.message[0].component.payload.buttons && msgData.message[0].component.payload.buttons.length}} \
                                             {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
-                                                <div class="buttonTmplContentChild quickReplyDiv displayInline"> <span actual-value="${msgItem.payload}" {{if msgData}}msgData="${JSON.stringify(msgData)}"{{/if}} {{if msgItem.payload}}value="${msgItem.title}"{{/if}} class="buttonQuickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem.url}}url="${msgItem.url}"{{/if}}>\
-                                                    {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
-                                                </div> \
-                                            {{/each}} \
+						<div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} actual-value="${msgItem.title}" class="buttonQuickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem && msgItem.url}}url="${msgItem.url}"{{/if}}">\
+						{{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
+						</div> \
+					     {{/each}} \
                                         {{/if}} \
                                     </div>\
                                 </div>\
@@ -3563,31 +3630,6 @@
                 
                 return this;
             };
-
-            this.showChatWindow = function(cfg){
-                $(".kore-chat-window").show();
-            }
-
-            this.openMinimisedChatWindow = function(cfg){
-                if($(".kore-chat-window").hasClass('minimize')){
-                    $(".kore-chat-window").removeClass('minimize');
-                } else {
-                    $(".kore-chat-window").addClass('minimize');
-                }
-            }
-
-            this.hideChatWindow = function(cfg){
-                $(".kore-chat-window").hide();
-            }
-            
-            this.isChatWindowMinimized = function(cfg){
-                if($(".kore-chat-window").hasClass('minimize')){
-                    return true;
-                } else {
-                    return false;
-                }
-                
-            }
             
             this.addWidgetEvents = function (cfg) {
                 if (cfg) {
@@ -3661,11 +3703,12 @@
                         "widgetTextColor":"widget-text-color",
                         "widgetBorderColor":"widget-border-color",
                         "widgetDividerColor":"widget-divider-color",
+			"buttonOutlineColor": "button-outline-color",
                     };
                     var cssVariable = "";
                     for (var key in response) {
                         if(key == 'bankLogo' && response[key] !== ""){
-                            $(".logo-icon").css("background-image", "url(" + response['bankLogo'] + ")");
+                             $(".logo-icon").css("background-image", "url(" + response['bankLogo'] + ")");
                         } else if(key !== "theme" && key !== 'widgetBgImage'){
                             cssVariable = cssPrefix + cssBrandingVariables[key];
                             document.documentElement.style.setProperty(cssVariable,response[key]);
@@ -4553,10 +4596,11 @@
                 }
             };
             function getFileToken(_obj, _file, recState) {
-                var auth = (bearerToken) ? bearerToken : assertionToken;
+                var auth = "bearer " + window.jwtDetails.authorization.accessToken;
+                var _self = this;
                 $.ajax({
                     type: "POST",
-                    url: koreAPIUrl + "1.1/attachment/file/token",
+                    url: koreAPIUrl + "/1.1/attachment/file/token",
                     dataType: "json",
                     headers: {
                         Authorization: auth
@@ -4580,9 +4624,9 @@
             }
             function getfileuploadConf(_recState) {
                 appConsts.UPLOAD = {
-                    "FILE_ENDPOINT": koreAPIUrl + "1.1/attachment/file",
-                    "FILE_TOKEN_ENDPOINT": koreAPIUrl + "1.1/attachment/file/token",
-                    "FILE_CHUNK_ENDPOINT": koreAPIUrl + "1.1/attachment/file/:fileID/chunk"
+                    "FILE_ENDPOINT": koreAPIUrl + "/1.1/attachment/file",
+                    "FILE_TOKEN_ENDPOINT": koreAPIUrl + "/1.1/attachment/file/token",
+                    "FILE_CHUNK_ENDPOINT": koreAPIUrl + "/1.1/attachment/file/:fileID/chunk"
                 };
                 _accessToke = "bearer " + accessToken;
                 _uploadConfg = {};
@@ -4715,6 +4759,10 @@
                 $('.chatInputBox').focus();
                 attachmentInfo.fileName = data.values.componentData.filename;
                 attachmentInfo.fileType = data.values.componentType;
+                if(data &&  data.values &&  data.values.componentFileId){
+                    attachmentInfo.fileId =  data.values.componentFileId;
+                }
+                
                 $('.sendButton').removeClass('disabled');
             };
             function acceptFileRecording(_this, _recState, ele) {
@@ -5200,14 +5248,10 @@
                 botDetails: botDetails,
                 chatHistory: chatHistory,
                 addWidgetEvents:addWidgetEvents,
-                setWidgetInstance:setWidgetInstance,
-                showChatWindow: showChatWindow,
-                hideChatWindow: hideChatWindow,
-                isChatWindowMinimized: isChatWindowMinimized,
-                openMinimisedChatWindow: openMinimisedChatWindow
+                setWidgetInstance:setWidgetInstance
             };
 
             //Actual chatwindow.js koreBotChat function code end here
-        })(koreJquery,KRPerfectScrollbar);
+        })(koreJquery);
     }
 });

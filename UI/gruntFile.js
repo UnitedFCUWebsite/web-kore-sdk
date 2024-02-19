@@ -24,7 +24,7 @@ module.exports = function (grunt) {
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
-            '../libs/perfect-scrollbar.css',
+            '../libs/prefect-scrollbar.css',
             'kore-widgets.css'
         ]
 
@@ -63,7 +63,7 @@ module.exports = function (grunt) {
             '../libs/purejscarousel.css',
             'chatWindow.css',
             'custom/customTemplate.css',
-            '../libs/perfect-scrollbar.css',
+            '../libs/prefect-scrollbar.css',
             'kore-widgets.css'
         ]
 
@@ -74,9 +74,6 @@ module.exports = function (grunt) {
             'libs/jquery.js',
             'libs/jquery.tmpl.min.js',
             'libs/jquery-ui.min.js',
-            '../libs/perfect-scrollbar.js',
-            'libs/moment.js',
-            '../libs/ie11CustomProperties.js',
             '../libs/lodash.min.js',
             '../libs/d3.v4.min.js',
             '../libs/KoreGraphAdapter.js',
@@ -85,9 +82,6 @@ module.exports = function (grunt) {
             '../libs/emoji.js',
             '../libs/purejscarousel.js',
             'chatWindow.js',
-            'libs/jquery.daterangepicker.js',
-            'libs/jquery-clockpicker.js',
-            '../libs/kore-pickers.js',
             'custom/customTemplate.js',
             '../libs/recorder.js',
             '../libs/recorderWorker.js',
@@ -100,15 +94,10 @@ module.exports = function (grunt) {
         ];
         cssFiles=[
             'libs/jquery-ui.min.css',
-            '../libs/emojione.sprites.css',
+            'libs/emojione.sprites.css',
             '../libs/purejscarousel.css',
             'chatWindow.css',
-            'libs/daterangepicker.css',
-            'libs/jquery-clockpicker.css',
-            '../libs/kore-pickers.css',
-            'custom/customTemplate.css',
-            '../libs/perfect-scrollbar.css',
-            '../libs/fonts.css'
+            'custom/customTemplate.css'
         ]
     }
 

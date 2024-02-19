@@ -14,8 +14,7 @@
 		<script src="../libs/KoreGraphAdapter.js" type="text/javascript"></script>
 		<script src='../libs/anonymousassertion.js'></script>
 		<script src="../kore-bot-sdk-client.js"></script>
-		<script src="../libs/perfect-scrollbar.js" type="text/javascript"></script>
-		<link href="../libs/perfect-scrollbar.css" rel="stylesheet"></link>
+	
 		<!-- Uncomment these lines for amazon polly -->
 		<!-- <script src="../plugins/aws-sdk-2.668.0.min.js"></script>
 		<script src="../plugins/kore-aws-polly.js" type="text/javascript"></script> -->
@@ -54,13 +53,404 @@
 			margin: 0;
 			border: 0;
 			padding: 0;
-			overflow: hidden;
+			overflow: auto;
 			background: #ffffff;
+			font-family: "Lato";
 		}
+		.bot-details-submission-form .display-block{
+			display: block;
+		}	
+		.bot-details-submission-form .header{
+			font-weight: bold;
+			height: 50px;
+			text-align: center;
+			font-size: 20px;
+		}
+		.bot-details-submission-form .display-none{
+			display: none;
+		}
+		.bot-details-submission-form.display-none{
+			display: none;
+		}
+		.bot-details-submission-form{
+			padding: 5%;
+		}
+		.bot-details-submission-form .kr-sg-input-text {
+			width: 100%;
+			position: relative;
+			margin-bottom: 10px;
+		}
+		.bot-details-submission-form .kr-sg-input-text .label-text {
+			text-align: left;
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 4px;
+		}
+		.bot-details-submission-form .kr-sg-input-text .label-text span.actions {
+			float: right;
+			color: #009dab;
+			font-weight: normal;
+			cursor: pointer;
+		}
+		.bot-details-submission-form .kr-sg-input-text .label-text span.actions .reset {
+			padding-right: 10px;
+			border-right: 1px solid #26344a;
+		}
+		.bot-details-submission-form .kr-sg-input-text .label-text span.actions .reset img {
+			padding-right: 5px;
+		}
+		.bot-details-submission-form .kr-sg-input-text .label-text span.actions .copy {
+			padding-left: 5px;
+		}
+		.bot-details-submission-form .kr-sg-input-text input {
+			border-radius: 2px;
+			height: 34px !important;
+			padding: 10px;
+			font-size: 14px;
+			width: 100%;
+			line-height: normal;
+			margin: 0 !important;
+			border: solid 1px #e5e8ec;
+		}
+		.bot-details-submission-form .kr-sg-input-text input::placeholder {
+			color: #8a959f;
+		}
+		.bot-details-submission-form .kr-sg-input-text input:focus {
+			border: solid 1px #1372ff !important;
+		}
+		.bot-details-submission-form .kr-sg-input-text input:active {
+			border: solid 1px #009dab !important;
+		}
+		.bot-details-submission-form .kr-sg-input-text input:disabled {
+			border: solid 1px #f3f3f4 !important;
+			color: #8a959f;
+		}
+		.bot-details-submission-form .kr-sg-input-text input:read-only {
+			pointer-events: none;
+		}
+		.bot-details-submission-form .kr-sg-input-text input.error {
+			border: solid 1px #ff001f !important;
+		}
+		.bot-details-submission-form .kr-sg-input-text input.error::placeholder {
+			opacity: 1;
+		}
+		.bot-details-submission-form .kr-sg-input-text .error-msg {
+			font-size: 12px;
+			margin-top: 5px;
+			color: #ff001f;
+			line-height: 1.17;
+		}
+		.bot-details-submission-form .kr-sg-input-text .eye-icon {
+			position: absolute;
+			bottom: 12px;
+			right: 12px;
+			cursor: pointer;
+		}
+		.bot-details-submission-form .kr-sg-dropdowns {
+	 width: 100%;
+	 margin-bottom: 15px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns.w-100 {
+	 width: 100%;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .label-text {
+	 font-size: 14px;
+	 margin-bottom: 4px;
+	 font-weight: bold;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .error-text {
+	 font-size: 12px;
+	 color: #ff001f;
+	 padding: 3px 0px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open {
+	 position: relative;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open.open .dropdown-input::before {
+	 content: "";
+	 position: absolute;
+	 line-height: 34px;
+	 font-size: 18px;
+	 height: 100%;
+	 right: 10px;
+	 transition: all 0.3s ease-in;
+	 z-index: 1;
+	 background-image: url('../../assets/icons/carrot-up-comp.svg');
+	 background-size: 14px;
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 width: 14px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input {
+	 position: relative;
+	 height: 34px;
+	 width: 100%;
+	 line-height: 32px;
+	 border-radius: 2px;
+	 padding: 0 10px;
+	 text-align: left;
+	 overflow: hidden;
+	 white-space: nowrap;
+	 text-overflow: ellipsis;
+	 max-width: 100%;
+	 border: solid 1px #e5e8ec;
+     background-color: #fff;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items {
+	 padding: 4px 8px;
+	 border-radius: 12px;
+	 min-width: 40px;
+	 margin-right: 10px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items .length-count {
+	 font-size: 12px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items .cross-icon {
+	 border-radius: 100px;
+	 padding: 0px 5px;
+	 position: relative;
+	 top: 3px;
+	 left: 3px;
+	 width: 16px;
+	 height: 16px;
+	 display: inline-block;
+	 position: relative;
+	 transition: all 0.3s ease-in;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items .cross-icon img {
+	 width: 10px;
+	 height: 10px;
+	 vertical-align: inherit;
+	 position: absolute;
+	 top: 3px;
+	 left: 3px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items .cross-icon:hover {
+	 background-color: #c9cdd4;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input .multi-selected-items .cross-icon i {
+	 position: relative;
+	 top: -2px;
+	 font-size: 10px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input::before {
+	 content: "";
+	 position: absolute;
+	 line-height: 34px;
+	 font-size: 18px;
+	 height: 100%;
+	 right: 10px;
+	 transition: all 0.3s ease-in;
+	 z-index: 1;
+	 background-image: url('../../assets/icons/carrot-down-comp.svg');
+	 background-size: 14px;
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 width: 14px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input.inline {
+	 border: 0;
+	 border-radius: 0px;
+	 border-bottom: 1px solid #f2f3f5;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input.inline:hover {
+	 border: 0;
+	 border-bottom: 1px solid #009dab;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input.inline:focus {
+	 border: solid 1px #1372ff;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input.inline:disabled {
+	 border: 0;
+	 border-bottom: solid 1px #f3f3f4;
+	 opacity: 0.3;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input.error {
+	 border: solid 1px #ff001f !important;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input:hover {
+	 border: solid 1px #ccd1d7;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input:focus {
+	border: solid 1px #1372ff;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .dropdown-input:disabled {
+	 border: solid 1px #f3f3f4;
+	 opacity: 0.3;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu {
+	 border: 0;
+	 border-radius: 2px;
+	 box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.2);
+	 width: 100%;
+	 padding: 0;
+	 margin: 0;
+	 z-index: 999;
+	 list-style: none;
+	 overflow: auto;
+	 max-height: 100px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu .kr-sg-checkbox {
+	 margin: 0;
+	 padding: 9.5px 10px 9.05px 10px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu .search-box {
+	 padding: 0 10px;
+	 position: relative;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu .search-box::before {
+	 content: "";
+	 position: absolute;
+	 line-height: 34px;
+	 font-size: 12px;
+	 height: 100%;
+	 left: 10px;
+	 background-image: url('../../assets/icons/search.svg');
+	 background-size: 14px;
+	 background-repeat: no-repeat;
+	 background-position: center;
+	 width: 14px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu .search-box .seach-input {
+	 width: 100%;
+	 line-height: 34px;
+	 height: 34px;
+	 border: 0;
+	 font-size: 14px;
+	 padding-left: 20px;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu li a {
+	 line-height: 40px;
+	 padding: 0 10px;
+	 font-size: 14px;
+	 overflow: hidden;
+	 white-space: nowrap;
+	 text-overflow: ellipsis;
+	 max-width: 100%;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu li a.selected {
+	 position: relative;
+	 background-color: #f2f3f5;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu li a.selected::before {
+	 content: "";
+	 background: url("../../assets/icons/checkTickIconGray.svg") no-repeat;
+	 position: absolute;
+	 line-height: 40px;
+	 height: 100%;
+	 right: 16px;
+	 transition: all 0.3s ease-in;
+	 z-index: 1;
+	 height: 100%;
+	 width: 14px;
+	 background-position: center;
+	 background-size: 100%;
+}
+ .bot-details-submission-form .kr-sg-dropdowns .dropdown-open .content-menu li a:hover {
+	 background-color: #f2f3f5;
+}
+.bot-details-submission-form .submit{
+	border: 1px solid transparent;
+    background: #009dab;
+    padding: 0px 20px;
+    height: 26px;
+    font-size: 12px;
+    border-radius: 4px;
+    color: #fff;
+    min-width: 60px;
+    text-align: center;
+    transition: 0.2s all ease-in;
+}
+ 
+		
 	</style>
 	<body>
+		<body>
+				<!-- Repeat or add more content as needed -->
+			
 		<!-- <div id="chatContainer">
 			<button class="openChatWindow">Open Chat Window</button>
 		</div> -->
+		<!-- <div class="bot-details-submission-form">
+			<form id="botDetailsForm">
+				<div class="header">Web- SDK Configuration</div>
+				<div class="kr-sg-input-text">
+					<div class="label-text">Bot Id</div>
+					<input type="text" placeholder="Enter Bot Id" id="botId" class="input-text">
+					<div class="error-msg display-none" id="botIdError">Please enter Bot Id</div>
+				</div>
+				<div class="kr-sg-input-text">
+					<div class="label-text">Client Id</div>
+					<input type="text" placeholder="Enter Client Id" id="clientId" class="input-text">
+					<div class="error-msg display-none" id="clientIdError">Please enter Client Id</div>
+				</div>
+				<div class="kr-sg-input-text">
+					<div class="label-text">Client Secret</div>
+					<input type="text" placeholder="Enter Client Secret" id="clientSecret" class="input-text">
+					<div class="error-msg display-none" id="clientSecretError">Please enter Client Secret</div>
+				</div>
+				<div class="kr-sg-input-text">
+					<div class="label-text">Account ID</div>
+					<input type="text" placeholder="Enter Account Id" id="accountId" class="input-text">
+					<div class="error-msg display-none" id="accountIdError">Please enter  Account Id</div>
+				</div>
+				<div class="kr-sg-input-text">
+					<div class="label-text">Trigger value</div>
+				</div>
+				<div class="kr-sg-dropdowns">
+					<div class="label-text">Environment</div>
+					<div class="dropdown dropdown-open">
+						<input type="button" id="env" class="dropdown-input env-selection" value="Choose an option">                                        
+						<ul class="dropdown-menu content-menu env-information display-none">
+						  <li id="dev"><a>BankAssist Dev</a></li>
+						  <li id="qa"><a>BankAssist QA</a></li>
+						  <li id="bnkstg"><a>BankAssist Staging</a></li>
+						  <li id="platstg"><a>PLAT Staging</a></li>
+						  <li id="demo"><a>BankAssit DEMO</a></li>
+						  <li id="prod"><a>BankAssist Prod</a></li>
+						  <li id="pncLocalOnPrem"><a>BankAssist LocalOnPrem PNC</a></li>
+						</ul>
+					  </div>
+				</div>
+				<button type="button" class="submit" value="Submit">Submit</button>
+			</form>
+		</div>	 -->
+
+
+		<!-- <li class="listViewTmplContentChild {{if msgData.message[0].component.payload.seeMore && (key > msgData.message[0].component.payload.moreCount-1)}}hide{{/if}}"> \
+			{{if msgItem.image_url}} \
+				<div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
+					<img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
+				</div> \
+			{{/if}} \
+			<div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.payload}"> \
+				<span class="titleDesc">\
+					<div class="listViewItemTitle" {{if !msgItem.tooltip}}title="${msgItem.title}"{{/if}}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.title, "user")}} {{/if}}</div> \
+					{{if msgItem.subtitle}}<div class="listViewItemSubtitle" {{if !msgItem.tooltip}}title="${msgItem.subtitle}"{{/if}}>{{if msgItem.tooltip}}<span class="tooltiptext">{{html helpers.convertMDtoHTML(msgItem.tooltip, "bot")}}</span>{{/if}}{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
+				</span>\
+				{{if msgItem.value}}<div class="listViewItemValue" {{if msgItem && msgItem.color}}style="color:${msgItem.color}"{{/if}} title=${msgItem.value}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.value, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.value, "user")}} {{/if}}</div>{{/if}} \
+			</div>\
+			{{if msgItem && msgItem.subElements && msgItem.subElements.length}}\
+				<ul class="subelements-group listViewTmplContentBox">
+					{{each (subKey,subMsgItem)}}\
+							<li class="listViewTmplContentChild"> \
+								{{if msgItem.image_url}} \
+									<div class="listViewRightContent" {{if msgItem.default_action && msgItem.default_action.url}}url="${msgItem.default_action.url}"{{/if}} {{if msgItem.default_action && msgItem.default_action.title}}data-value="${msgItem.default_action.title}"{{/if}} {{if msgItem.default_action && msgItem.default_action.type}}type="${msgItem.default_action.type}"{{/if}} {{if msgItem.default_action && msgItem.default_action.payload}} value="${msgItem.default_action.payload}"{{/if}}> \
+										<img alt="image" src="${msgItem.image_url}" onerror="this.onerror=null;this.src=\'../libs/img/no_image.png\';"/> \
+									</div> \
+								{{/if}} \
+								<div class="listViewLeftContent" data-url="${msgItem.default_action.url}" data-title="${msgItem.default_action.title}" data-value="${msgItem.default_action.payload}"> \
+									<span class="titleDesc">\
+										<div class="listViewItemTitle" {{if !msgItem.tooltip}}title="${msgItem.title}"{{/if}}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.title, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.title, "user")}} {{/if}}</div> \
+										{{if msgItem.subtitle}}<div class="listViewItemSubtitle" {{if !msgItem.tooltip}}title="${msgItem.subtitle}"{{/if}}>{{if msgItem.tooltip}}<span class="tooltiptext">{{html helpers.convertMDtoHTML(msgItem.tooltip, "bot")}}</span>{{/if}}{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.subtitle, "user")}} {{/if}}</div>{{/if}} \
+									</span>\
+									{{if msgItem.value}}<div class="listViewItemValue" {{if msgItem && msgItem.color}}style="color:${msgItem.color}"{{/if}} title=${msgItem.value}>{{if msgData.type === "bot_response"}} {{html helpers.convertMDtoHTML(msgItem.value, "bot")}} {{else}} {{html helpers.convertMDtoHTML(msgItem.value, "user")}} {{/if}}</div>{{/if}} \
+								</div>\
+							</li> \
+					{{/each}}\
+				</ul>
+			{{/if}}\
+			</div>
+		</li> \ -->
 	</body>
 </html>

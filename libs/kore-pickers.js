@@ -48,10 +48,6 @@
     this.chatConfig = mainConfig[1];
     var _korePickers = mainConfig[0].chatConfig.chatContainer;
     this._korePickers=_korePickers;
-    this.KRPerfectScrollbar;
-    if (window.PerfectScrollbar && typeof PerfectScrollbar === 'function') {
-        this.KRPerfectScrollbar = window.PerfectScrollbar;
-    }
 }
     KorePickers.prototype.showTaskMenuItems=function(actionsData){
         return actionsData;
@@ -107,7 +103,6 @@
 KorePickers.prototype.init = function (mainConfig) {
     mainConfig=this.mainConfig;
     chatWindowInstance=this.chatWindowInstance;
-    KRPerfectScrollbar = this.KRPerfectScrollbar;
     if (chatWindowInstance.config.pickersConfig.showDateRangePickerIcon) {
        this.showDateRangeIconToFooter();
     //    KorePickers.prototype.showDateRangePicker(mainConfig);
@@ -141,16 +136,6 @@ KorePickers.prototype.init = function (mainConfig) {
         // KorePickers.prototype.showDatePicker(mainConfig);
         chatWindowInstance.config.chatContainer.on('click', '.sdkMenu.menuBtn', function (event) {
         KorePickers.prototype.showTaskPicker(mainConfig);
-            setTimeout(function () {
-                if (KRPerfectScrollbar) {
-                    this.contentPSObj = null;
-                    if (!this.contentPSObj) {
-                        this.contentPSObj = new KRPerfectScrollbar($('.kore-action-sheet').find(".taskMenuPicker").get(0), {
-                            suppressScrollX: true
-                        });
-                    }
-                }
-            }, 500)
          });
      }
 }
@@ -291,6 +276,13 @@ KorePickers.prototype.showTaskPicker = function (mainConfig) {
 }
 KorePickers.prototype.getTaskPickerTemplate = function (taskPickerConfig) {
     var $taskContent = $('<div class="taskMenuPicker"></div>');
+    if (taskPickerConfig && taskPickerConfig.tasks && taskPickerConfig.tasks.length) {
+        taskPickerConfig.tasks.sort(function (val1, val2) {
+            if (val1 && val2 && (val1.order > -1) && (val2.order > -1)) {
+                return parseInt(val1.order) - parseInt(val2.order);
+            }
+        });
+    }
     if(taskPickerConfig && taskPickerConfig.tasks){
         var tasks = taskPickerConfig.tasks;
         tasks.forEach(function (task) {
@@ -318,10 +310,10 @@ KorePickers.prototype.addTaskMenuListener = function (mainConfig) {
     _korePickers.find(".TaskPickerContainer .btnTask").click(function (e) {
         var inputValue = $(e.currentTarget).find(".taskName").text();
         _korePickers.find('.footerContainer.pos-relative .chatInputBox').text(inputValue);
-        var taskPostbackMsg = $(e.currentTarget).find('.taskName').attr('data-value');
+        var taskPostbackMsg = ($(e.currentTarget).find('.taskName').attr('data-value') !== 'undefined')? $(e.currentTarget).find('.taskName').attr('data-value') : $(e.currentTarget).find('.taskName').attr('data-title');
         var taskTitle = $(e.currentTarget).find('.taskName').attr('data-title');
         var buttonNameResponse = $(e.currentTarget).find('.taskName').attr('data-title-response');
-        mainConfig[0].chatWindowInstance.sendMessage($('.chatInputBox').text(taskPostbackMsg), buttonNameResponse);
+        mainConfig[0].chatWindowInstance.sendMessage($('.chatInputBox').text(taskPostbackMsg), taskTitle);
         _self.bottomSlider('hide');
         _korePickers.find(".kore-action-sheet").remove();
     });
@@ -347,7 +339,7 @@ KorePickers.prototype.getTaskPickerContainer = function (actionsData) {
     <div class="taskMenuHeader">\
          <button class="closeSheet" title="Close"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button> \
          <input class="searchInput" placeholder="Write a reply">\
-       <label class="taskHeading"> '+ actionsData.heading +' </label>\
+       <label class="taskHeading" title="'+actionsData.heading+'"> '+ actionsData.heading +' </label>\
     </div>'
 }
 /*TaskMenu Template end*/
@@ -515,6 +507,8 @@ KorePickers.prototype.showDatePicker = function (mainConfig) {
         startDate: mainConfig[1].dateConfig.startDate,
         endDate: mainConfig[1].dateConfig.endDate,
         inline: true,
+        monthSelect: true,
+        yearSelect: [1900, moment().get('year')],
         container:  _korePickers.find('.kore-action-sheet .datePickerContainer'),
 
     };
@@ -667,13 +661,19 @@ function getMonth(date){
 
 function hlght(config){
     var monthList = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-      var currentmonth = $(".date-picker-wrapper .month-wrapper .month1 .month-name .month-element")[0].innerText;
+    if( $(".date-picker-wrapper .month-wrapper .month1 .month-name .month-element") && $(".date-picker-wrapper .month-wrapper .month1 .month-name .month-element")[0]){
+        var currentmonth = $(".date-picker-wrapper .month-wrapper .month1 .month-name .month-element")[0].innerText;
+    }else{
+        var currentmonth = $(".date-picker-wrapper .month-wrapper .month1 .month-name .select-wrapper")[0].innerText;
+    }
+    
     //   var endMonthFormat=moment(endMonth).format("MM");
+    var currentmonth = new Date().getMonth();
       var endMonth = getMonth(config.dateConfig.endDate);
-      if(config.dateConfig.showdueDate && (monthList[endMonth].toLowerCase() === currentmonth.toLowerCase())){
+      //if(config.dateConfig.showdueDate && (monthList[endMonth].toLowerCase() === monthList[currentmonth].toLowerCase())){
         $(".month-wrapper .day.toMonth.valid").last().css({"background-color":"#e94848"});
         $(".month-wrapper .day.toMonth.valid.tmp").last().css({"background-color":"#e94848"});
-    }
+    //}
   }
  
 /*ClockPicker start*/ 

@@ -1,8 +1,7 @@
 (function ($) {
 
     var _hash = (location.href.split("#")[1] || "");
-    // var _hash = "eyJqd3QiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFlYUWlPakUyTVRrME16UTFOVFkxTXpnc0ltVjRjQ0k2TVRZeE9UUXpORFUxTnpRek9Dd2lZWFZrSWpvaUlpd2lhWE56SWpvaVkzTXROVFppWW1WaVpUWXRaams1WkMwMU56SXdMV0poTldNdE1EQXdOamN4WmpNNVl6UTBJaXdpYzNWaUlqb2lOalJrTWpGaFpqSXRPVGt3TWkwMFlqY3hMV0psT1RndE5tVmlOak00T1RFd05qZGpJaXdpYVhOQmJtOXVlVzF2ZFhNaU9tWmhiSE5sZlEuaU10bFAwZlpZWGp3dEJabC1UelR6SnJQTl9QRy1OdnItTTYwYm1MWExJdyIsImJvdEluZm8iOnsibmFtZSI6IkJhbmtBc3Npc3QgRGV2IiwiX2lkIjoic3QtZmJkZWQ5MTktMjhjNC01MTYyLWI0ZmEtODgyNWE5OWRhOGZmIn0sImtvcmVBUElVcmwiOiJodHRwczovL2Jhbmtpbmdhc3Npc3RhbnQtcWEtYm90cy5rb3JlLmFpOjQ0My8iLCJjaGFubmVsIjoicnRtIn0="
-    // var _hash = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MjAxMTI5ODMsImV4cCI6MTYyMDExMzA0MywiYXVkIjoiaHR0cHM6Ly9iYW5raW5nYXNzaXN0YW50LWlkcC1kZXYua29yZS5haS9hdXRob3JpemUiLCJpc3MiOiI1YTM3YmYyNC1mZWEwLTRlNmItYTgxNi1mOTYwMmRiMDgxNDkiLCJzdWIiOiJ3b3JrYmVuY2hkZXZAYWJjLmNvbSJ9.YuK4yJVkIP_IpU4hZ2svbUnvBeFhTvv5QIMlPZCIJqvmXJSUw9iedZ4R7ZKyAVGqq0-W6YOY1Qsh9aqSQdypnXHVqFVaKE9RAI3H8sam7esEMgi_ghLaxjiFO2gzCWILpgClum-4TElBD__11qtmxIOaNa54rXf4UQUVD3E8PBMIP-vxuX-Hc75eTnwrvQfaOZB0FJtzNSnfoB6FHi_A3Fve7Zc47C857RrPEqXGzNK7Rfn5kTQPXQMXjndX9GHQAXOpfFq2NuTlox4wIyDKABWxW5YFvfdQKkrxq66wAdJ1HeUjRMizEwEe7k-NvhJ_owkjJJ2Ce_FiDUdfZsmOYg";
+    // var _hash = "eyJqd3QiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFlYUWlPakUyTVRBME16RTJNRGswTmpjc0ltVjRjQ0k2TVRZeE1EUXpNVFkyT1RRMk55d2lZWFZrSWpvaUlpd2lhWE56SWpvaVkzTXROMkUyTkdZelpUVXRZelkxTXkwMVpXUTNMVGt4T1RjdE9EUmpNR1UzTjJOak1qRmxJaXdpYzNWaUlqb2lZMkV5T1RJNFltSmxNV1kxTVRCaE9ERXhaRFU0Wm1Gak9XTXhZalprTmpNME1pSXNJbWx6UVc1dmJubHRiM1Z6SWpwbVlXeHpaWDAuOGRib3JwTEhWTm9BUE5OSVhzN1VhQ2hqNF9yS1o3bU1fRFdQTUxxa0txcyIsImJvdEluZm8iOnsibmFtZSI6IkJhbmtpbmcgQXNzaXN0IiwiX2lkIjoic3QtY2RlZmNlMGYtOWVlZC01NGM1LWIzZDctM2MxYjJmODNiOGVjIn0sImtvcmVBUElVcmwiOiJodHRwczovL2Jhbmtpbmdhc3Npc3RhbnQtcWEua29yZS5haTo0NDMvIiwiY2hhbm5lbCI6InJ0bSJ9"
     var hashObj = {};
 
     if (_hash) {
@@ -38,12 +37,12 @@
         }
 
         function assertion(options, callback) {
+            //console.log(options.botInfo.customData.tenantId);
             if (hashObj && hashObj.jwt) {
                 options.assertion = hashObj.jwt;
                 options.handleError = koreBot.showError;
                 options.chatHistory = koreBot.chatHistory;
                 options.botDetails = koreBot.botDetails;
-                options.brandingAPIUrl = options.koreAPIUrl + 'workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop';
                 callback(null, options);
             } else if(chatConfig.isFromFinastra){
                 var jsonData = {
@@ -81,7 +80,7 @@
                 var jsonData = {
                     "clientId": options.clientId,
                     "clientSecret": options.clientSecret,
-                    "identity": options.userIdentity,
+                    "identity": uuid,
                     "aud": "",
                     "isAnonymous": false
                 };
@@ -104,16 +103,14 @@
         }
 
         function getBrandingInformation(options) {
-           var branding= !chatConfig.botOptions.botInfo.customData.brandingId ? chatConfig.botOptions.botInfo._id:  chatConfig.botOptions.botInfo.customData.brandingId ;
-           //console.log("branding"+branding);
             $.ajax({
-                url: this.brandingAPIUrl,
+                url: this.koreAPIUrl + '/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop',
                 headers: {
                     'tenantId': chatConfig.botOptions.accountId,
                     'Authorization': "bearer " + options.authorization.accessToken,
                     'Accept-Language': 'en_US',
                     'Accepts-version': '1',
-                    'botId':branding,
+                    'botId': chatConfig.botOptions.universalBotId,
                     'state': 'published'
                 },
                 type: 'get',
@@ -133,7 +130,7 @@
 
         function CheckRefreshToken(options){
             var jsonData = {
-                // "userId": window.jwtDetails.userInfo.userId,
+                "userId": window.jwtDetails.userInfo.userId,
                 "uniqueUserId": options.uniqueUserId
             };
             $.ajax({
@@ -150,7 +147,7 @@
         }
         
         var korecookie = localStorage.getItem("korecom");
-        var uuid = getQueryStringValue('userId');
+        var uuid = getQueryStringValue('uid');
         if (uuid) {
             console.log(uuid);
         } else {
@@ -158,6 +155,9 @@
         }
         localStorage.setItem("korecom", uuid);
         var chatConfig = window.KoreSDK.chatConfig;
+        KoreSDK.resetSSN=function(){
+            
+        }
         chatConfig.botOptions.assertionFn = assertion;
         chatConfig.botOptions.jwtgrantSuccessCB = getBrandingInformation;
 
@@ -166,18 +166,127 @@
         }
 
         if (hashObj.koreAPIUrl) {
-            chatConfig.botOptions.koreAPIUrl = hashObj.koreAPIUrl + 'workbench/api/';
+            chatConfig.botOptions.koreAPIUrl = hashObj.koreAPIUrl + '/api/';
         }
 
-        if (hashObj.brand && hashObj.brand.headerTitle) {
-            chatConfig.chatTitleOverride = hashObj.brand.headerTitle;
-        }
+        // if (hashObj.brand && hashObj.brand.headerTitle) {
+        //     chatConfig.chatTitleOverride = hashObj.brand.headerTitle;
+        // }
 
-        var koreBot = koreBotChat();
+        var koreBot;
+        koreBot = koreBotChat();
          koreBot.show(chatConfig);
-        KoreSDK.show = function(){
+        $('.openChatWindow').click(function () {
             koreBot.show(chatConfig);
+        });
+        var botOptionsInformation = {};
+        botOptionsInformation['env'] = '';
+        var botOptionsArray = ['botId', 'clientId', 'clientSecret', 'accountId','triggerValue'];
+        $('.submit').click(function () {
+            var isValidForm = true;
+            for (var i = 0; i < botOptionsArray.length; i++) {
+                if (!$('#' + botOptionsArray[i]).val().length && (botOptionsArray[i] !=='triggerValue')) {
+                    isValidForm = false;
+                    if ($('#' + botOptionsArray[i] + 'Error').hasClass('display-none')) {
+                        $('#' + botOptionsArray[i] + 'Error').removeClass('display-none');
+                        $('#' + botOptionsArray[i] + 'Error').addClass('display-block');
+                    }
+                } else if ($('#' + botOptionsArray[i]).val().length) {
+                    botOptionsInformation[botOptionsArray[i]] = $('#' + botOptionsArray[i]).val();
+                    if ($('#' + botOptionsArray[i] + 'Error').hasClass('display-block')) {
+                        $('#' + botOptionsArray[i] + 'Error').removeClass('display-block');
+                        $('#' + botOptionsArray[i] + 'Error').addClass('display-none');
+                    }
+                }
+            }
+            if (isValidForm) {
+                if (!botOptionsInformation['env'].length) {
+                    window.alert('Please select environment');
+                } else {
+                    chatConfig['botOptions']['botInfo']['_id'] = botOptionsInformation['botId'];
+                    chatConfig['botOptions']['accountId'] = botOptionsInformation['accountId'];
+                    chatConfig['botOptions']['clientId'] = botOptionsInformation['clientId'];
+                    chatConfig['botOptions']['clientSecret'] = botOptionsInformation['clientSecret'];
+                    if(botOptionsInformation && botOptionsInformation['triggerValue']){
+                        chatConfig['botOptions']['botInfo']['customData']['trigger'] = botOptionsInformation['triggerValue'];
+                    }
+                    if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'dev') {
+                        chatConfig['botOptions']['koreAPIUrl'] = "https://bankassist-dev.kore.ai/workbench/api";
+                    }
+                    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'qa') {
+                        chatConfig['botOptions']['koreAPIUrl'] = "https://bankingassistant-qa.kore.ai/workbench/api";
+                    }
+                    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'demo') {
+                        chatConfig['botOptions']['koreAPIUrl'] = "https://bankingassistant-demo.kore.ai/workbench/api";
+                    }
+                    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'bnkstg') {
+                        chatConfig['botOptions']['koreAPIUrl'] = "https://bankingassistant-stg.kore.ai/workbench/api";
+                    }
+                    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'prod') {
+                        chatConfig['botOptions']['koreAPIUrl'] = "https://bankassist.kore.ai/workbench/api";
+                    }
+                    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'platstg') {
+                        chatConfig['botOptions']['koreAPIUrl'] = " https://staging-workbench-external.korebots.com/workbench/api";
+                    }
+		    else if (botOptionsInformation['env'].length && botOptionsInformation['env'] == 'pncLocalOnPrem') {
+                        chatConfig['botOptions']['koreAPIUrl'] = " https://installer-393-use1-wb.korebots.com/workbench/api";
+                    }
+                    $('.bot-details-submission-form').addClass('display-none');
+                    koreBot = koreBotChat();
+                    koreBot.show(chatConfig);
+                }
+            }
+        });
+
+
+        function envdropdownChanges() {
+            if ($('.env-information').hasClass('display-none')) {
+                $('.env-information').removeClass('display-none');
+                $('.env-information').addClass('display-block');
+            } else if ($('.env-information').hasClass('display-block')) {
+                $('.env-information').removeClass('display-block');
+                $('.env-information').addClass('display-none');
+            }
         }
+        $('.env-selection').click(function (e) {
+            envdropdownChanges();
+        });
+
+        $('#dev').click(function (e) {
+            botOptionsInformation['env'] = 'dev';
+            $('#env').val('Dev');
+            envdropdownChanges();
+        });
+        $('#qa').click(function (e) {
+            botOptionsInformation['env'] = 'qa';
+            $('#env').val('QA');
+            envdropdownChanges();
+        });
+        $('#bnkstg').click(function (e) {
+            botOptionsInformation['env'] = 'bnkstg';
+            $('#env').val('Bank Assist STAGING');
+            envdropdownChanges();
+        });
+        $('#platstg').click(function (e) {
+            botOptionsInformation['env'] = 'platstg';
+            $('#env').val('PLAT STAGING');
+            envdropdownChanges();
+        });
+        $('#demo').click(function (e) {
+            botOptionsInformation['env'] = 'demo';
+            $('#env').val('DEMO');
+            envdropdownChanges();
+        });
+        $('#prod').click(function (e) {
+            botOptionsInformation['env'] = 'prod';
+            $('#env').val('Prod');
+            envdropdownChanges();
+        });
+	$('#pncLocalOnPrem').click(function (e) {
+            botOptionsInformation['env'] = 'pncLocalOnPrem';
+            $('#env').val('pncLocalOnPrem');
+            envdropdownChanges();
+        });
     });
 
 })(jQuery || (window.KoreSDK && window.KoreSDK.dependencies && window.KoreSDK.dependencies.jQuery));
