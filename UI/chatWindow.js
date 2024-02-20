@@ -24,7 +24,7 @@
 
             var bot = requireKr('/KoreBot.js').instance();
             var botMessages = {
-                message: "Message...",
+                message: "How can I help you?",
                 connecting: "Connecting...",
                 reconnecting: "Reconnecting..."
             };
