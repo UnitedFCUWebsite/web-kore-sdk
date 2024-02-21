@@ -24,7 +24,7 @@
 
             var bot = requireKr('/KoreBot.js').instance();
             var botMessages = {
-                message: "How can I help you?",
+                message: "How can I help you ?",
                 connecting: "Connecting...",
                 reconnecting: "Reconnecting..."
             };
@@ -486,7 +486,7 @@
                             txtArr[i] = '\r\n';
                             _lineBreakAdded = true;
                         } else if (txtArr[i].indexOf('*') === 0) {
-                            if (!isEven(txtArr[i].split('*').length - 1) && KoreSDK.chatConfig.masking) {    // Not sure what is the impact
+                            if (!isEven(txtArr[i].split('*').length - 1) && !KoreSDK.chatConfig.masking) { // Not sure what is the impact
                                 txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(1);
                                 _lineBreakAdded = true;
                             } else  {
@@ -1100,7 +1100,7 @@
                 _chatContainer.off('click', '.botResponseAttachments').on('click', '.botResponseAttachments', function (event) {
                     window.open($(this).attr('fileid'), '_blank');
                 });
-                _chatContainer.off('keydown', '.text-as-password').on('keydown', '.text-as-password', function (event) {
+               _chatContainer.off('keydown', '.text-as-password').on('keydown', '.text-as-password', function (event) {
                     if (event.keyCode === 13) {
                         event.preventDefault();
                         if ($('.text-as-password').val().length > 0) {
@@ -2808,7 +2808,6 @@
                         {{if userAgentIE}} \
                         <div role="textbox" class="chatInputBox inputCursor" aria-label="Message"aria-label="Message" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{else}} \
-                        <input type="password" class="text-as-password" placeholder="${botMessages.message}">\
                         <div role="textbox" class="chatInputBox" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{/if}} \
                     <div class="footerIonsContainer">\

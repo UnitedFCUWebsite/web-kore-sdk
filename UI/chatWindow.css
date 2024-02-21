@@ -235,7 +235,7 @@
     -moz-border-radius: 4px;
     border-radius: 4px;
     z-index: 1030;
-    right: 0;
+    right: 10px;
     bottom: 10px;
     height: calc(100% - 25px);
 }
@@ -520,7 +520,7 @@
    /* color: var(--sdk-chat-widow-bot-chat-bubble-text-color);*/
     color: var(--sdk-chat-widow-widget-text-color);
     text-align: left;
-    padding-left: 65px;
+    padding-left: 70px;
 }
 
 /* .kore-chat-window .kore-chat-header .header-title.ui-draggable-handle {
@@ -542,6 +542,7 @@
     bottom: 30px;
     height: 36px;
     display: block;
+    top:0;
 }
 
 .kore-chat-window .kore-chat-header .chat-box-controls button {
@@ -554,12 +555,12 @@
     vertical-align: top;
     height: 50px;
     line-height: inherit;
-    margin: 0;
+    margin-top: 22px;
     padding: 0 6px;
 }
 
 .kore-chat-window .kore-chat-header .chat-box-controls .reload-btn {
-    margin-top: 0;
+    margin-top: 22px;
     background-size: 16px 16px;
     display: inline-block;
     font-size: 18px;
@@ -779,7 +780,7 @@
 
 .kore-chat-window .footerContainer.pos-relative{
     top: 12px;
-    margin-right: 50px;
+    margin-right: 10px;
     margin-left: 0;
 }
 
@@ -835,7 +836,7 @@
     color: var(--sdk-chat-widow-primary-font-color);
     min-height: 42px;
     border-radius: 21px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    box-shadow: inset 0 0 5px 2px rgba(86, 86, 86, 0.22);
     margin: 0;
     padding: 12px 20px;
     margin-right: 10px;
@@ -1423,6 +1424,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 
 .kore-chat-window .microphoneBtn {
     display: inline;
+    display: none !important;
 }
 
 
@@ -2222,7 +2224,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 
 .kore-chat-window .inputCursor:empty:before {
     display: inline;
-    content: "Message...1";
+    content: "Message...";
     position: absolute;
     top: 3px !important;
     left: 0;
@@ -3043,15 +3045,15 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 } */
 
 .logo-icon{
-    position: absolute;
-    top: 0;
-    width: 35px;
-    border-radius: 0;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    height: 100%;
-    left: 20px;
+        position: absolute;
+        top: 19px;
+        width: 50px;
+        border-radius: 56%;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 50px;
+        left: 13px;
 }
 
 .kore-chat-window.shopping_theme .kore-chat-body{
@@ -3110,6 +3112,6 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
     display:none !important;
 }
 .kore-chat-window.mobile-browser-enabled .footerContainer.pos-relative{
-    margin-right: 90px;
+    margin-right: 60px;
     margin-left: 0;
     }

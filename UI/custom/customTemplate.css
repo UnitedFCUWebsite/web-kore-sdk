@@ -318,26 +318,28 @@
     text-align: center;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-info{
-    min-width: 80px;
-    height: 30px;
-    border-radius: 4px;
+    min-width: auto;
+    height: auto;
+    border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
     margin-right: 10px;
     background-color: #0d6efd;
     border: solid 1px transparent;
     color: #fff;
+    padding: 5px 17px;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-url-postback{
-    min-width: 80px;
-    height: 30px;
-    border-radius: 4px;
-
+    min-width: auto;
+    height: auto;
+    border-radius: 5px;
+    background-color: transparent;
     font-size: 14px;
     border: solid 1px transparent;
     cursor: pointer;
     margin-right: 10px;
     color: #0d6efd;
+    padding: 5px 17px;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .templateHeading{
     text-align: center;
@@ -1404,7 +1406,7 @@
 
 .kore-chat-window .listViewTmplContent .listViewLeftContent .titleDesc {
     display: inline-block;
-    width: 40%;
+    width: 60%;
 }
 
 .kore-chat-window .listViewItemTitle {
