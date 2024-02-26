@@ -564,7 +564,7 @@
     background-size: 16px 16px;
     display: inline-block;
     font-size: 18px;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat
 }
 
 @media(max-width: 767px) {
@@ -1322,6 +1322,7 @@
     border: none;
     outline: 0;
     cursor: pointer;
+    visibility: hidden;
 }
 
 .kore-chat-window .sdkFooterIcon i {
@@ -3045,15 +3046,15 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 } */
 
 .logo-icon{
-        position: absolute;
-        top: 19px;
-        width: 50px;
-        border-radius: 56%;
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-        height: 50px;
-        left: 13px;
+    position: absolute;
+    top: 19px;
+    width: 50px;
+    border-radius: 56%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 50px;
+    left: 13px;
 }
 
 .kore-chat-window.shopping_theme .kore-chat-body{
@@ -3065,6 +3066,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 .kore-chat-window .attachment {
     float: left;
     width: 100%;
+    visibility: hidden;
  }
  .kore-chat-window .attachments .uploadedFileIcon {
     float: left;
@@ -3073,38 +3075,37 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
     text-align: left!important;
 }
 
-
 .text-as-password{
-    width: 100%;
-    outline: none;
-    display: none;
-    cursor: text;
-    max-height: 70px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background-color: var( --sdk-chat-widow-default-white);
-    color: var(--sdk-chat-widow-primary-font-color);
-    min-height: 42px;
-    border-radius: 21px;
-    box-shadow: inset 0 0 5px 2px rgb(86 86 86 / 22%);
-    margin: 0;
-    padding: 12px 20px;
-    margin-right: 10px;
-    font-size: 12px;
-    width: 90%;
-    margin: 0 auto;
-    position: relative;
-    left: 7px;
+    width: 100% !important;
+    outline: none !important;
+    display: none !important;
+    cursor: text !important;
+    max-height: 70px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background-color: var( --sdk-chat-widow-default-white) !important;
+    color: var(--sdk-chat-widow-primary-font-color) !important;
+    min-height: 42px !important;
+    border-radius: 21px !important;
+    box-shadow: inset 0 0 5px 2px rgb(86 86 86 / 22%) !important;
+    margin: 0 !important;
+    padding: 12px 20px !important;
+    margin-right: 10px !important;
+    font-size: 12px !important;
+    width: 90% !important;
+    margin: 0 auto !important;
+    position: relative !important;
+    left: 7px !important;
     outline: 0 !important;
-    border: 0;
-}
+    border: 0 !important;
+    }
 .text-as-password::placeholder{
-    letter-spacing: -0.4px;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 24px;
-    color: #aaa;   
-}
+    letter-spacing: -0.4px !important;
+    font-weight: normal !important;
+    font-size: 12px !important;
+    line-height: 24px !important;
+    color: #aaa !important;
+    }
 .disable-chatInput{
     pointer-events:none;
 }

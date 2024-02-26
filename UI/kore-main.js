@@ -176,6 +176,10 @@
         var koreBot;
         koreBot = koreBotChat();
          koreBot.show(chatConfig);
+         KoreSDK.destroyChatBot = function(){
+            koreBot.destroy();
+            KoreSDK.chatConfig.isChatBotOpened = false;
+            }
         $('.openChatWindow').click(function () {
             koreBot.show(chatConfig);
         });

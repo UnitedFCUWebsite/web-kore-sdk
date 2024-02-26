@@ -24,7 +24,7 @@
 
             var bot = requireKr('/KoreBot.js').instance();
             var botMessages = {
-                message: "How can I help you ?",
+                message: "How can I help you?",
                 connecting: "Connecting...",
                 reconnecting: "Reconnecting..."
             };
@@ -1100,7 +1100,7 @@
                 _chatContainer.off('click', '.botResponseAttachments').on('click', '.botResponseAttachments', function (event) {
                     window.open($(this).attr('fileid'), '_blank');
                 });
-               _chatContainer.off('keydown', '.text-as-password').on('keydown', '.text-as-password', function (event) {
+                _chatContainer.off('keydown', '.text-as-password').on('keydown', '.text-as-password', function (event) {
                     if (event.keyCode === 13) {
                         event.preventDefault();
                         if ($('.text-as-password').val().length > 0) {
@@ -1430,6 +1430,7 @@
                         ttsAudioSource.stop();
                     }
                     isTTSOn = false;
+                    me.sendCloseForceClosureEvent();
                     me.destroy();
                     if (_ttsContext) {
                         _ttsContext.close();
@@ -2784,7 +2785,58 @@
                 }
                 $('.dropdown-contentWidgt.show').not($(obj).next()).removeClass('show');
             }; // Close the dropdown if the user clicks outside of it
-
+            chatWindow.prototype.sendCloseForceClosureEvent = function (renderMsg,data) {
+                var me = this;
+                me.config.botOptions._reconnecting = true;
+                var _bodyContainer = $(me.config.chatContainer).find('.kore-chat-body');
+                var _footerContainer = $(me.config.chatContainer).find('.kore-chat-footer');
+                var clientMessageId = new Date().getTime();
+                var msgData = {};
+                msgData = {
+                'type': "currentUser",
+                "message": [{
+                'type': 'text',
+                'cInfo': { 'body': "forceClosure" },
+                'clientMessageId': clientMessageId
+                }],
+                "createdOn": clientMessageId
+                };
+                var messageToBot = {};
+                messageToBot["clientMessageId"] = clientMessageId;
+                if (Object.keys(attachmentInfo).length > 0 && chatInput.text().trim().length) {
+                messageToBot["message"] = { body: chatInput.text().trim(), attachments: [attachmentInfo] };
+                } else if (Object.keys(attachmentInfo).length > 0) {
+                messageToBot["message"] = { attachments: [attachmentInfo] };
+                }
+                else {
+                messageToBot["clientEvent"] = { body: "forceClosure" };
+                messageToBot["message"] = { body: "forceClosure" };
+                }
+                messageToBot["resourceid"] = '/bot.message';
+                if(renderMsg && typeof renderMsg==='string'){
+                messageToBot["message"].renderMsg=renderMsg;
+                }
+                if (data && data.customdata) {
+                messageToBot["message"].customdata = data.customdata;
+                }
+                if (data && data.nlmeta) {
+                messageToBot["message"].nlmeta = data.nlmeta;
+                }
+                if($('.isDebugConsolePanelOpen').length > 0) {
+                messageToBot["isDebugging"] = true;
+                }
+                else{
+                messageToBot["isDebugging"] = false;
+                }
+                attachmentInfo = {};
+                bot.sendMessage(messageToBot, function messageSent(err) {
+                if (err && err.message) {
+                setTimeout(function () {
+                $('#msg_' + clientMessageId).find('.messageBubble').append('<div class="errorMsg">'+i18n.i18nString('sendFailed_please_resend')+'</div>');
+                }, 350);
+                }
+                });
+                };
             (function () {
                 window.onclick = function (event) {
                   if (!event.target.matches('.dropbtnWidgt')) {
@@ -2808,6 +2860,7 @@
                         {{if userAgentIE}} \
                         <div role="textbox" class="chatInputBox inputCursor" aria-label="Message"aria-label="Message" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{else}} \
+                        <input type="password" class="text-as-password" placeholder="${botMessages.message}">\
                         <div role="textbox" class="chatInputBox" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{/if}} \
                     <div class="footerIonsContainer">\
@@ -2833,14 +2886,14 @@
                     </div> \
                     {{/if}}\
                     <div class="sdkFooterIcon"> \
-                        <button class="sdkAttachment attachmentBtn" title="Attachment"> \
+                        <button class="sdkAttachment attachmentBtn" aria-hidden="true" title="Attachment"> \
                             <div class="attachmentIcon"></div> \
                         </button> \
                         <input type="file" name="Attachment" class="filety" id="captureAttachmnts" title="Upload attachment"> \
                     </div> \
                     {{if !(isSendButton)}}<div class="chatSendMsg">Press enter to send</div>{{/if}} \
                     </div>\
-                     <div class="attachment"></div> \
+                     <div class="attachment" aria-hidden="true"></div> \
                 </div>';
 
                 var chatWindowTemplate = '<script id="chat_window_tmpl" type="text/x-jqury-tmpl"> \
@@ -3657,6 +3710,9 @@
                 }
                 window.removeEventListener('online', updateOnlineStatus);
                 window.removeEventListener('offline', updateOnlineStatus);
+                if(chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')){
+                    chatInitialize.config.chatContainer.find('.chat-container').empty()
+                    }
             };
             this.initToken = function (options) {
                 assertionToken = "bearer " + options.accessToken;
