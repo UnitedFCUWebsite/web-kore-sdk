@@ -69,6 +69,7 @@
     botOptions.clientSecret ="7JOc+Qaa9GisGPEdq62lpU0mNqKFb+z+17tU1gHON0g=";
     botOptions.accountId = "65203af7391d718428c910f2";
     botOptions.universalBotId ="st-21ae4413-5366-5621-85c8-08f0f5a3f906";
+    botOptions.tenant="UFCU"
   }
   // window._BAMya.accountId
   // window._BAMya.botId

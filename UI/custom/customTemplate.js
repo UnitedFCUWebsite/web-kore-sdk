@@ -1,8 +1,9 @@
 (function($){
-	function customTemplate(data,chatInitialize) {
+	function customTemplate(data,chatInitialize,bot) {
 		this.cfg = data;
 		this.chatInitialize=chatInitialize;
 		this.helpers = null;
+		this.bot = bot;
 		this.extension = null;
 	}
 	
@@ -183,7 +184,15 @@
             });
 			this.galleryTemplateEvents(messageHtml, msgData);
         }
-
+        else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "custom_form_template") {
+			messageHtml = $(this.getChatTemplate("customFormTemplate")).tmpl({
+				'msgData': msgData,
+				'helpers': this.helpers,
+				'extension': this.extension
+			});
+			$('.kore-chat-window .kore-action-sheet').addClass('koreActionSheet_customClass');
+			this.customFormTemplateBindEvents(messageHtml, msgData);
+		}
 		else if (msgData && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.body && this.toCheckBankingFeedbackTemplate(msgData)) {
 			return;
 		}
@@ -1783,6 +1792,62 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 					</li>\
 					{{/if}} \
 			</script>';
+			var customFormTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
+			{{if msgData.message}} \
+				<bdi {{if msgData.message[0].component.payload.lang === "ar"}}dir="rtl"{{/if}} class="customAdressFormContent"> \
+					<bdi class="hading-text">${msgData.message[0].component.payload.heading}\
+							<button class="close-button" ><img draggable="false" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>\
+					</bdi>\
+					{{each(key, formItems) msgData.message[0].component.payload.form_fields}}\
+						<div class="customAdressFormChild"> \
+							<div class="customAdressFormInput formInputParent${key} {{if formItems.required}}required{{/if}} {{if formItems.text}}floatingLabel{{/if}}" >\
+								<input class="inputItem {{if formItems.inputType && formItems.inputType ==="number"}}allow-only-numbers{{/if}}" type="text" placeholder=" " value="${formItems.text}" {{if formItems.required}}required{{/if}} {{if formItems.maxLength}}maxlength="${formItems.maxLength}"{{/if}}></input>\
+								<bdi class="formPlaceholderLabel">${formItems.label} {{if formItems.required}}<span style="color: red;">*</span>{{/if}}</bdi>\
+							</div>\
+							<bdi class="errorMessage hide">${formItems.errorMessage}</bdi>\
+						</div> \
+					{{/each}} \
+					<div class="custom-address-dropdown"> \
+						<div class="product extraPadding">\
+							<div class="parentListDiv"> \
+								<bdi class="drop-btn-header"> \
+									{{if msgData.message[0].component.payload.dropdown.heading}}<bdi class="dropFloatingLabel">${msgData.message[0].component.payload.dropdown.heading}</bdi>{{/if}} \
+									<button class="dropbtn-down-prod" \
+											{{if msgData.message[0].component.payload.dropdown.countrycode}} \
+														data-value="${msgData.message[0].component.payload.dropdown.countrycode}" \
+														value="${msgData.message[0].component.payload.dropdown.text}" \
+											 {{else}}data-value="${helpers.countriesList[0].code}" value="${helpers.countriesList[0].country_name}"{{/if}}> \
+										{{if msgData.message[0].component.payload.dropdown.countrycode}} \
+											<img draggable="false" src="${helpers.countriesList[0].flag_link}${msgData.message[0].component.payload.dropdown.countrycode}.png" > \
+											<span>${msgData.message[0].component.payload.dropdown.text}</span>\
+										{{else}} \
+											<img draggable="false" src="${helpers.countriesList[0].flag_link}${helpers.countriesList[0].code}.png" >\
+											<span>${helpers.countriesList[0].country_name}</span>\
+										{{/if}}\
+									</button>\
+								</bdi>\
+								<div id="productDropdownDrop" class="dropdown-content-drop">\
+									<div class="searchBtn"> \
+										<img draggable="false" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU2OTBfMjkzNikiPgo8cGF0aCBkPSJNMS40NzIwNSAxMy4zNTcxQzIuNDEyMiAxNS41NjkzIDQuMTkyNjIgMTcuMzE3NCA2LjQyMTY1IDE4LjIxNjhDOC42NTA2NyAxOS4xMTYzIDExLjE0NTcgMTkuMDkzNCAxMy4zNTc5IDE4LjE1MzNDMTUuNTcgMTcuMjEzMSAxNy4zMTgxIDE1LjQzMjcgMTguMjE3NiAxMy4yMDM3QzE5LjExNyAxMC45NzQ2IDE5LjA5NDIgOC40Nzk2IDE4LjE1NCA2LjI2NzQzQzE3LjIxMzkgNC4wNTUyNiAxNS40MzM1IDIuMzA3MTcgMTMuMjA0NCAxLjQwNzcyQzEwLjk3NTQgMC41MDgyNjYgOC40ODAzNyAwLjUzMTEyOCA2LjI2ODIgMS40NzEyOEM0LjA1NjA0IDIuNDExNDMgMi4zMDc5NSA0LjE5MTg1IDEuNDA4NDkgNi40MjA4N0MwLjUwOTA0IDguNjQ5OSAwLjUzMTkwMyAxMS4xNDQ5IDEuNDcyMDUgMTMuMzU3MVYxMy4zNTcxWiIgc3Ryb2tlPSIjN0M3QzdDIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNi4yMjEgMTYuMjE5N0wyMy4yNSAyMy4yNDk3IiBzdHJva2U9IiMzMzMzMzMiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81NjkwXzI5MzYiPgo8cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg=="> \
+										<input type="text" placeholder="Search" autocomplete="off" autocomplete="new-password" id="myProdInputDrop">\
+									</div>\
+									<ul class="multiSingleDrop"> \
+										{{each(key, msgItem) helpers.countriesList}} \
+											<li value="${msgItem.country_name}" data-value="${msgItem.code}"  class="dropdown-item"><img draggable="false" src="${msgItem.flag_link}${msgItem.code}.png" ><span>${msgItem.country_name}</span></li>\
+										{{/each}} \
+									</ul> \
+								</div> \
+							</div> \
+						</div> \
+					</div>\
+					{{if msgData.message[0].component.payload.submit_button}} \
+						<div class="addressBtnGroup"> \
+							<button>${msgData.message[0].component.payload.submit_button}</button> \
+						</div> \
+					{{/if}} \
+				</bdi >\
+			{{/if}} \
+		</script > ';
 
 		if (tempType === "dropdown_template") {
 			return dropdownTemplate;
@@ -1824,9 +1889,13 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		else if(tempType === 'galleryTemplate'){
 			return galleryTemplate;
 		}
+		else if (tempType === "customFormTemplate") {
+			return customFormTemplate;
+		}
 		else {
 			return "";
 		}
+		
 		return "";
 	}; // end of getChatTemplate method
 
@@ -3657,7 +3726,145 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 
 	}
 	/* Gallery template Events */
+	customTemplate.prototype.customFormTemplateBindEvents = function (messageHtml, msgData) {
+		chatInitialize = this.chatInitialize;
+		bot = this.bot;
+		helpers = this.helpers;
+		$(messageHtml).off('keyup', '#myProdInputDrop').on('keyup', '#myProdInputDrop', function (event) {
+			var input, filter, i;
+			input = $(this);
+			filter = input[0].value.toUpperCase();
+			div = $(this).closest("#productDropdownDrop").find(".dropdown-item");
+			// a = div.getElementsByTagName("li");
+			for (i = 0; i < div.length; i++) {
+				txtValue = div[i].textContent || div[i].innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					div[i].style.display = "";
+				} else {
+					div[i].style.display = "none";
+				}
+			}
+		});
+		$(messageHtml).off('keyup', '#myMultiProdInputDrop').on('keyup', '#myMultiProdInputDrop', function (event) {
+			var input, filter, i;
+			input = $(this);
+			filter = input[0].value.toUpperCase();
+			div = $(this).closest("#productDropdownDrop").find(".dropdown-item");
+			// a = div.getElementsByTagName("li");
+			for (i = 0; i < div.length; i++) {
+				txtValue = div[i].textContent || div[i].innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					div[i].style.display = "";
+				} else {
+					div[i].style.display = "none";
+				}
+			}
+		});
 
+		$(messageHtml).off('click', '.multiSingleDrop li').on('click', '.multiSingleDrop li', function (event) {
+			// var currentVal = $(this).text();
+			$(this).attr("data-value")
+			$(this).attr("value");
+			$(this).closest(".parentListDiv").find(".dropbtn-down-prod img").attr("src", $(this).find("img").attr("src"));
+			$(this).closest(".parentListDiv").find(".dropbtn-down-prod span").text($(this).attr("value"));
+			$(this).closest(".parentListDiv").find(".dropbtn-down-prod").attr({ "value": $(this).attr("value"), "data-value": $(this).attr("data-value") });
+			$(this).closest(".parentListDiv").find(".dropbtn-down-prod img").attr("src", $(this).find("img").attr("src"));
+			$(this).closest(".parentListDiv").find(".dropdown-content-drop").toggle();
+		});
+		$(messageHtml).off('click', '.drop-btn-header').on('click', '.drop-btn-header', function (event) {
+			$(this).closest(".parentListDiv").find("#myProdInputDrop").val('');
+			$(this).closest(".parentListDiv").find('.dropdown-item').css('display','block')
+			$(this).closest(".parentListDiv").find(".dropdown-content-drop").toggle();
+		});
+		$(messageHtml).off('click', '.addressBtnGroup button').on('click', '.addressBtnGroup button', function (event) {
+			var inputFields = $(this).closest(".customAdressFormContent").find(".customAdressFormInput");
+			var inputFieldsValues = [];
+
+			for (var i = 0; i < inputFields.length; i++) {
+				var inputVal = $(inputFields[i]).find("input").val();
+				if (inputVal.length <= 0) {
+					if ($(inputFields[i]).hasClass("required")) {
+						$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").removeClass("hide");
+						return;
+					}
+				} else {
+					$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").addClass("hide");
+				}
+				inputFieldsValues.push(inputVal);
+			}
+			var dropValue = $(this).closest(".customAdressFormContent").find(".dropbtn-down-prod").attr("data-value");
+			inputFieldsValues.push(dropValue);
+			var messageToDisplay = '';
+			if(inputFieldsValues && inputFieldsValues.length){
+				for(var i=0; i<inputFieldsValues.length;i++){
+					if(inputFieldsValues[i] && inputFieldsValues[i].length){
+						messageToDisplay = messageToDisplay + inputFieldsValues[i]
+						if(i !== inputFieldsValues.length -1){
+							messageToDisplay = messageToDisplay+', '
+						}
+					}
+				}
+			}
+			var inputFieldsValuesNewObject = {
+				"addressline1": inputFieldsValues[0],
+				"addressline2": inputFieldsValues[1],
+				"addressline3": inputFieldsValues[2],
+				"addressline4": inputFieldsValues[3],
+				"addressline5": inputFieldsValues[4],
+				"addressline6": inputFieldsValues[5]
+			};
+			// bot.sendMessage({
+			// 	"clientMessageId": new Date(),
+			// 	"message": { "body": payload },
+			// 	"resourceid": "/bot.message"
+			// });
+			$('.chatInputBox').text(JSON.stringify(inputFieldsValuesNewObject));
+			chatInitialize.sendMessage($('.chatInputBox'),messageToDisplay);
+			bottomSliderAction('hide');
+			//$('.kore-action-sheet').removeClass('koreActionSheet_customClass');
+		});
+		$(messageHtml).off('focus', '.customAdressFormInput').on('focus', '.customAdressFormInput', function (event) {
+			var inputFields = $(event.currentTarget.parentElement.parentElement).find(".customAdressFormInput");
+			for (var i = 0; i < inputFields.length; i++) {
+				var inputVal = $(inputFields[i]).find("input").val();
+				if (inputVal && inputVal.length > 0) {
+					$(inputFields[i]).addClass("floatingLabel");
+				} else {
+					$(inputFields[i]).removeClass("floatingLabel");
+				}
+			}
+			$(this).addClass("floatingLabel");
+		});
+		$(messageHtml).off('click', '.customAdressFormInput').on('click', '.customAdressFormInput', function (event) {
+			var inputFields = $(event.currentTarget.parentElement.parentElement).find(".customAdressFormInput");
+			for (var i = 0; i < inputFields.length; i++) {
+				var inputVal = $(inputFields[i]).find("input").val();
+				if (inputVal && inputVal.length > 0) {
+					$(inputFields[i]).addClass("floatingLabel");
+				} else {
+					$(inputFields[i]).removeClass("floatingLabel");
+				}
+			}
+			$(this).addClass("floatingLabel");
+		});
+		$(messageHtml).off('click', '.close-button').on('click', '.close-button', function (event) {
+			bottomSliderAction('hide');
+			$('.kore-action-sheet').removeClass('koreActionSheet_customClass');
+			bot.sendMessage({
+				"clientMessageId": new Date(),
+				"message": { "body": 'cancel' },
+				"resourceid": "/bot.message"
+			});
+		});
+
+		$(messageHtml).off('keypress', '.inputItem.allow-only-numbers').on('keypress', '.inputItem.allow-only-numbers', function (e) {
+			if ((e.keyCode >= 48 && e.keyCode <= 57)) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+	};
 	    window.customTemplate=customTemplate;	
 
 	return {

@@ -24,7 +24,7 @@
 
             var bot = requireKr('/KoreBot.js').instance();
             var botMessages = {
-                message: "How can I help you?",
+                message: "Message...",
                 connecting: "Connecting...",
                 reconnecting: "Reconnecting..."
             };
@@ -632,7 +632,1447 @@
                     }
                     val = txtArr.join('');
                     return val;
-                }
+                },
+                'countriesList': [
+                    {
+                        "country_name": "Afghanistan",
+                        "code": "AF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AFG"
+                    },
+                    {
+                        "country_name": "Albania",
+                        "code": "AL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/"
+                    },
+                    {
+                        "country_name": "Algeria",
+                        "code": "DZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DZA"
+                    },
+                    {
+                        "country_name": "American Samoa",
+                        "code": "AS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ASM"
+                    },
+                    {
+                        "country_name": "Andorra",
+                        "code": "AD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AND"
+                    },
+                    {
+                        "country_name": "Angola",
+                        "code": "AO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AGO"
+                    },
+                    {
+                        "country_name": "Anguilla",
+                        "code": "AI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AIA"
+                    },
+                    {
+                        "country_name": "Antarctica",
+                        "code": "AQ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ATA"
+                    },
+                    {
+                        "country_name": "Antigua and Barbuda",
+                        "code": "AG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ATG"
+                    },
+                    {
+                        "country_name": "Argentina",
+                        "code": "AR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ARG"
+                    },
+                    {
+                        "country_name": "Armenia",
+                        "code": "AM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ARM"
+                    },
+                    {
+                        "country_name": "Aruba",
+                        "code": "AW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ABW"
+                    },
+                    {
+                        "country_name": "Australia",
+                        "code": "AU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AUS"
+                    },
+                    {
+                        "country_name": "Austria",
+                        "code": "AT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AUT"
+                    },
+                    {
+                        "country_name": "Azerbaijan",
+                        "code": "AZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "AZE"
+                    },
+                    {
+                        "country_name": "Bahamas",
+                        "code": "BS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BHS"
+                    },
+                    {
+                        "country_name": "Bahrain",
+                        "code": "BH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BHR"
+                    },
+                    {
+                        "country_name": "Bangladesh",
+                        "code": "BD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BGD"
+                    },
+                    {
+                        "country_name": "Barbados",
+                        "code": "BB",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BRB"
+                    },
+                    {
+                        "country_name": "Belarus",
+                        "code": "BY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BLR"
+                    },
+                    {
+                        "country_name": "Belgium",
+                        "code": "BE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BEL"
+                    },
+                    {
+                        "country_name": "Belize",
+                        "code": "BZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BLZ"
+                    },
+                    {
+                        "country_name": "Benin",
+                        "code": "BJ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BEN"
+                    },
+                    {
+                        "country_name": "Bermuda",
+                        "code": "BM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BMU"
+                    },
+                    {
+                        "country_name": "Bhutan",
+                        "code": "BT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BTN"
+                    },
+                    {
+                        "country_name": "Bolivia",
+                        "code": "BO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BOL"
+                    },
+                    {
+                        "country_name": "Bosnia and Herzegovina",
+                        "code": "BA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BIH"
+                    },
+                    {
+                        "country_name": "Botswana",
+                        "code": "BW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BWA"
+                    },
+                    {
+                        "country_name": "Brazil",
+                        "code": "BR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BRA"
+                    },
+                    {
+                        "country_name": "British Indian Ocean Territory",
+                        "code": "IO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IOT"
+                    },
+                    {
+                        "country_name": "British Virgin Islands",
+                        "code": "VG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VGB"
+                    },
+                    {
+                        "country_name": "Brunei",
+                        "code": "BN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BRN"
+                    },
+                    {
+                        "country_name": "Bulgaria",
+                        "code": "BG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BGR"
+                    },
+                    {
+                        "country_name": "Burkina Faso",
+                        "code": "BF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BFA"
+                    },
+                    {
+                        "country_name": "Burundi",
+                        "code": "BI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BDI"
+                    },
+                    {
+                        "country_name": "Cambodia",
+                        "code": "KH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KHM"
+                    },
+                    {
+                        "country_name": "Cameroon",
+                        "code": "CM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CMR"
+                    },
+                    {
+                        "country_name": "Canada",
+                        "code": "CA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CAN"
+                    },
+                    {
+                        "country_name": "Cape Verde",
+                        "code": "CV",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CPV"
+                    },
+                    {
+                        "country_name": "Cayman Islands",
+                        "code": "KY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CYM"
+                    },
+                    {
+                        "country_name": "Central African Republic",
+                        "code": "CF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CAF"
+                    },
+                    {
+                        "country_name": "Chad",
+                        "code": "TD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TCD"
+                    },
+                    {
+                        "country_name": "Chile",
+                        "code": "CL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/"
+                    },
+                    {
+                        "country_name": "China",
+                        "code": "CN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CHN"
+                    },
+                    {
+                        "country_name": "Christmas Island",
+                        "code": "CX",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CXR"
+                    },
+                    {
+                        "country_name": "Cocos Islands",
+                        "code": "CC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CCK"
+                    },
+                    {
+                        "country_name": "Colombia",
+                        "code": "CO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "COL"
+                    },
+                    {
+                        "country_name": "Comoros",
+                        "code": "KM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "COM"
+                    },
+                    {
+                        "country_name": "Cook Islands",
+                        "code": "CK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "COK"
+                    },
+                    {
+                        "country_name": "Costa Rica",
+                        "code": "CR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CRI"
+                    },
+                    {
+                        "country_name": "Croatia",
+                        "code": "HR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "HRV"
+                    },
+                    {
+                        "country_name": "Cuba",
+                        "code": "CU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CUB"
+                    },
+                    {
+                        "country_name": "Curacao",
+                        "code": "CW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CUW"
+                    },
+                    {
+                        "country_name": "Cyprus",
+                        "code": "CY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CYP"
+                    },
+                    {
+                        "country_name": "Czech Republic",
+                        "code": "CZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CZE"
+                    },
+                    {
+                        "country_name": "Democratic Republic of the Congo",
+                        "code": "CD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "COD"
+                    },
+                    {
+                        "country_name": "Denmark",
+                        "code": "DK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DNK"
+                    },
+                    {
+                        "country_name": "Djibouti",
+                        "code": "DJ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DJI"
+                    },
+                    {
+                        "country_name": "Dominica",
+                        "code": "DM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DMA"
+                    },
+                    {
+                        "country_name": "Dominican Republic",
+                        "code": "DO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DOM"
+                    },
+                    {
+                        "country_name": "East Timor",
+                        "code": "TL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TLS"
+                    },
+                    {
+                        "country_name": "Ecuador",
+                        "code": "EC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ECU"
+                    },
+                    {
+                        "country_name": "Egypt",
+                        "code": "EG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "EGY"
+                    },
+                    {
+                        "country_name": "El Salvador",
+                        "code": "SV",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SLV"
+                    },
+                    {
+                        "country_name": "Equatorial Guinea",
+                        "code": "GQ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GNQ"
+                    },
+                    {
+                        "country_name": "Eritrea",
+                        "code": "ER",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ERI"
+                    },
+                    {
+                        "country_name": "Estonia",
+                        "code": "EE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "EST"
+                    },
+                    {
+                        "country_name": "Ethiopia",
+                        "code": "ET",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ETH"
+                    },
+                    {
+                        "country_name": "Falkland Islands",
+                        "code": "FK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FLK"
+                    },
+                    {
+                        "country_name": "Faroe Islands",
+                        "code": "FO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FRO"
+                    },
+                    {
+                        "country_name": "Fiji",
+                        "code": "FJ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FJI"
+                    },
+                    {
+                        "country_name": "Finland",
+                        "code": "FI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FIN"
+                    },
+                    {
+                        "country_name": "France",
+                        "code": "FR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FRA"
+                    },
+                    {
+                        "country_name": "French Polynesia",
+                        "code": "PF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PYF"
+                    },
+                    {
+                        "country_name": "Gabon",
+                        "code": "GA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GAB"
+                    },
+                    {
+                        "country_name": "Gambia",
+                        "code": "GM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GMB"
+                    },
+                    {
+                        "country_name": "Georgia",
+                        "code": "GE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GEO"
+                    },
+                    {
+                        "country_name": "Germany",
+                        "code": "DE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "DEU"
+                    },
+                    {
+                        "country_name": "Ghana",
+                        "code": "GH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GHA"
+                    },
+                    {
+                        "country_name": "Gibraltar",
+                        "code": "GI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GIB"
+                    },
+                    {
+                        "country_name": "Greece",
+                        "code": "GR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GRC"
+                    },
+                    {
+                        "country_name": "Greenland",
+                        "code": "GL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GRL"
+                    },
+                    {
+                        "country_name": "Grenada",
+                        "code": "GD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GRD"
+                    },
+                    {
+                        "country_name": "Guam",
+                        "code": "GU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GUM"
+                    },
+                    {
+                        "country_name": "Guatemala",
+                        "code": "GT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GTM"
+                    },
+                    {
+                        "country_name": "Guernsey",
+                        "code": "GG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GGY"
+                    },
+                    {
+                        "country_name": "Guinea",
+                        "code": "GN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GIN"
+                    },
+                    {
+                        "country_name": "Guinea-Bissau",
+                        "code": "GW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GNB"
+                    },
+                    {
+                        "country_name": "Guyana",
+                        "code": "GY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GUY"
+                    },
+                    {
+                        "country_name": "Haiti",
+                        "code": "HT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "HTI"
+                    },
+                    {
+                        "country_name": "Honduras",
+                        "code": "HN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "HND"
+                    },
+                    {
+                        "country_name": "Hong Kong",
+                        "code": "HK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "HKG"
+                    },
+                    {
+                        "country_name": "Hungary",
+                        "code": "HU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "HUN"
+                    },
+                    {
+                        "country_name": "Iceland",
+                        "code": "IS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ISL"
+                    },
+                    {
+                        "country_name": "India",
+                        "code": "IN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IND"
+                    },
+                    {
+                        "country_name": "Indonesia",
+                        "code": "ID",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IDN"
+                    },
+                    {
+                        "country_name": "Iran",
+                        "code": "IR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IRN"
+                    },
+                    {
+                        "country_name": "Iraq",
+                        "code": "IQ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IRQ"
+                    },
+                    {
+                        "country_name": "Ireland",
+                        "code": "IE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IRL"
+                    },
+                    {
+                        "country_name": "Isle of Man",
+                        "code": "IM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "IMN"
+                    },
+                    {
+                        "country_name": "Israel",
+                        "code": "IL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ISR"
+                    },
+                    {
+                        "country_name": "Italy",
+                        "code": "IT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ITA"
+                    },
+                    {
+                        "country_name": "Ivory Coast",
+                        "code": "CI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CIV"
+                    },
+                    {
+                        "country_name": "Jamaica",
+                        "code": "JM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "JAM"
+                    },
+                    {
+                        "country_name": "Japan",
+                        "code": "JP",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "JPN"
+                    },
+                    {
+                        "country_name": "Jersey",
+                        "code": "JE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "JEY"
+                    },
+                    {
+                        "country_name": "Jordan",
+                        "code": "JO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "JOR"
+                    },
+                    {
+                        "country_name": "Kazakhstan",
+                        "code": "KZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KAZ"
+                    },
+                    {
+                        "country_name": "Kenya",
+                        "code": "KE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KEN"
+                    },
+                    {
+                        "country_name": "Kiribati",
+                        "code": "KI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KIR"
+                    },
+                    {
+                        "country_name": "Kosovo",
+                        "code": "XK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "XKX"
+                    },
+                    {
+                        "country_name": "Kuwait",
+                        "code": "KW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KWT"
+                    },
+                    {
+                        "country_name": "Kyrgyzstan",
+                        "code": "KG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KGZ"
+                    },
+                    {
+                        "country_name": "Laos",
+                        "code": "LA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LAO"
+                    },
+                    {
+                        "country_name": "Latvia",
+                        "code": "LV",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LVA"
+                    },
+                    {
+                        "country_name": "Lebanon",
+                        "code": "LB",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LBN"
+                    },
+                    {
+                        "country_name": "Lesotho",
+                        "code": "LS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LSO"
+                    },
+                    {
+                        "country_name": "Liberia",
+                        "code": "LR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LBR"
+                    },
+                    {
+                        "country_name": "Libya",
+                        "code": "LY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LBY"
+                    },
+                    {
+                        "country_name": "Liechtenstein",
+                        "code": "LI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LIE"
+                    },
+                    {
+                        "country_name": "Lithuania",
+                        "code": "LT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LTU"
+                    },
+                    {
+                        "country_name": "Luxembourg",
+                        "code": "LU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LUX"
+                    },
+                    {
+                        "country_name": "Macau",
+                        "code": "MO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MAC"
+                    },
+                    {
+                        "country_name": "Macedonia",
+                        "code": "MK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MKD"
+                    },
+                    {
+                        "country_name": "Madagascar",
+                        "code": "MG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MDG"
+                    },
+                    {
+                        "country_name": "Malawi",
+                        "code": "MW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MWI"
+                    },
+                    {
+                        "country_name": "Malaysia",
+                        "code": "MY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MYS"
+                    },
+                    {
+                        "country_name": "Maldives",
+                        "code": "MV",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MDV"
+                    },
+                    {
+                        "country_name": "Mali",
+                        "code": "ML",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MLI"
+                    },
+                    {
+                        "country_name": "Malta",
+                        "code": "MT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MLT"
+                    },
+                    {
+                        "country_name": "Marshall Islands",
+                        "code": "MH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MHL"
+                    },
+                    {
+                        "country_name": "Mauritania",
+                        "code": "MR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MRT"
+                    },
+                    {
+                        "country_name": "Mauritius",
+                        "code": "MU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MUS"
+                    },
+                    {
+                        "country_name": "Mayotte",
+                        "code": "YT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MYT"
+                    },
+                    {
+                        "country_name": "Mexico",
+                        "code": "MX",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MEX"
+                    },
+                    {
+                        "country_name": "Micronesia",
+                        "code": "FM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "FSM"
+                    },
+                    {
+                        "country_name": "Moldova",
+                        "code": "MD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MDA"
+                    },
+                    {
+                        "country_name": "Monaco",
+                        "code": "MC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MCO"
+                    },
+                    {
+                        "country_name": "Mongolia",
+                        "code": "MN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MNG"
+                    },
+                    {
+                        "country_name": "Montenegro",
+                        "code": "ME",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MNE"
+                    },
+                    {
+                        "country_name": "Montserrat",
+                        "code": "MS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MSR"
+                    },
+                    {
+                        "country_name": "Morocco",
+                        "code": "MA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MAR"
+                    },
+                    {
+                        "country_name": "Mozambique",
+                        "code": "MZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MOZ"
+                    },
+                    {
+                        "country_name": "Myanmar",
+                        "code": "MM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MMR"
+                    },
+                    {
+                        "country_name": "Namibia",
+                        "code": "NA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NAM"
+                    },
+                    {
+                        "country_name": "Nauru",
+                        "code": "NR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NRU"
+                    },
+                    {
+                        "country_name": "Nepal",
+                        "code": "NP",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NPL"
+                    },
+                    {
+                        "country_name": "Netherlands",
+                        "code": "NL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NLD"
+                    },
+                    {
+                        "country_name": "Netherlands Antilles",
+                        "code": "AN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ANT"
+                    },
+                    {
+                        "country_name": "New Caledonia",
+                        "code": "NC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NCL"
+                    },
+                    {
+                        "country_name": "New Zealand",
+                        "code": "NZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NZL"
+                    },
+                    {
+                        "country_name": "Nicaragua",
+                        "code": "NI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NIC"
+                    },
+                    {
+                        "country_name": "Niger",
+                        "code": "NE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NER"
+                    },
+                    {
+                        "country_name": "Nigeria",
+                        "code": "NG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NGA"
+                    },
+                    {
+                        "country_name": "Niue",
+                        "code": "NU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NIU"
+                    },
+                    {
+                        "country_name": "North Korea",
+                        "code": "KP",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PRK"
+                    },
+                    {
+                        "country_name": "Northern Mariana Islands",
+                        "code": "MP",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MNP"
+                    },
+                    {
+                        "country_name": "Norway",
+                        "code": "NO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "NOR"
+                    },
+                    {
+                        "country_name": "Oman",
+                        "code": "OM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "OMN"
+                    },
+                    {
+                        "country_name": "Pakistan",
+                        "code": "PK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PAK"
+                    },
+                    {
+                        "country_name": "Palau",
+                        "code": "PW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PLW"
+                    },
+                    {
+                        "country_name": "Palestine",
+                        "code": "PS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PSE"
+                    },
+                    {
+                        "country_name": "Panama",
+                        "code": "PA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PAN"
+                    },
+                    {
+                        "country_name": "Papua New Guinea",
+                        "code": "PG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PNG"
+                    },
+                    {
+                        "country_name": "Paraguay",
+                        "code": "PY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PRY"
+                    },
+                    {
+                        "country_name": "Peru",
+                        "code": "PE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PER"
+                    },
+                    {
+                        "country_name": "Philippines",
+                        "code": "PH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PHL"
+                    },
+                    {
+                        "country_name": "Pitcairn",
+                        "code": "PN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PCN"
+                    },
+                    {
+                        "country_name": "Poland",
+                        "code": "PL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "POL"
+                    },
+                    {
+                        "country_name": "Portugal",
+                        "code": "PT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PRT"
+                    },
+                    {
+                        "country_name": "Puerto Rico",
+                        "code": "PR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "PRI"
+                    },
+                    {
+                        "country_name": "Qatar",
+                        "code": "QA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "QAT"
+                    },
+                    {
+                        "country_name": "Republic of the Congo",
+                        "code": "CG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "COG"
+                    },
+                    {
+                        "country_name": "Reunion",
+                        "code": "RE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "REU"
+                    },
+                    {
+                        "country_name": "Romania",
+                        "code": "RO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ROU"
+                    },
+                    {
+                        "country_name": "Russia",
+                        "code": "RU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "RUS"
+                    },
+                    {
+                        "country_name": "Rwanda",
+                        "code": "RW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "RWA"
+                    },
+                    {
+                        "country_name": "Saint Barthelemy",
+                        "code": "BL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "BLM"
+                    },
+                    {
+                        "country_name": "Saint Helena",
+                        "code": "SH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SHN"
+                    },
+                    {
+                        "country_name": "Saint Kitts and Nevis",
+                        "code": "KN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KNA"
+                    },
+                    {
+                        "country_name": "Saint Lucia",
+                        "code": "LC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LCA"
+                    },
+                    {
+                        "country_name": "Saint Martin",
+                        "code": "MF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "MAF"
+                    },
+                    {
+                        "country_name": "Saint Pierre and Miquelon",
+                        "code": "PM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SPM"
+                    },
+                    {
+                        "country_name": "Saint Vincent and the Grenadines",
+                        "code": "VC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VCT"
+                    },
+                    {
+                        "country_name": "Samoa",
+                        "code": "WS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "WSM"
+                    },
+                    {
+                        "country_name": "San Marino",
+                        "code": "SM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SMR"
+                    },
+                    {
+                        "country_name": "Sao Tome and Principe",
+                        "code": "ST",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "STP"
+                    },
+                    {
+                        "country_name": "Saudi Arabia",
+                        "code": "SA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SAU"
+                    },
+                    {
+                        "country_name": "Senegal",
+                        "code": "SN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SEN"
+                    },
+                    {
+                        "country_name": "Serbia",
+                        "code": "RS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SRB"
+                    },
+                    {
+                        "country_name": "Seychelles",
+                        "code": "SC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SYC"
+                    },
+                    {
+                        "country_name": "Sierra Leone",
+                        "code": "SL",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SLE"
+                    },
+                    {
+                        "country_name": "Singapore",
+                        "code": "SG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SGP"
+                    },
+                    {
+                        "country_name": "Sint Maarten",
+                        "code": "SX",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SXM"
+                    },
+                    {
+                        "country_name": "Slovakia",
+                        "code": "SK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SVK"
+                    },
+                    {
+                        "country_name": "Slovenia",
+                        "code": "SI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SVN"
+                    },
+                    {
+                        "country_name": "Solomon Islands",
+                        "code": "SB",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SLB"
+                    },
+                    {
+                        "country_name": "Somalia",
+                        "code": "SO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SOM"
+                    },
+                    {
+                        "country_name": "South Africa",
+                        "code": "ZA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ZAF"
+                    },
+                    {
+                        "country_name": "South Korea",
+                        "code": "KR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "KOR"
+                    },
+                    {
+                        "country_name": "South Sudan",
+                        "code": "SS",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SSD"
+                    },
+                    {
+                        "country_name": "Spain",
+                        "code": "ES",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ESP"
+                    },
+                    {
+                        "country_name": "Sri Lanka",
+                        "code": "LK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "LKA"
+                    },
+                    {
+                        "country_name": "Sudan",
+                        "code": "SD",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SDN"
+                    },
+                    {
+                        "country_name": "Suriname",
+                        "code": "SR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SUR"
+                    },
+                    {
+                        "country_name": "Svalbard and Jan Mayen",
+                        "code": "SJ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SJM"
+                    },
+                    {
+                        "country_name": "Swaziland",
+                        "code": "SZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SWZ"
+                    },
+                    {
+                        "country_name": "Sweden",
+                        "code": "SE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SWE"
+                    },
+                    {
+                        "country_name": "Switzerland",
+                        "code": "CH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "CHE"
+                    },
+                    {
+                        "country_name": "Syria",
+                        "code": "SY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "SYR"
+                    },
+                    {
+                        "country_name": "Taiwan",
+                        "code": "TW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TWN"
+                    },
+                    {
+                        "country_name": "Tajikistan",
+                        "code": "TJ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TJK"
+                    },
+                    {
+                        "country_name": "Tanzania",
+                        "code": "TZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TZA"
+                    },
+                    {
+                        "country_name": "Thailand",
+                        "code": "TH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "THA"
+                    },
+                    {
+                        "country_name": "Togo",
+                        "code": "TG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TGO"
+                    },
+                    {
+                        "country_name": "Tokelau",
+                        "code": "TK",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TKL"
+                    },
+                    {
+                        "country_name": "Tonga",
+                        "code": "TO",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TON"
+                    },
+                    {
+                        "country_name": "Trinidad and Tobago",
+                        "code": "TT",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TTO"
+                    },
+                    {
+                        "country_name": "Tunisia",
+                        "code": "TN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TUN"
+                    },
+                    {
+                        "country_name": "Turkey",
+                        "code": "TR",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TUR"
+                    },
+                    {
+                        "country_name": "Turkmenistan",
+                        "code": "TM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TKM"
+                    },
+                    {
+                        "country_name": "Turks and Caicos Islands",
+                        "code": "TC",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TCA"
+                    },
+                    {
+                        "country_name": "Tuvalu",
+                        "code": "TV",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "TUV"
+                    },
+                    {
+                        "country_name": "U.S. Virgin Islands",
+                        "code": "VI",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VIR"
+                    },
+                    {
+                        "country_name": "Uganda",
+                        "code": "UG",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "UGA"
+                    },
+                    {
+                        "country_name": "Ukraine",
+                        "code": "UA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "UKR"
+                    },
+                    {
+                        "country_name": "United Arab Emirates",
+                        "code": "AE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ARE"
+                    },
+                    {
+                        "country_name": "United Kingdom",
+                        "code": "GB",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "GBR"
+                    },
+                    {
+                        "country_name": "United States",
+                        "code": "US",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "USA"
+                    },
+                    {
+                        "country_name": "Uruguay",
+                        "code": "UY",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "URY"
+                    },
+                    {
+                        "country_name": "Uzbekistan",
+                        "code": "UZ",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "UZB"
+                    },
+                    {
+                        "country_name": "Vanuatu",
+                        "code": "VU",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VUT"
+                    },
+                    {
+                        "country_name": "Vatican",
+                        "code": "VA",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VAT"
+                    },
+                    {
+                        "country_name": "Venezuela",
+                        "code": "VE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VEN"
+                    },
+                    {
+                        "country_name": "Vietnam",
+                        "code": "VN",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "VNM"
+                    },
+                    {
+                        "country_name": "Wallis and Futuna",
+                        "code": "WF",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "WLF"
+                    },
+                    {
+                        "country_name": "Western Sahara",
+                        "code": "EH",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ESH"
+                    },
+                    {
+                        "country_name": "Yemen",
+                        "code": "YE",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "YEM"
+                    },
+                    {
+                        "country_name": "Zambia",
+                        "code": "ZM",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ZMB"
+                    },
+                    {
+                        "country_name": "Zimbabwe",
+                        "code": "ZW",
+                        "flag_link": "https://contentdelivery.mashreqbank.com/assisted-channels/national-flags/",
+                        "ISO3": "ZWE"
+                    }
+                ],
             };
 
             function isEven(n) {
@@ -1026,6 +2466,7 @@
             chatWindow.prototype.bot = bot;
             chatWindow.prototype.destroy = function () {
                 var me = this;
+                me.sendCloseForceClosureEvent();
                 $('.kore-chat-overlay').hide();
                 bot.close();
                 if (!me.config.minimizeMode) {
@@ -1054,7 +2495,7 @@
             chatWindow.prototype.resetWindow = function () {
                 var me = this;
                 me.config.chatContainer.find('.kore-chat-header .header-title').html(me.config.botMessages.reconnecting);
-                //me.config.chatContainer.find('.chat-container').html("");
+                me.config.chatContainer.find('.chat-container').html("");
                 bot.close();
                 bot.init(me.config.botOptions);
             };
@@ -1425,12 +2866,14 @@
                 });
 
                 _chatContainer.off('click', '.close-btn').on('click', '.close-btn', function (event) {
+                    if(chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')){
+                        chatInitialize.config.chatContainer.find('.chat-container').empty()
+                        }
                     $('.recordingMicrophone').trigger('click');
                     if (ttsAudioSource) {
                         ttsAudioSource.stop();
                     }
                     isTTSOn = false;
-                    me.sendCloseForceClosureEvent();
                     me.destroy();
                     if (_ttsContext) {
                         _ttsContext.close();
@@ -2787,7 +4230,7 @@
             }; // Close the dropdown if the user clicks outside of it
             chatWindow.prototype.sendCloseForceClosureEvent = function (renderMsg,data) {
                 var me = this;
-                me.config.botOptions._reconnecting = true;
+                //me.config.botOptions._reconnecting = true;
                 var _bodyContainer = $(me.config.chatContainer).find('.kore-chat-body');
                 var _footerContainer = $(me.config.chatContainer).find('.kore-chat-footer');
                 var clientMessageId = new Date().getTime();
@@ -3678,7 +5121,7 @@
                     this.addWidgetEvents(cfg);
                 };
                 chatInitialize = new chatWindow(cfg);
-                customTemplateObj = new customTemplate(cfg,chatInitialize);
+                customTemplateObj = new customTemplate(cfg,chatInitialize,bot);
                 
                 return this;
             };

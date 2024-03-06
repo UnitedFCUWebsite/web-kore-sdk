@@ -234,7 +234,7 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    z-index: 1030;
+    z-index: 20000;
     right: 10px;
     bottom: 10px;
     height: calc(100% - 25px);
@@ -520,7 +520,7 @@
    /* color: var(--sdk-chat-widow-bot-chat-bubble-text-color);*/
     color: var(--sdk-chat-widow-widget-text-color);
     text-align: left;
-    padding-left: 70px;
+    padding-left: 65px;
 }
 
 /* .kore-chat-window .kore-chat-header .header-title.ui-draggable-handle {
@@ -555,16 +555,16 @@
     vertical-align: top;
     height: 50px;
     line-height: inherit;
-    margin-top: 22px;
+    margin-top: 22px !important;
     padding: 0 6px;
 }
 
 .kore-chat-window .kore-chat-header .chat-box-controls .reload-btn {
-    margin-top: 22px;
+    margin-top: 22px !important;
     background-size: 16px 16px;
     display: inline-block;
     font-size: 18px;
-    background-repeat: no-repeat
+    background-repeat: no-repeat;
 }
 
 @media(max-width: 767px) {
@@ -1920,7 +1920,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 }
 
 .kore-chat-window .hide {
-    display: none;
+    display: none !important;
 }
 
 
@@ -3078,7 +3078,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 .text-as-password{
     width: 100% !important;
     outline: none !important;
-    display: none !important;
+    display: none ;
     cursor: text !important;
     max-height: 70px !important;
     overflow-x: hidden !important;
@@ -3115,4 +3115,11 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 .kore-chat-window.mobile-browser-enabled .footerContainer.pos-relative{
     margin-right: 60px;
     margin-left: 0;
+    }
+.kore-chat-window .kore-action-sheet .customAdressFormContent{
+        /* height:462px; */
+        overflow-y: auto;
+        animation-name: fadeInBottom;
+        animation-duration: 1s;
+        animation-fill-mode: both;
     }

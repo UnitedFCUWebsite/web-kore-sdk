@@ -38,7 +38,8 @@
                 "clientSecret": options.clientSecret,
                 "identity": options.userIdentity,
                 "aud": "",
-                "isAnonymous": false
+                "isAnonymous": false,
+                "tenant":options.tenant
             };
             return $.ajax({
                 url: options.JWTUrl,

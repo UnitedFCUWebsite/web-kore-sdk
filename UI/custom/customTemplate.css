@@ -3068,4 +3068,252 @@ ul.chat-container li.fromOtherUsers.listView {
     background: var(--sdk-chat-widow-chat-button-active-color);
     margin-right: 10px;
 }
+/*==== custom Address Form Template changes ====*/
+.kore-chat-window .customAdressFormContent {
+    padding: 24px;
+    display: block;
+}
+
+.kore-chat-window .customAdressFormContent .customAdressFormInput {
+    padding: 0 16px;
+    position: relative;
+    background: #F8F9FC;
+    outline: 1px solid transparent;
+    border: 1px solid #7C7C7C;
+    border-radius: 4px;
+}
+
+.kore-chat-window .customAdressFormContent .customAdressFormInput .inputItem {
+    border: none;
+    font-size: 14px;
+    margin: 20px 0px 12px;
+    outline: 0;
+    cursor: text;
+    width: 100%;
+    background: #F8F9FC;
+    color: var(--sdk-chat-window-list-view-color);
+    font-weight: 800;
+}
+
+.kore-chat-window .customAdressFormContent .customAdressFormInput .formPlaceholderLabel {
+    position: absolute;
+    transform-origin: top left;
+    transform: translate(0, 24px) scale(1);
+    transition: all .1s ease-in-out;
+    font-weight: 400;
+    left: 16px;
+    font-size: 14px;
+    line-height: 22px;
+    cursor: text;
+    color: #738794;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .dropFloatingLabel{
+    position: absolute;
+    transform-origin: top left;
+    transition: all .1s ease-in-out;
+    font-weight: 400;
+    /* left: 16px; */
+    padding-left: 24px;
+    line-height: 22px;
+    cursor: text;
+    transform: translate(0, 6px) scale(.95);
+    font-size: 12px;
+    color: var(--sdk-chat-window-list-view-color);
+    font-weight: 600;
+    top: -4px;
+}
+.kore-chat-window .customAdressFormContent .customAdressFormChild {
+    margin-bottom: 16px;
+}
+.kore-chat-window .customAdressFormContent .customAdressFormChild .errorMessage{
+    display: block;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #B00020;
+    margin-top: 8px;
+}
+.kore-chat-window .customAdressFormContent .customAdressFormInput.floatingLabel{
+    border: 1px solid var(--sdk-chat-window-list-view-color);
+    outline: 1px solid var(--sdk-chat-window-list-view-color);
+}
+.kore-chat-window .customAdressFormContent .customAdressFormInput.floatingLabel .formPlaceholderLabel{
+    transform: translate(0, 6px) scale(.95);
+    font-size: 12px;
+    color: var(--sdk-chat-window-list-view-color);
+}
+
+.kore-chat-window .customAdressFormContent .addressBtnGroup {
+    padding-top: 20px;
+    text-align: right;
+}
+
+.kore-chat-window .customAdressFormContent .addressBtnGroup button {
+    background-color: var(--sdk-chat-widow-chat-button-active-color);
+    border: 1px solid var(--sdk-chat-widow-chat-button-outline-color);
+    color: var(--sdk-chat-widow-chat-button-active-text-color);
+
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 12px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 18px;
+    border: none;
+    cursor: pointer;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown {
+    color: var(--sdk-chat-widow-bot-chat-bubble-text-color);
+    border-radius: 12px;
+    border-top-left-radius: 2px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .custom-heading {
+    padding: 10px 0px 5px 0px;
+    display: block;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .searchBtn {
+    background: #FBFBFB;
+    border: 1px solid #7C7C7C;
+    border-radius: 4px;
+    display: inline-flex;
+    width: 100%;
+    padding: 20px 16px;
+    font-size: 14px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .searchBtn img {
+    vertical-align: middle;
+    padding-right: 16px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .searchBtn #myProdInputDrop {
+    border: 0 !important;
+    outline: none;
+    background: transparent;
+    vertical-align: middle;
+    width: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    color: #333333;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .searchBtn #myProdInputDrop::placeholder{
+    color: #333333;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .parentListDiv .drop-btn-header{
+    display: block;
+    position: relative;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .parentListDiv .dropbtn-down-prod {
+    background: #FBFBFB;
+    border: 1px solid var(--sdk-chat-window-list-view-color);
+    outline: 1px solid var(--sdk-chat-window-list-view-color);
+    border-radius: 4px;
+    padding: 20px 16px 18px;
+    width: 100%;
+    color: var(--sdk-chat-window-list-view-color);
+    text-align: left;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .parentListDiv .dropbtn-down-prod img{
+    height: 40px;
+}
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .parentListDiv .dropbtn-down-prod span{
+    padding-left: 16px;
+    font-weight: 800;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .parentListDiv .dropbtn-down-prod::before {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABlSURBVHgB7ZLBCcAwCAAt3Us6mNAUHKw4WRvoo4QYNfl6H0Hk7iNAkiRbuyCi8o4T5riYufwXe3shIjci1vABi/JuYDLSlauBYESVDwPOyFBuBoyIKXcFlIhLHqa+8PfGSZIEeAC/PjBQB7NaewAAAABJRU5ErkJggg==");
+    content: "";
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 50px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .dropdown-content-drop {
+    display: none;
+    position: absolute;
+    min-width: 230px;
+    z-index: 1;
+    max-width: 90%;
+    background: #ffffff;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px 5px rgb(0 0 0 / 20%);
+    width: 100%;
+    padding: 16px !important;
+    bottom: 174px;
+    margin: 0;
+    z-index: 1;
+    max-height: 350px;
+    overflow: hidden;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .multiSingleDrop {
+    padding: 0px;
+    overflow-y: scroll;
+    max-height: 230px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .multiSingleDrop li {
+    cursor: pointer;
+    padding: 16px 16px 16px 0px;
+    border-bottom: 1px solid #DDE0E9;
+    list-style: none;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .multiSingleDrop li img {
+    vertical-align: middle;
+    padding-right: 16px;
+    height: 40px;
+}
+
+.kore-chat-window .customAdressFormContent .custom-address-dropdown .multiSingleDrop li span {
+    vertical-align: text-top;
+}
+
+.kore-chat-window .customAdressFormContent .hading-text {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 32px;
+    color: #000000;
+    display: block;
+}
+
+.kore-chat-window .customAdressFormContent .hading-text .close-button {
+    position: absolute;
+    right: 17px;
+    top: 12px;
+    background: #ffffff;
+    border: 0;
+}
+
+.kore-chat-window .customAdressFormContent .hading-text .close-button img {
+    cursor: pointer;
+}
+
+[dir="rtl"] .customAdressFormContent .hading-text .close-button {
+    left: 12px;
+    right: auto;
+}
+
+[dir="rtl"] .customAdressFormContent .addressBtnGroup {
+    text-align: left;
+}
+
+/*===== End Of the changes =========*/
 
