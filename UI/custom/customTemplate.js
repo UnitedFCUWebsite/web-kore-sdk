@@ -3,8 +3,8 @@
 		this.cfg = data;
 		this.chatInitialize=chatInitialize;
 		this.helpers = null;
-		this.bot = bot;
 		this.extension = null;
+		this.bot = bot;
 	}
 	
 	/**
@@ -184,7 +184,18 @@
             });
 			this.galleryTemplateEvents(messageHtml, msgData);
         }
-        else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "custom_form_template") {
+		else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "custom_form_template") {
+			if(msgData.message[0].component.payload.form_fields){
+				var formFields = msgData.message[0].component.payload.form_fields;
+				var dropdownFields = formFields.filter(function(field){
+					return field.type == 'dropdown';
+				});
+				$.each(dropdownFields,function(key,val){
+					if(val.default_option && val.default_option.length){
+						val.selectedOption = val.options.find(function(opt){return opt.value === val.default_option});
+					}
+				})
+			}
 			messageHtml = $(this.getChatTemplate("customFormTemplate")).tmpl({
 				'msgData': msgData,
 				'helpers': this.helpers,
@@ -1792,6 +1803,7 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 					</li>\
 					{{/if}} \
 			</script>';
+
 			var customFormTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-tmpl"> \
 			{{if msgData.message}} \
 				<bdi {{if msgData.message[0].component.payload.lang === "ar"}}dir="rtl"{{/if}} class="customAdressFormContent"> \
@@ -1799,15 +1811,52 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 							<button class="close-button" ><img draggable="false" src="data:image/svg+xml;base64, PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxNHB4IiB2aWV3Qm94PSIwIDAgMTQgMTQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUyLjMgKDY3Mjk3KSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5jbG9zZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJBcnRib2FyZCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM0NC4wMDAwMDAsIC0yMjkuMDAwMDAwKSIgZmlsbD0iIzhBOTU5RiI+CiAgICAgICAgICAgIDxnIGlkPSJjbG9zZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzQ0LjAwMDAwMCwgMjI5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPHBvbHlnb24gaWQ9IlNoYXBlIiBwb2ludHM9IjE0IDEuNCAxMi42IDAgNyA1LjYgMS40IDAgMCAxLjQgNS42IDcgMCAxMi42IDEuNCAxNCA3IDguNCAxMi42IDE0IDE0IDEyLjYgOC40IDciPjwvcG9seWdvbj4KICAgICAgICAgICAgPC9nPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+"></button>\
 					</bdi>\
 					{{each(key, formItems) msgData.message[0].component.payload.form_fields}}\
-						<div class="customAdressFormChild"> \
-							<div class="customAdressFormInput formInputParent${key} {{if formItems.required}}required{{/if}} {{if formItems.text}}floatingLabel{{/if}}" >\
-								<input class="inputItem {{if formItems.inputType && formItems.inputType ==="number"}}allow-only-numbers{{/if}}" type="text" placeholder=" " value="${formItems.text}" {{if formItems.required}}required{{/if}} {{if formItems.maxLength}}maxlength="${formItems.maxLength}"{{/if}}></input>\
-								<bdi class="formPlaceholderLabel">${formItems.label} {{if formItems.required}}<span style="color: red;">*</span>{{/if}}</bdi>\
-							</div>\
-							<bdi class="errorMessage hide">${formItems.errorMessage}</bdi>\
-						</div> \
+						{{if formItems.type === "textbox"}}\
+							<div class="customAdressFormChild formElement"> \
+								<div class="customAdressFormInput formInputParent${key} {{if formItems.required}}required{{/if}} {{if formItems.text}}floatingLabel{{/if}}" >\
+									<input class="inputItem {{if formItems.inputType && formItems.inputType ==="number"}}allow-only-numbers{{/if}}" type="text" placeholder=" " value="${formItems.text}" {{if formItems.required}}required{{/if}} {{if formItems.maxLength}}maxlength="${formItems.maxLength}"{{/if}}></input>\
+									<bdi class="formPlaceholderLabel">${formItems.label} {{if formItems.required}}<span style="color: red;">*</span>{{/if}}</bdi>\
+								</div>\
+								<bdi class="errorMessage hide">${formItems.errorMessage}</bdi>\
+							</div> \
+						{{else formItems.type === "dropdown"}}\
+								<div class="custom-address-dropdown customAdressFormChild {{if formItems.disabled}}read-only-wrap{{/if}} formElement"> \
+										<div class="product extraPadding">\
+											<div class="parentListDiv"> \
+												<bdi class="drop-btn-header"> \
+													{{if formItems.label}}<bdi class="dropFloatingLabel">${formItems.label}</bdi>{{/if}} \
+													<button class="dropbtn-down-prod" \
+															{{if formItems.selectedOption}} \
+																		data-value="${formItems.selectedOption.value}" \
+																		value="${formItems.selectedOption.title}" \
+															{{else}}data-value="${formItems.options[0].value}" value="${formItems.options[0].title}" {{/if}}> \
+															{{if formItems.selectedOption}} \
+																{{if formItems.selectedOption.image}}<img draggable="false" src="${formItems.selectedOption.image}" > {{/if}}\
+																<span>${formItems.selectedOption.title}</span>\
+															{{else}} \
+																{{if formItems.options[0].image}}<img draggable="false" src="${formItems.options[0].image}" >{{/if}}\
+																<span>${formItems.options[0].title}</span>\
+															{{/if}}\
+													</button>\
+												</bdi>\
+												<div id="productDropdownDrop" class="dropdown-content-drop">\
+													<div class="searchBtn"> \
+														<img draggable="false" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU2OTBfMjkzNikiPgo8cGF0aCBkPSJNMS40NzIwNSAxMy4zNTcxQzIuNDEyMiAxNS41NjkzIDQuMTkyNjIgMTcuMzE3NCA2LjQyMTY1IDE4LjIxNjhDOC42NTA2NyAxOS4xMTYzIDExLjE0NTcgMTkuMDkzNCAxMy4zNTc5IDE4LjE1MzNDMTUuNTcgMTcuMjEzMSAxNy4zMTgxIDE1LjQzMjcgMTguMjE3NiAxMy4yMDM3QzE5LjExNyAxMC45NzQ2IDE5LjA5NDIgOC40Nzk2IDE4LjE1NCA2LjI2NzQzQzE3LjIxMzkgNC4wNTUyNiAxNS40MzM1IDIuMzA3MTcgMTMuMjA0NCAxLjQwNzcyQzEwLjk3NTQgMC41MDgyNjYgOC40ODAzNyAwLjUzMTEyOCA2LjI2ODIgMS40NzEyOEM0LjA1NjA0IDIuNDExNDMgMi4zMDc5NSA0LjE5MTg1IDEuNDA4NDkgNi40MjA4N0MwLjUwOTA0IDguNjQ5OSAwLjUzMTkwMyAxMS4xNDQ5IDEuNDcyMDUgMTMuMzU3MVYxMy4zNTcxWiIgc3Ryb2tlPSIjN0M3QzdDIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0xNi4yMjEgMTYuMjE5N0wyMy4yNSAyMy4yNDk3IiBzdHJva2U9IiMzMzMzMzMiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF81NjkwXzI5MzYiPgo8cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg=="> \
+														<input type="text" placeholder="Search" autocomplete="off" autocomplete="new-password" id="myProdInputDrop">\
+													</div>\
+													<ul class="multiSingleDrop"> \
+														{{each(key, option) formItems.options}} \
+															<li value="${option.title}" data-value="${option.value}"  class="dropdown-item">{{if option.image}}<img draggable="false" src="${option.image}">{{/if}}<span>${option.title}</span></li>\
+														{{/each}} \
+													</ul> \
+												</div> \
+											</div> \
+										</div> \
+								</div>\
+						{{/if}}\
 					{{/each}} \
-					<div class="custom-address-dropdown"> \
+					{{if msgData.message[0].component.payload.dropdown}}\
+					<div class="custom-address-dropdown {{if msgData.message[0].component.payload && msgData.message[0].component.payload.dropdown && msgData.message[0].component.payload.dropdown.disabled}}read-only-wrap{{/if}}"> \
 						<div class="product extraPadding">\
 							<div class="parentListDiv"> \
 								<bdi class="drop-btn-header"> \
@@ -1840,6 +1889,7 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 							</div> \
 						</div> \
 					</div>\
+					{{/if}}\
 					{{if msgData.message[0].component.payload.submit_button}} \
 						<div class="addressBtnGroup"> \
 							<button>${msgData.message[0].component.payload.submit_button}</button> \
@@ -1895,7 +1945,6 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		else {
 			return "";
 		}
-		
 		return "";
 	}; // end of getChatTemplate method
 
@@ -3726,6 +3775,7 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 
 	}
 	/* Gallery template Events */
+
 	customTemplate.prototype.customFormTemplateBindEvents = function (messageHtml, msgData) {
 		chatInitialize = this.chatInitialize;
 		bot = this.bot;
@@ -3779,22 +3829,53 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		$(messageHtml).off('click', '.addressBtnGroup button').on('click', '.addressBtnGroup button', function (event) {
 			var inputFields = $(this).closest(".customAdressFormContent").find(".customAdressFormInput");
 			var inputFieldsValues = [];
+			var isValidForm = true;
 
-			for (var i = 0; i < inputFields.length; i++) {
-				var inputVal = $(inputFields[i]).find("input").val();
-				if (inputVal.length <= 0) {
-					if ($(inputFields[i]).hasClass("required")) {
-						$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").removeClass("hide");
-						return;
+			// for (var i = 0; i < inputFields.length; i++) {
+			// 	var inputVal = $(inputFields[i]).find("input").val();
+			// 	if (inputVal.length <= 0) {
+			// 		if ($(inputFields[i]).hasClass("required")) {
+			// 			$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").removeClass("hide");
+			// 			isValidForm = false;
+			// 			// return;
+			// 		}
+			// 	} else {
+			// 		$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").addClass("hide");
+			// 	}
+			// 	inputFieldsValues.push(inputVal);
+			// }
+			// var dropdownInputs = $(this).closest(".customAdressFormContent").find(".dropbtn-down-prod");
+			// if(dropdownInputs && dropdownInputs.length){
+			// 	$.each(dropdownInputs,function(key,val){
+			// 		inputFieldsValues.push($(val).attr("data-value"));
+			// 	})
+			// }
+			var formFields = $(this).closest(".customAdressFormContent").find(".formElement");
+			var formInputFields = $(formFields).find('.inputItem');
+			if(formInputFields && formInputFields.length){
+				for (var i = 0; i < formInputFields.length; i++) {
+					var inputVal = $(formInputFields[i]).val();
+					if (inputVal.length <= 0) {
+						if ($(formInputFields[i]).closest('.customAdressFormInput').hasClass("required")) {
+							$(formInputFields[i]).closest(".customAdressFormChild").find(".errorMessage").removeClass("hide");
+							isValidForm = false;
+							// return;
+						}
+					} else {
+						$(formInputFields[i]).closest(".customAdressFormChild").find(".errorMessage").addClass("hide");
 					}
-				} else {
-					$(inputFields[i]).closest(".customAdressFormChild").find(".errorMessage").addClass("hide");
 				}
-				inputFieldsValues.push(inputVal);
 			}
-			var dropValue = $(this).closest(".customAdressFormContent").find(".dropbtn-down-prod").attr("data-value");
-			inputFieldsValues.push(dropValue);
+			// inputFieldsValues.push(dropValue);
 			var messageToDisplay = '';
+			if (isValidForm) {
+				$.each(formFields,function(key,field){
+					if($(field).find('.inputItem').length){
+						inputFieldsValues.push($(field).find('.inputItem').val())
+					}else if($(field).find('.dropbtn-down-prod').length){
+						inputFieldsValues.push($(field).find('.dropbtn-down-prod').attr("data-value"));
+					}
+				})
 			if(inputFieldsValues && inputFieldsValues.length){
 				for(var i=0; i<inputFieldsValues.length;i++){
 					if(inputFieldsValues[i] && inputFieldsValues[i].length){
@@ -3821,6 +3902,7 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 			$('.chatInputBox').text(JSON.stringify(inputFieldsValuesNewObject));
 			chatInitialize.sendMessage($('.chatInputBox'),messageToDisplay);
 			bottomSliderAction('hide');
+			}
 			//$('.kore-action-sheet').removeClass('koreActionSheet_customClass');
 		});
 		$(messageHtml).off('focus', '.customAdressFormInput').on('focus', '.customAdressFormInput', function (event) {
@@ -3873,4 +3955,3 @@ var otpValidationTemplate = '<script id="chat_message_tmpl" type="text/x-jqury-t
 		valueClick:valueClick
 	}
 })($);
-

@@ -318,28 +318,26 @@
     text-align: center;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-info{
-    min-width: auto !important;
-    height: auto !important;
-    border-radius: 5px;
+    min-width: 80px;
+    height: 30px;
+    border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
     margin-right: 10px;
     background-color: #0d6efd;
     border: solid 1px transparent;
     color: #fff;
-    padding: 5px 17px;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-url-postback{
-    min-width: auto !important;
-    height: auto !important;
-    border-radius: 5px;
+    min-width: 80px;
+    height: 30px;
+    border-radius: 4px;
+
     font-size: 14px;
     border: solid 1px transparent;
-    background-color: transparent;
     cursor: pointer;
     margin-right: 10px;
     color: #0d6efd;
-    padding: 5px 17px;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .templateHeading{
     text-align: center;
@@ -1407,7 +1405,6 @@
 .kore-chat-window .listViewTmplContent .listViewLeftContent .titleDesc {
     display: inline-block;
     width: 60%;
-    width: 40%;
 }
 
 .kore-chat-window .listViewItemTitle {
@@ -1435,10 +1432,6 @@
     white-space: normal;
     margin-top: 4px;
     position: relative;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .kore-chat-window .listViewTmplContent .listViewItemValue {
@@ -3068,6 +3061,7 @@ ul.chat-container li.fromOtherUsers.listView {
     background: var(--sdk-chat-widow-chat-button-active-color);
     margin-right: 10px;
 }
+
 /*==== custom Address Form Template changes ====*/
 .kore-chat-window .customAdressFormContent {
     padding: 24px;
@@ -3314,6 +3308,14 @@ ul.chat-container li.fromOtherUsers.listView {
 [dir="rtl"] .customAdressFormContent .addressBtnGroup {
     text-align: left;
 }
-
+.kore-chat-window .kore-action-sheet .customAdressFormContent{
+    /* height:462px; */
+    overflow-y: auto;
+    animation-name: fadeInBottom;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.read-only-wrap{
+    pointer-events: none;
+}
 /*===== End Of the changes =========*/
-
