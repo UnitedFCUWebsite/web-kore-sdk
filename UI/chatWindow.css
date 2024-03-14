@@ -555,16 +555,17 @@
     vertical-align: top;
     height: 50px;
     line-height: inherit;
-    margin-top: 22px !important;
+   /* margin-top: 22px !important;*/
     padding: 0 6px;
 }
 
 .kore-chat-window .kore-chat-header .chat-box-controls .reload-btn {
-    margin-top: 22px !important;
+    margin-top: 7px!important;
     background-size: 16px 16px;
     display: inline-block;
-    font-size: 18px;
+    font-size: 18px !important;
     background-repeat: no-repeat;
+    padding: 0 6px;
 }
 
 @media(max-width: 767px) {
@@ -3078,7 +3079,7 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
 .text-as-password{
     width: 100% !important;
     outline: none !important;
-    display: none ;
+    /* display: none ; */
     cursor: text !important;
     max-height: 70px !important;
     overflow-x: hidden !important;

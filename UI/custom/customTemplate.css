@@ -318,8 +318,8 @@
     text-align: center;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-info{
-    min-width: 80px;
-    height: 30px;
+    min-width: auto;
+    height: auto;
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
@@ -327,17 +327,19 @@
     background-color: #0d6efd;
     border: solid 1px transparent;
     color: #fff;
+    padding: 5px 17px;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .btn-url-postback{
-    min-width: 80px;
-    height: 30px;
+    min-width: auto;
+    height: auto;
     border-radius: 4px;
-
     font-size: 14px;
     border: solid 1px transparent;
     cursor: pointer;
     margin-right: 10px;
     color: #0d6efd;
+    padding: 5px 17px;
+    background-color:transparent;
 }
 .kore-chat-window .kore-chat-body .buttonTmplContent .formMainComponent .templateHeading{
     text-align: center;
@@ -3087,6 +3089,7 @@ ul.chat-container li.fromOtherUsers.listView {
     background: #F8F9FC;
     color: var(--sdk-chat-window-list-view-color);
     font-weight: 800;
+    position: relative;
 }
 
 .kore-chat-window .customAdressFormContent .customAdressFormInput .formPlaceholderLabel {
@@ -3100,6 +3103,7 @@ ul.chat-container li.fromOtherUsers.listView {
     line-height: 22px;
     cursor: text;
     color: #738794;
+    top: 0;
 }
 .kore-chat-window .customAdressFormContent .custom-address-dropdown .dropFloatingLabel{
     position: absolute;
@@ -3308,8 +3312,18 @@ ul.chat-container li.fromOtherUsers.listView {
 [dir="rtl"] .customAdressFormContent .addressBtnGroup {
     text-align: left;
 }
+@keyframes fadeInBottom {
+    from {
+        opacity: 0;
+        height: 0;
+    }
+    to { 
+        opacity: 1;
+        height: 462px; 
+    }
+}
 .kore-chat-window .kore-action-sheet .customAdressFormContent{
-    /* height:462px; */
+    height:462px;
     overflow-y: auto;
     animation-name: fadeInBottom;
     animation-duration: 1s;

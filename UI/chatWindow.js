@@ -2560,7 +2560,7 @@
 
                             KoreSDK.chatConfig.piiReductionChar = '';
                             $('.text-as-password').val('');
-                            $('.text-as-password').css('display', 'none');
+                            $('.text-as-password').addClass('hide');
                             $('.chatInputBox').css('display','block');
                         }
                     }
@@ -4083,7 +4083,7 @@
                         if(msgData.message[0].component.payload.piiReductionChar){
                             KoreSDK.chatConfig.piiReductionChar =  msgData.message[0].component.payload.piiReductionChar;
                         }
-                        $('.text-as-password').css('display','block');
+                        $('.text-as-password').removeClass('hide');
                         $('.text-as-password').focus();
                         $('.chatInputBox').css('display','none');
                     }
@@ -4303,7 +4303,7 @@
                         {{if userAgentIE}} \
                         <div role="textbox" class="chatInputBox inputCursor" aria-label="Message"aria-label="Message" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{else}} \
-                        <input type="password" class="text-as-password" placeholder="${botMessages.message}">\
+                        <input type="password" class="text-as-password hide" placeholder="${botMessages.message}">\
                         <div role="textbox" class="chatInputBox" contenteditable="true" placeholder="${botMessages.message}"></div> \
                         {{/if}} \
                     <div class="footerIonsContainer">\

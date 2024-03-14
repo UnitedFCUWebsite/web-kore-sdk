@@ -62,11 +62,9 @@
   } else {
     botOptions.koreAPIUrl = "https://bankassist.kore.ai/workbench/api";
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop';
-    botOptions.JWTUrl = "https://mk2r2rmj21.execute-api.us-east-1.amazonaws.com/dev/users/sts";
+    botOptions.JWTUrl = "https://integrations-finastra.kore.ai/visifi-sts";
     botOptions.userIdentity = '';// Provide users email id here
     botOptions.botInfo = { name: "Mya", "_id": "st-009c0e1a-e3cc-5d35-b493-c7d332039690",customData:{"rtmType":"web","brandingId":"st-21ae4413-5366-5621-85c8-08f0f5a3f906", "environment":"test"}}; // bot name is case sensitive
-    botOptions.clientId = "cs-bfb4310f-34fc-5da7-928d-667ef50fb058";
-    botOptions.clientSecret ="7JOc+Qaa9GisGPEdq62lpU0mNqKFb+z+17tU1gHON0g=";
     botOptions.accountId = "65203af7391d718428c910f2";
     botOptions.universalBotId ="st-21ae4413-5366-5621-85c8-08f0f5a3f906";
     botOptions.tenant="UFCU"
