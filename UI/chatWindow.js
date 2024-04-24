@@ -2466,7 +2466,7 @@
             chatWindow.prototype.bot = bot;
             chatWindow.prototype.destroy = function () {
                 var me = this;
-                me.sendCloseForceClosureEvent();
+                 me.sendCloseForceClosureEvent();
                 $('.kore-chat-overlay').hide();
                 bot.close();
                 if (!me.config.minimizeMode) {
@@ -2780,6 +2780,16 @@
                         }
                         me.sendMessage($('.chatInputBox'), _innerText);
                     } else if (type == "url" || type == "web_url") {
+                        var renderType = $(this).attr('renderType');
+                        if (renderType === 'windowpopup') {
+                            var _a_link = $(this).attr('url');
+                            if (_a_link.indexOf("http:") < 0 && _a_link.indexOf("https:") < 0) {
+                                _a_link = "http:////" + _a_link;
+                            }
+                            var features = "width=400,height=450,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes";
+                            window.open(_a_link, "PopupWindow", features);
+                            return;
+                        }
                         if($(this).attr('msgData')!==undefined){
                             var msgData;
                             try {
@@ -2869,17 +2879,77 @@
                     if(chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')){
                         chatInitialize.config.chatContainer.find('.chat-container').empty()
                         }
+
+
+                    //     var clientMessageId = new Date().getTime();
+                    //     var messageToBot = {};
+                    //     messageToBot["clientMessageId"] = clientMessageId;
+                        
+                    //     messageToBot["resourceid"] = '/bot.closeConversationSession'; // session close event
+                    //     // bot.sendMessage(messageToBot, function messageSent(err) {
+                    //     //     console.error("bot.closeConversationSession send failed")
+                    //     // });
+                        
+                        
+                    //     // messageToBot["resourceid"] = '/bot.message';
+                    //     // messageToBot["event"] = "close_agent_chat" // agent close event
+                    //     // bot.sendMessage(messageToBot, function messageSent(err) {
+                    //     //     console.error("close_agent_chat event message ")
+                    //     // })
+                    //     var t = {};
+                    //     t.clientMessageId = (new Date).getTime(),
+                    //     t.event = "close_agent_chat",
+                    //     t.message = {
+                    //         body: "",
+                    //         type: ""
+                    //     },
+                    //     t.resourceid = "/bot.message",
+                    //    bot.sendMessage(t, function(e) {})
+
+                    //     // messageToBot["resourceid"] = '/bot.closeConversationSession'; // session close event
+                    //     // bot.sendMessage(messageToBot, function messageSent(err) {
+                    //     //     console.error("bot.closeConversationSession send failed")
+                    //     // });
+    
+                        
+
                     $('.recordingMicrophone').trigger('click');
                     if (ttsAudioSource) {
                         ttsAudioSource.stop();
                     }
                     isTTSOn = false;
+                    // me.closeAgentSession();
+                    //me.closeConversationSession();
                     me.destroy();
                     if (_ttsContext) {
                         _ttsContext.close();
                         _ttsContext = null;
                     }
                 });
+
+                chatWindow.prototype.closeAgentSession = function(){
+                    var clientMessageId = new Date().getTime();
+                    var messageToBot = {};
+                        messageToBot["clientMessageId"] =clientMessageId;
+                        messageToBot["event"] = "close_agent_chat";
+                        messageToBot["message"] = {
+                        "body": "",
+                        "type": ""
+                        }
+                        messageToBot["resourceid"] = "/bot.message";
+                        bot.sendMessage(messageToBot, (err) => { console.log("Error identified" + err);});
+
+                };
+                chatWindow.prototype.closeConversationSession = function () {
+                    var me = this;
+                    var clientMessageId = new Date().getTime();
+                    var messageToBot = {};
+                    messageToBot["clientMessageId"] = clientMessageId;
+                    messageToBot["resourceid"] = '/bot.closeConversationSession';
+                    bot.sendMessage(messageToBot, function messageSent(err) {
+                        console.error("bot.closeConversationSession send failed sending")
+                    });
+                };    
 
                 _chatContainer.off('click', '.minimize-btn').on('click', '.minimize-btn', function (event) {
                     if (me.minimized === true) {
@@ -4774,7 +4844,7 @@
                                         {{/if}} \
                                         {{if msgData.message[0].component.payload.buttons && msgData.message[0].component.payload.buttons.length}} \
                                             {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
-						<div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} actual-value="${msgItem.title}" class="buttonQuickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem && msgItem.url}}url="${msgItem.url}"{{/if}}">\
+						<div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} actual-value="${msgItem.title}" class="buttonQuickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem && msgItem.url}}url="${msgItem.url}"{{/if}}" {{if msgItem.renderType}}renderType ="${msgItem.renderType}"{{/if}}>\
 						{{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
 						</div> \
 					     {{/each}} \

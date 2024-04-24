@@ -58,8 +58,8 @@
     botOptions.botInfo.customData.source = getCookie("source");
     botOptions.botInfo.customData.tenantId = getCookie("tenantId");
     botOptions.botInfo.customData.uniqueUserId = getCookie("uniqueUserId");
-
-  } else {
+  } 
+  else {
     botOptions.koreAPIUrl = "https://bankassist.kore.ai/workbench/api";
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop';
     botOptions.JWTUrl = "https://integrations-finastra.kore.ai/visifi-sts";
@@ -68,7 +68,7 @@
     botOptions.accountId = "65203af7391d718428c910f2";
     botOptions.universalBotId ="st-21ae4413-5366-5621-85c8-08f0f5a3f906";
     botOptions.tenant="UFCU"
-  }
+ }
   // window._BAMya.accountId
   // window._BAMya.botId
   // window._BAMya.clientId
