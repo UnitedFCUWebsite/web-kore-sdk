@@ -2937,8 +2937,7 @@
                         "type": ""
                         }
                         messageToBot["resourceid"] = "/bot.message";
-                        bot.sendMessage(messageToBot, (err) => { console.log("Error identified" + err);});
-
+                        bot.sendMessage(messageToBot, function (err) { console.log("Error identified" + err);});
                 };
                 chatWindow.prototype.closeConversationSession = function () {
                     var me = this;
