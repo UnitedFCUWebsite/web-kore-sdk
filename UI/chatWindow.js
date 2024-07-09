@@ -2911,15 +2911,14 @@
                     //     //     console.error("bot.closeConversationSession send failed")
                     //     // });
     
-                        
-
+                    //  me.closeAgentSession();
+                    // me.closeConversationSession();
                     $('.recordingMicrophone').trigger('click');
                     if (ttsAudioSource) {
                         ttsAudioSource.stop();
                     }
                     isTTSOn = false;
-                    // me.closeAgentSession();
-                    //me.closeConversationSession();
+                   
                     me.destroy();
                     if (_ttsContext) {
                         _ttsContext.close();
@@ -2937,7 +2936,8 @@
                         "type": ""
                         }
                         messageToBot["resourceid"] = "/bot.message";
-                        bot.sendMessage(messageToBot, function (err) { console.log("Error identified" + err);});
+                        bot.sendMessage(messageToBot, (err) => { console.log("Error identified" + err);});
+
                 };
                 chatWindow.prototype.closeConversationSession = function () {
                     var me = this;
@@ -3552,6 +3552,7 @@
                 else {
                     waiting_for_message = false;
                 }
+
                 var _chatContainer = $(me.config.chatContainer).find('.chat-container');
                 if (msgData.message && msgData.message[0] && msgData.message[0].cInfo && msgData.message[0].cInfo.attachments) {
                     extension = strSplit(msgData.message[0].cInfo.attachments[0].fileName);
@@ -3564,7 +3565,7 @@
                 /* checking for matched custom template */
                 messageHtml = customTemplateObj.renderMessage(msgData);
                 if (messageHtml === '' && msgData && msgData.message && msgData.message[0]) {
-
+                    $('.kore-chat-body ul li').css({'pointer-events': 'none','opacity':'0.8'});
                     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
                         messageHtml = $(me.getChatTemplate("templatequickreply")).tmpl({
                             'msgData': msgData,

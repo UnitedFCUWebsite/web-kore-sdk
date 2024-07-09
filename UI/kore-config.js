@@ -42,7 +42,7 @@
       showClockPickerIcon: false,          //set true to show clockPicker icon
       showTaskMenuPickerIcon: true,        //set true to show TaskMenu Template icon
       showradioOptionMenuPickerIcon: false //set true to show Radio Option Template icon
-    }
+    },
   };
 
   
