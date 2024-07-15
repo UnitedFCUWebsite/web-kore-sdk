@@ -3180,7 +3180,11 @@
                        // me.defaultWelcomeMsg();
                     }
                 });
-
+                bot.on('reconnected', (response) => {
+                    if (me.config?.syncMessages?.onReconnect?.enable && response?.reconnected) {
+                        me.bot.getHistory({ forHistorySync: true, limit: me.config?.syncMessages?.onReconnect?.batchSize });
+                    }
+                });
                 bot.on("message", function (message) {
                     if (me.popupOpened === true) {
                         $('.kore-auth-popup .close-popup').trigger("click");
@@ -3336,6 +3340,7 @@
                         }, 2000);
                     }
                 });
+
                 var element = document.querySelector('.droppable');
                 function callback(files) {
                     // Here, we simply log the Array of files to the console.

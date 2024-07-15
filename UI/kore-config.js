@@ -43,6 +43,13 @@
       showTaskMenuPickerIcon: true,        //set true to show TaskMenu Template icon
       showradioOptionMenuPickerIcon: false //set true to show Radio Option Template icon
     },
+    maxReconnectionAPIAttempts: 5,  // Number of retries on api failure,
+    syncMessages: {
+        onReconnect: {
+            enable: false,  // Set true to sync messages on Reconnect
+            batchSize: 10   // To configure the number of messages to fetch
+        }
+    }
   };
 
   
