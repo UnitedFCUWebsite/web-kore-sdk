@@ -2936,7 +2936,7 @@
                         "type": ""
                         }
                         messageToBot["resourceid"] = "/bot.message";
-                        bot.sendMessage(messageToBot, (err) => { console.log("Error identified" + err);});
+                        bot.sendMessage(messageToBot, function(err) { console.log("Error identified" + err);});
 
                 };
                 chatWindow.prototype.closeConversationSession = function () {
@@ -3180,9 +3180,9 @@
                        // me.defaultWelcomeMsg();
                     }
                 });
-                bot.on('reconnected', (response) => {
-                    if (me.config?.syncMessages?.onReconnect?.enable && response?.reconnected) {
-                        me.bot.getHistory({ forHistorySync: true, limit: me.config?.syncMessages?.onReconnect?.batchSize });
+                bot.on('reconnected', function(response) {
+                    if (me.config.syncMessages.onReconnect.enable && response.reconnected) {
+                        me.bot.getHistory({ forHistorySync: true, limit: me.config.syncMessages.onReconnect.batchSize });
                     }
                 });
                 bot.on("message", function (message) {
