@@ -17,7 +17,7 @@
             //fall back to clients jquery version
             koreJquery = window.jQuery;
         }
-        
+
         return (function ($) {
 
             //Actual  chatwindow.js koreBotChat function code starts here
@@ -49,7 +49,7 @@
             /***************** Mic initilization code end here ************************/
 
             /******************************* TTS variable initialization **************/
-            var _ttsContext = null, _ttsConnection = null,_ttsInterface, ttsServerUrl = '', ttsAudioSource = null, _txtToSpeak = "", isTTSOn = false, isTTSEnabled = false, optionIndex = 65, autoEnableSpeechAndTTS = false;    // Audio context
+            var _ttsContext = null, _ttsConnection = null, _ttsInterface, ttsServerUrl = '', ttsAudioSource = null, _txtToSpeak = "", isTTSOn = false, isTTSEnabled = false, optionIndex = 65, autoEnableSpeechAndTTS = false;    // Audio context
             /************************** TTS initialization code end here **************/
 
             /*************************** file upload variable *******************************/
@@ -86,7 +86,7 @@
             window.linechartCount = 0;
             var available_charts = [];
             var chatInitialize;
-            window.chatInitialize=chatInitialize;
+            window.chatInitialize = chatInitialize;
             var customTemplateObj = {};
             window.chartColors = ['#75b0fe', '#f78083', '#99ed9e', '#fde296', '#26344a', '#5f6bf7', '#b3bac8', '#99a1fd', '#9cebf9', '#f7c7f4'];
             /**************************File upload variable end here **************************/
@@ -157,7 +157,7 @@
             function findSortedIndex(array, value) {
                 var low = 0,
                     high = array.length;
-    
+
                 while (low < high) {
                     var mid = low + high >>> 1;
                     if (array[mid] < value) low = mid + 1;
@@ -212,18 +212,18 @@
                     }
                     return d.toDateString() + " at " + helpers.formatAMPM(d);
                 },
-                'convertMDtoHTML': function (val, responseType,msgItem) {
-                    if(typeof val==='object'){
+                'convertMDtoHTML': function (val, responseType, msgItem) {
+                    if (typeof val === 'object') {
                         try {
-                            val=JSON.stringify(val);
+                            val = JSON.stringify(val);
                         } catch (error) {
-                            val="";
+                            val = "";
                         }
                     }
                     var hyperLinksMap = {};
                     var mdre = {};
-                    if(msgItem && msgItem.cInfo && msgItem.cInfo.ignoreCheckMark){
-                        var ignoreCheckMark=msgItem.cInfo.ignoreCheckMark;
+                    if (msgItem && msgItem.cInfo && msgItem.cInfo.ignoreCheckMark) {
+                        var ignoreCheckMark = msgItem.cInfo.ignoreCheckMark;
                     }
                     //mdre.date = new RegExp(/\\d\(\s*(.{10})\s*\)/g);
                     mdre.date = new RegExp(/\\d\(\s*(.{10})\s*(?:,\s*["'](.+?)["']\s*)?\)/g);
@@ -389,11 +389,11 @@
                     // } catch (e) {
                     //     str = str || '';
                     // }
-			if(typeof str === 'number'){
-                        str =  str.toString(); 
+                    if (typeof str === 'number') {
+                        str = str.toString();
                     }
-                        str = str || '';
-                    
+                    str = str || '';
+
                     var newStr = '', wrapper1;
                     if (responseType === 'user') {
                         str = str.replace(/onerror=/gi, 'abc-error=');
@@ -414,7 +414,7 @@
                             var linkArray = str.match(/<a[^>]*>([^<]+)<\/a>/g);
                             for (var x = 0; x < linkArray.length; x++) {
                                 var _newLA = document.createElement('div');
-                                var _detectedLink=linkArray[x];
+                                var _detectedLink = linkArray[x];
                                 _newLA.innerHTML = linkArray[x];
                                 //for mailto: links, new line character need to be repaced with %0A 
                                 if (_detectedLink.indexOf("href='mailto:") > -1 || _detectedLink.indexOf('href="mailto:') > -1) {
@@ -436,10 +436,10 @@
                             str = wrapper1.innerHTML.replace(_regExForLink, linkreplacer);
                         }
                     }
-                    if(ignoreCheckMark){
-                        str=val;
-                    }else{
-                    str = helpers.checkMarkdowns(str, hyperLinksMap);
+                    if (ignoreCheckMark) {
+                        str = val;
+                    } else {
+                        str = helpers.checkMarkdowns(str, hyperLinksMap);
                     }
                     var hrefRefs = Object.keys(hyperLinksMap);
                     if (hrefRefs && hrefRefs.length) {
@@ -458,7 +458,7 @@
                     return helpers.nl2br(str, true);
                 },
                 'checkMarkdowns': function (val, hyperLinksMap) {
-                    if(val===''){
+                    if (val === '') {
                         return val;
                     }
                     var txtArr = val.split(/\r?\n/);
@@ -489,7 +489,7 @@
                             if (!isEven(txtArr[i].split('*').length - 1) && !KoreSDK.chatConfig.masking) { // Not sure what is the impact
                                 txtArr[i] = '\r\n&#9679; ' + txtArr[i].substring(1);
                                 _lineBreakAdded = true;
-                            } else  {
+                            } else {
                                 txtArr[i] = txtArr[i];
                                 _lineBreakAdded = true;
                             }
@@ -554,14 +554,14 @@
                             for (j = 0; j < _matchAstrik.length; j++) {
                                 var _boldTxt = _matchAstrik[j];
                                 var validBoldGroup = true;
-                                if(_boldTxt.includes('*')){
-                                    var _tempStr = _boldTxt.replace(/\*/g,'');
+                                if (_boldTxt.includes('*')) {
+                                    var _tempStr = _boldTxt.replace(/\*/g, '');
                                     var letterNumber = /^[0-9a-zA-Z!@#$%^&()_ +\-=\[\]{};':"\\|,.<>\/?]+$/;
-                                    if(!(_tempStr.match(letterNumber))){
+                                    if (!(_tempStr.match(letterNumber))) {
                                         validBoldGroup = false;
                                     }
                                 }
-                                if(validBoldGroup){
+                                if (validBoldGroup) {
                                     _boldTxt = _boldTxt.substring(1, _boldTxt.length - 1);
                                     _boldTxt = '<b>' + _boldTxt.trim() + '</b>';
                                     txtArr[i] = txtArr[i].replace(_matchAstrik[j], _boldTxt);
@@ -2142,7 +2142,7 @@
                 attachEventListener();
             }
             // iframe of child window events //
-            function attachEventListener(){
+            function attachEventListener() {
                 // Create IE + others compatible event handler
                 var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
                 var eventer = window[eventMethod];
@@ -2161,110 +2161,110 @@
                     }
                 }, false);
             }
-            function postMessageToChildIframes (iframe,postPayload) {
-                if(iframe && iframe.length && iframe[0] && iframe[0].contentWindow && postPayload){
+            function postMessageToChildIframes(iframe, postPayload) {
+                if (iframe && iframe.length && iframe[0] && iframe[0].contentWindow && postPayload) {
                     iframe[0].contentWindow.postMessage(
                         postPayload, '*'
-                  );
+                    );
                 }
-             };
-        // iframe of child window events ends//
+            };
+            // iframe of child window events ends//
 
-        // inline model for iframes starts here//
-        function openModal(template, showClose){
-            var chatBodyModal=  $('#chatBodyModal');
-            var close = document.getElementsByClassName("closeChatBodyModal")[0];
+            // inline model for iframes starts here//
+            function openModal(template, showClose) {
+                var chatBodyModal = $('#chatBodyModal');
+                var close = document.getElementsByClassName("closeChatBodyModal")[0];
                 close.onclick = function () {
-                    var postPayload={
-                        payload:{},
-                        event : 'formEvent', // need to find another way to make it common ,giving a static value due to time constrain //
-                        action : 'formCancel',
-                        metaData:{},
-                     }
+                    var postPayload = {
+                        payload: {},
+                        event: 'formEvent', // need to find another way to make it common ,giving a static value due to time constrain //
+                        action: 'formCancel',
+                        metaData: {},
+                    }
                     var iframe = chatBodyModal.find('iframe');
-                    postMessageToChildIframes(iframe,postPayload);
+                    postMessageToChildIframes(iframe, postPayload);
                     chatBodyModal.hide();
                 }
-            if(template){
-                chatBodyModal.find('.closeChatBodyModal').css('display','none');
-                chatBodyModal.find('.loading_form').css('z-index',999);
-                if(chatBodyModal && chatBodyModal.length){
-                    chatBodyModal.find('#chatBodyModalContent').empty();
-                    chatBodyModal.find('#chatBodyModalContent').append(template);
-                    chatBodyModal.show();
-                }
-                setTimeout(function(){
-                    chatBodyModal.find('.loading_form').css('z-index',0);
-                    if(showClose){
-                        chatBodyModal.find('.closeChatBodyModal').css('display','block');
-                   } else {
-                       chatBodyModal.find('.closeChatBodyModal').css('display','none');
-                     }
-                },1500);
-            } else {
-                chatBodyModal.find('.closeChatBodyModal').css('display','none');
-                setTimeout(function(){
-                    chatBodyModal.find('#chatBodyModalContent').empty();
-                },1000);
-                chatBodyModal.hide(); 
-            }
-            }
-        // inline model for iframes starts ends//
-
-        // form event actions starts here //
-        function formAction(event){
-            if(event && event.action==='formSubmit'){
-               openModal();
-               if($('.kore-chat-body .uiformComponent').length){
-                $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
-               }
-            } else if(event.action==='formCancel'){
-                if($('.kore-chat-body .uiformComponent').length){
-                    $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
-                   }
-            } else if (event.action==='formClose'){
-               openModal();
-               if($('.kore-chat-body .uiformComponent').length){
-                $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
-               }
-            }
-        }
-        chatWindow.prototype.renderWebForm = function (msgData, returnTemplate) {
-            if (msgData.message && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData) {
-                msgData.renderType = msgData.message[0].component.payload.formData.renderType;
-                msgData.message[0].component.payload.template_type = 'iframe';
-                if (!returnTemplate && msgData.renderType === 'inline') {
-                     this.renderMessage(msgData);
+                if (template) {
+                    chatBodyModal.find('.closeChatBodyModal').css('display', 'none');
+                    chatBodyModal.find('.loading_form').css('z-index', 999);
+                    if (chatBodyModal && chatBodyModal.length) {
+                        chatBodyModal.find('#chatBodyModalContent').empty();
+                        chatBodyModal.find('#chatBodyModalContent').append(template);
+                        chatBodyModal.show();
+                    }
+                    setTimeout(function () {
+                        chatBodyModal.find('.loading_form').css('z-index', 0);
+                        if (showClose) {
+                            chatBodyModal.find('.closeChatBodyModal').css('display', 'block');
+                        } else {
+                            chatBodyModal.find('.closeChatBodyModal').css('display', 'none');
+                        }
+                    }, 1500);
                 } else {
-                    var popupHtml = $(this.getChatTemplate("iframe")).tmpl({
-                        'msgData': msgData,
-                        'helpers': helpers,
-                        "link_url": msgData.message[0].component.payload.formData.formLink
-                    });
-                    if (returnTemplate) {
-                        return popupHtml;
-                    } else {
-                        openModal(popupHtml[0], true);
+                    chatBodyModal.find('.closeChatBodyModal').css('display', 'none');
+                    setTimeout(function () {
+                        chatBodyModal.find('#chatBodyModalContent').empty();
+                    }, 1000);
+                    chatBodyModal.hide();
+                }
+            }
+            // inline model for iframes starts ends//
+
+            // form event actions starts here //
+            function formAction(event) {
+                if (event && event.action === 'formSubmit') {
+                    openModal();
+                    if ($('.kore-chat-body .uiformComponent').length) {
+                        $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
+                    }
+                } else if (event.action === 'formCancel') {
+                    if ($('.kore-chat-body .uiformComponent').length) {
+                        $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
+                    }
+                } else if (event.action === 'formClose') {
+                    openModal();
+                    if ($('.kore-chat-body .uiformComponent').length) {
+                        $('.kore-chat-body .uiformComponent').closest('.inlineIframeContainer').css('display', 'none');
                     }
                 }
-    
             }
-        }
-        // form event actions ends here //
-            function addBottomSlider(){
+            chatWindow.prototype.renderWebForm = function (msgData, returnTemplate) {
+                if (msgData.message && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData) {
+                    msgData.renderType = msgData.message[0].component.payload.formData.renderType;
+                    msgData.message[0].component.payload.template_type = 'iframe';
+                    if (!returnTemplate && msgData.renderType === 'inline') {
+                        this.renderMessage(msgData);
+                    } else {
+                        var popupHtml = $(this.getChatTemplate("iframe")).tmpl({
+                            'msgData': msgData,
+                            'helpers': helpers,
+                            "link_url": msgData.message[0].component.payload.formData.formLink
+                        });
+                        if (returnTemplate) {
+                            return popupHtml;
+                        } else {
+                            openModal(popupHtml[0], true);
+                        }
+                    }
+
+                }
+            }
+            // form event actions ends here //
+            function addBottomSlider() {
                 $('.kore-chat-window').remove('.kore-action-sheet');
-                var actionSheetTemplate='<div class="kore-action-sheet hide">\
+                var actionSheetTemplate = '<div class="kore-action-sheet hide">\
                 <div class="actionSheetContainer"></div>\
                 </div>';
                 $('.kore-chat-window').append(actionSheetTemplate);
             }
-            
+
             function updateOnlineStatus() {
-                if ("boolean" === typeof(navigator["onLine"])) {
+                if ("boolean" === typeof (navigator["onLine"])) {
                     if (navigator.onLine) {
                         this.hideError();
-                        if(bot && bot.RtmClient){
-                                bot.getHistory({forHistorySync:true,limit:30});                           
+                        if (bot && bot.RtmClient) {
+                            bot.getHistory({ forHistorySync: true, limit: 30 });
                         }
 
                     } else {
@@ -2301,27 +2301,27 @@
 
                 // handling quick replies
                 var quickReplyDivs = document.querySelectorAll('.quickReplies');
-                for(var i=0;i<quickReplyDivs.length;i++) {
+                for (var i = 0; i < quickReplyDivs.length; i++) {
                     var btnsParentDiv = quickReplyDivs[i].querySelectorAll('.quick_replies_btn_parent');
                     var leftScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyLeftIcon');
                     var rightScrollBtn = quickReplyDivs[i].querySelectorAll('.quickreplyRightIcon');
-                    if(btnsParentDiv[0].hasChildNodes()) {
-                        if(btnsParentDiv[0].scrollLeft > 0) {
+                    if (btnsParentDiv[0].hasChildNodes()) {
+                        if (btnsParentDiv[0].scrollLeft > 0) {
                             leftScrollBtn[0].classList.remove('hide');
                         }
-                        else if(leftScrollBtn.length){
+                        else if (leftScrollBtn.length) {
                             leftScrollBtn[0].classList.add('hide');
                         }
-                        if(btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
+                        if (btnsParentDiv[0].offsetWidth < btnsParentDiv[0].scrollWidth) {
                             rightScrollBtn[0].classList.remove('hide');
                         }
                         else {
-                            if(rightScrollBtn &&  rightScrollBtn[0]){
+                            if (rightScrollBtn && rightScrollBtn[0]) {
                                 rightScrollBtn[0].classList.add('hide');
-                            }   
+                            }
                         }
                     }
-                }   
+                }
 
                 /* Handling for full size table */
                 if ($('.kore-chat-window').width() > 460) {
@@ -2394,7 +2394,7 @@
                     return false;
                 }
             }
-            function setCollapsedModeStyles(){
+            function setCollapsedModeStyles() {
                 // $('.kore-chat-window').css({left:$('body').width()-400,width:'400px'});
             }
             chatWindow.prototype.init = function () {
@@ -2420,9 +2420,9 @@
                 loadHistory = me.config.loadHistory || false;
                 historyLoading = loadHistory ? true : false;
                 me.config.botOptions.loadHistory = me.config.loadHistory;
-                me.config.botOptions.chatHistory=me.config.chatHistory;
-                me.config.botOptions.handleError=me.config.handleError;
-                me.config.botOptions.googleMapsAPIKey=me.config.googleMapsAPIKey;
+                me.config.botOptions.chatHistory = me.config.chatHistory;
+                me.config.botOptions.handleError = me.config.handleError;
+                me.config.botOptions.googleMapsAPIKey = me.config.googleMapsAPIKey;
                 autoEnableSpeechAndTTS = me.config.autoEnableSpeechAndTTS || false;
                 /* autoEnableSpeechAndTTS will on if and only if both tts and mic are enabled */
                 if (isTTSEnabled && (isSpeechEnabled || allowGoogleSpeech) && autoEnableSpeechAndTTS) {
@@ -2433,29 +2433,29 @@
                 }
                 var chatWindowHtml = $(me.getChatTemplate()).tmpl(me.config);
 
-                $(chatWindowHtml).off('click', '.drpdown_theme').on('click', '.drpdown_theme', function(e){
+                $(chatWindowHtml).off('click', '.drpdown_theme').on('click', '.drpdown_theme', function (e) {
                     me.showDropdown(this);
                 });
 
-                $(chatWindowHtml).off('click', '.themeName').on('click', '.themeName', function(e){
+                $(chatWindowHtml).off('click', '.themeName').on('click', '.themeName', function (e) {
                     var themeChange = $(this).attr('id');
-                    if(themeChange == 'shopping_theme'){
+                    if (themeChange == 'shopping_theme') {
                         $('.kore-chat-window').removeClass('logo_theme').addClass("shopping_theme");
                     }
-                    else{
+                    else {
                         $('.kore-chat-window').removeClass('shopping_theme').addClass("logo_theme");
-                    } 
+                    }
                 });
-                
+
                 me.config.chatContainer = chatWindowHtml;
 
                 me.config.chatTitle = tempTitle;
-                if(!me.config.minimizeMode){
-                    bot.init(me.config.botOptions,me.config.messageHistoryLimit);
-                }else{
+                if (!me.config.minimizeMode) {
+                    bot.init(me.config.botOptions, me.config.messageHistoryLimit);
+                } else {
                     chatWindowHtml.addClass('minimize');
                     chatWindowHtml.find('.minimized-title').html("Talk to " + me.config.chatTitle);
-                    me.skipedInit=true;
+                    me.skipedInit = true;
                 }
                 if (me.config.allowLocation) {
                     bot.fetchUserLocation();
@@ -2466,20 +2466,20 @@
             chatWindow.prototype.bot = bot;
             chatWindow.prototype.destroy = function () {
                 var me = this;
-                 me.sendCloseForceClosureEvent();
+                me.sendCloseForceClosureEvent();
                 $('.kore-chat-overlay').hide();
                 bot.close();
                 if (!me.config.minimizeMode) {
                     bot.destroy();
                 }
-                messagesQueue=[];
+                messagesQueue = [];
                 if (me.config && me.config.chatContainer) {
                     if (!me.config.minimizeMode) {
                         me.config.chatContainer.remove();
-                    }else{
+                    } else {
                         me.config.chatContainer.find('.kore-chat-header .header-title').html(me.config.botMessages.reconnecting);
                         me.config.chatContainer.addClass('minimize');
-                        me.skipedInit=true;                
+                        me.skipedInit = true;
                     }
                 }
                 if (ttsAudioSource) {
@@ -2503,7 +2503,7 @@
             chatWindow.prototype.bindEvents = function () {
                 var me = this;
                 var _chatContainer = me.config.chatContainer;
-               
+
                 _chatContainer.draggable({
                     handle: _chatContainer.find(".kore-chat-header .header-title"),
                     containment: "document",
@@ -2547,12 +2547,12 @@
                         if ($('.text-as-password').val().length > 0) {
                             var message = $('.text-as-password').val();
                             var messageCopy = $('.text-as-password').val();
-                            if(KoreSDK.chatConfig.piiReductionChar){
+                            if (KoreSDK.chatConfig.piiReductionChar) {
                                 var piiReductionChar = KoreSDK.chatConfig.piiReductionChar;
                                 message = piiReductionChar + message + piiReductionChar;
                                 var renderMessage = messageCopy.replace(/\w/g, "*");
                                 me.sendMessage($('.chatInputBox').text(message), renderMessage);
-                            }else{
+                            } else {
                                 var _renderMessage = messageCopy.replace(/[^\w\s]/gi, '*');
                                 _renderMessage = _renderMessage.replace(/\w/g, "*");
                                 me.sendMessage($('.chatInputBox').text(message), _renderMessage);
@@ -2561,7 +2561,7 @@
                             KoreSDK.chatConfig.piiReductionChar = '';
                             $('.text-as-password').val('');
                             $('.text-as-password').addClass('hide');
-                            $('.chatInputBox').css('display','block');
+                            $('.chatInputBox').css('display', 'block');
                         }
                     }
                 });
@@ -2690,7 +2690,7 @@
                     } else {
                         alert("Sorry, the file you tried to attach is not supported. Please attach a valid pdf or image file");
                     }
-                  //  cnvertFiles(this, file);
+                    //  cnvertFiles(this, file);
                     function checkForFileValidation(file) {
                         var workbenchAllowedFileTypes = [".pdf", ".jpg", ".jpeg", ".jpe", ".jig", ".jfif", ".jfi", ".heif", ".png", ".img", ".webp"];
                         var extension = file.name.substring(file.name.lastIndexOf('.'));
@@ -2720,12 +2720,12 @@
                     var _footerContainer = $(me.config.container).find('.kore-chat-footer');
                     me.sendMessage(_footerContainer.find('.chatInputBox'));
                 });
-                _chatContainer.off('click','.notificationTemplate .btn-notification .link').on('click','.notificationTemplate .btn-notification .link',function(e){
-                    var _innerText= $(this).attr('data-value');
+                _chatContainer.off('click', '.notificationTemplate .btn-notification .link').on('click', '.notificationTemplate .btn-notification .link', function (e) {
+                    var _innerText = $(this).attr('data-value');
                     // me.sendMessage($('.chatInputBox').text('_innerText'), _innerText);
                     $('.chatInputBox').text(_innerText);
                     // var _innerText = ($(this)[0] && $(this)[0].innerText) ? $(this)[0].innerText.trim():"" || ($(this) && $(this).attr('data-value'))?$(this).attr('data-value').trim():"";
-                    me.sendMessage($('.chatInputBox'),_innerText);
+                    me.sendMessage($('.chatInputBox'), _innerText);
                 });
 
                 _chatContainer.off('click', 'li a').on('click', 'li a', function (e) {
@@ -2734,29 +2734,29 @@
                     var _trgt = $(this).attr('target');
                     var msgDataText = $(event.currentTarget).closest('span.simpleMsg').attr('msgData') || '';
                     var msgData;
-                    if(msgDataText){
+                    if (msgDataText) {
                         try {
-                         msgData = JSON.parse(msgDataText);
+                            msgData = JSON.parse(msgDataText);
                         } catch (err) {
-        
+
                         }
                     }
-                    if(msgData && msgData.message && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData){
+                    if (msgData && msgData.message && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData) {
                         me.renderWebForm(msgData);
                     } else if (_trgt === "_self") {
                         callListener("provideVal", { link: a_link });
                         return;
                     }
                     if (me.config.allowIframe === true) {
-                         var popupHtml = $(me.getChatTemplate("iframe")).tmpl({
+                        var popupHtml = $(me.getChatTemplate("iframe")).tmpl({
                             'msgData': msgData,
                             'helpers': helpers,
                             "link_url": url
                         });
-                         popupHtml[0].onload = function(iFrameEvent){
+                        popupHtml[0].onload = function (iFrameEvent) {
                             console.log(iFrameEvent);
-                         }
-                         openModal(popupHtml[0],true);
+                        }
+                        openModal(popupHtml[0], true);
                     }
                     else {
                         window.open(a_link, "_blank");
@@ -2772,11 +2772,11 @@
                     if (type == "postback" || type == "text") {
                         $('.chatInputBox').text($(this).attr('value') || $(this).attr('actual-value'));
                         //var _innerText = $(this)[0].innerText.trim() || $(this).attr('data-value').trim();
-                        if($('.quickReply') && $('.quickReply').length){
+                        if ($('.quickReply') && $('.quickReply').length) {
                             var _innerText = $(this).attr('actual-value');
-			   // _innerText = toTitleCase(_innerText);
+                            // _innerText = toTitleCase(_innerText);
                         } else {
-                            var _innerText = ($(this)[0] && $(this)[0].innerText) ? $(this)[0].innerText.trim():"" || ($(this) && $(this).attr('data-value'))?$(this).attr('data-value').trim():"";
+                            var _innerText = ($(this)[0] && $(this)[0].innerText) ? $(this)[0].innerText.trim() : "" || ($(this) && $(this).attr('data-value')) ? $(this).attr('data-value').trim() : "";
                         }
                         me.sendMessage($('.chatInputBox'), _innerText);
                     } else if (type == "url" || type == "web_url") {
@@ -2790,16 +2790,16 @@
                             window.open(_a_link, "PopupWindow", features);
                             return;
                         }
-                        if($(this).attr('msgData')!==undefined){
+                        if ($(this).attr('msgData') !== undefined) {
                             var msgData;
                             try {
                                 msgData = JSON.parse($(this).attr('msgData'));
-                               } catch (err) {
-               
-                             }
-                            if(msgData && msgData.message && msgData.message[0].component && (msgData.message[0].component.formData || (msgData.message[0].component.payload &&  msgData.message[0].component.payload.formData))){
-                                if(msgData.message[0].component.formData){
-                                   msgData.message[0].component.payload.formData = msgData.message[0].component.formData;
+                            } catch (err) {
+
+                            }
+                            if (msgData && msgData.message && msgData.message[0].component && (msgData.message[0].component.formData || (msgData.message[0].component.payload && msgData.message[0].component.payload.formData))) {
+                                if (msgData.message[0].component.formData) {
+                                    msgData.message[0].component.payload.formData = msgData.message[0].component.formData;
                                 }
                                 me.renderWebForm(msgData);
                                 return;
@@ -2823,19 +2823,19 @@
                     }
 
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'checkboxBtn') {
-                        if(e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[1] && e.currentTarget.classList[1] === 'cancel-btn'){
+                        if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[1] && e.currentTarget.classList[1] === 'cancel-btn') {
                             var checkboxSelection = $(e.currentTarget.parentElement.parentElement).find('.checkInput:checked')
                             var selectedValue = [];
                             var toShowText = [];
                             for (var i = 0; i < checkboxSelection.length; i++) {
                                 $(checkboxSelection[i]).prop("checked", false);
                             }
-                            me.sendMessage(   $('.chatInputBox').text($(e.currentTarget).attr('value')),$(e.currentTarget).attr('title'));
-                            if($(e.currentTarget).closest('.kore-action-sheet')){
+                            me.sendMessage($('.chatInputBox').text($(e.currentTarget).attr('value')), $(e.currentTarget).attr('title'));
+                            if ($(e.currentTarget).closest('.kore-action-sheet')) {
                                 bottomSliderAction('hide');
                             }
 
-                        }else{
+                        } else {
                             var checkboxSelection = $(e.currentTarget.parentElement.parentElement).find('.checkInput:checked')
                             var selectedValue = [];
                             var toShowText = [];
@@ -2849,20 +2849,20 @@
                             } else {
                                 $('.chatInputBox').text($(this).attr('title'));
                             }
-                            me.sendMessage($('.chatInputBox'),toShowText.toString());
-                            if($(e.currentTarget).closest('.kore-action-sheet').length){
+                            me.sendMessage($('.chatInputBox'), toShowText.toString());
+                            if ($(e.currentTarget).closest('.kore-action-sheet').length) {
                                 bottomSliderAction('hide');
                             }
                         }
 
-                    }   
+                    }
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'quickReply') {
                         var _parentQuikReplyEle = e.currentTarget.parentElement.parentElement;
                         var _leftIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyLeftIcon');
                         var _rightIcon = _parentQuikReplyEle.parentElement.parentElement.querySelectorAll('.quickreplyRightIcon');
                         setTimeout(function () {
                             _parentQuikReplyEle.parentElement.parentElement.getElementsByClassName('user-account')[0].classList.remove('marginT50');
-                            if((_leftIcon && _leftIcon.length) || (_rightIcon && _rightIcon.length) ){
+                            if ((_leftIcon && _leftIcon.length) || (_rightIcon && _rightIcon.length)) {
                                 _parentQuikReplyEle.parentElement.parentElement.removeChild(_leftIcon[0]);
                                 _parentQuikReplyEle.parentElement.parentElement.removeChild(_rightIcon[0]);
                             }
@@ -2876,21 +2876,21 @@
                 });
 
                 _chatContainer.off('click', '.close-btn').on('click', '.close-btn', function (event) {
-                    if(chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')){
+                    if (chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')) {
                         chatInitialize.config.chatContainer.find('.chat-container').empty()
-                        }
+                    }
 
 
                     //     var clientMessageId = new Date().getTime();
                     //     var messageToBot = {};
                     //     messageToBot["clientMessageId"] = clientMessageId;
-                        
+
                     //     messageToBot["resourceid"] = '/bot.closeConversationSession'; // session close event
                     //     // bot.sendMessage(messageToBot, function messageSent(err) {
                     //     //     console.error("bot.closeConversationSession send failed")
                     //     // });
-                        
-                        
+
+
                     //     // messageToBot["resourceid"] = '/bot.message';
                     //     // messageToBot["event"] = "close_agent_chat" // agent close event
                     //     // bot.sendMessage(messageToBot, function messageSent(err) {
@@ -2910,7 +2910,7 @@
                     //     // bot.sendMessage(messageToBot, function messageSent(err) {
                     //     //     console.error("bot.closeConversationSession send failed")
                     //     // });
-    
+
                     //  me.closeAgentSession();
                     // me.closeConversationSession();
                     $('.recordingMicrophone').trigger('click');
@@ -2918,7 +2918,7 @@
                         ttsAudioSource.stop();
                     }
                     isTTSOn = false;
-                   
+
                     me.destroy();
                     if (_ttsContext) {
                         _ttsContext.close();
@@ -2926,17 +2926,17 @@
                     }
                 });
 
-                chatWindow.prototype.closeAgentSession = function(){
+                chatWindow.prototype.closeAgentSession = function () {
                     var clientMessageId = new Date().getTime();
                     var messageToBot = {};
-                        messageToBot["clientMessageId"] =clientMessageId;
-                        messageToBot["event"] = "close_agent_chat";
-                        messageToBot["message"] = {
+                    messageToBot["clientMessageId"] = clientMessageId;
+                    messageToBot["event"] = "close_agent_chat";
+                    messageToBot["message"] = {
                         "body": "",
                         "type": ""
-                        }
-                        messageToBot["resourceid"] = "/bot.message";
-                        bot.sendMessage(messageToBot, function(err) { console.log("Error identified" + err);});
+                    }
+                    messageToBot["resourceid"] = "/bot.message";
+                    bot.sendMessage(messageToBot, function (err) { console.log("Error identified" + err); });
 
                 };
                 chatWindow.prototype.closeConversationSession = function () {
@@ -2948,7 +2948,7 @@
                     bot.sendMessage(messageToBot, function messageSent(err) {
                         console.error("bot.closeConversationSession send failed sending")
                     });
-                };    
+                };
 
                 _chatContainer.off('click', '.minimize-btn').on('click', '.minimize-btn', function (event) {
                     if (me.minimized === true) {
@@ -3022,9 +3022,9 @@
                     }
                 });*/
 
-                  // dateClockPickers();
+                // dateClockPickers();
                 if (window.KorePickers) {
-                    var pickerConfig={
+                    var pickerConfig = {
                         chatWindowInstance: me,
                         chatConfig: me.config,
                     }
@@ -3093,9 +3093,9 @@
                 _chatContainer.off('click', '.minimized').on('click', '.minimized,.minimized-title', function (event) {
                     _chatContainer.removeClass("minimize");
                     me.minimized = false;
-                    if(me.skipedInit){
-                        bot.init(me.config.botOptions,me.config.messageHistoryLimit);
-                        me.skipedInit=false;
+                    if (me.skipedInit) {
+                        bot.init(me.config.botOptions, me.config.messageHistoryLimit);
+                        me.skipedInit = false;
                     }
                     /*_chatContainer.draggable({
                         handle: _chatContainer.find(".kore-chat-header .header-title"),
@@ -3115,13 +3115,13 @@
                 _chatContainer.off('click', '.reload-btn').on('click', '.reload-btn', function (event) {
                     $(this).addClass("disabled").prop('disabled', true);
                     $(".close-btn").addClass("disabled").prop('disabled', true);
-                    setTimeout(function(){
+                    setTimeout(function () {
                         // if(customData && customData.isReconnect){
                         //     me.resetWindow(true);
                         //     //me.defaultWelcomeMsg();
                         // }else{
-                            me.resetWindow();
-                            //me.defaultWelcomeMsg();
+                        me.resetWindow();
+                        //me.defaultWelcomeMsg();
                         // }
                     });
                     $('.recordingMicrophone').trigger('click');
@@ -3138,25 +3138,25 @@
                             cancelTTSConnection();
                             isTTSOn = false;
                             $('#ttspeaker')[0].pause();
-                            if(_ttsInterface && _ttsInterface ==="webapi"){
+                            if (_ttsInterface && _ttsInterface === "webapi") {
                                 var synth = window.speechSynthesis;
                                 synth.pause();
-                             }else if (_ttsInterface === 'awspolly') {
-                                if (isTTSOn ===false) {
+                            } else if (_ttsInterface === 'awspolly') {
+                                if (isTTSOn === false) {
                                     // isTTSOn = false;
                                     gainNode.gain.value = 0; // 10 %
                                     $('.ttspeakerDiv').addClass('ttsOff');
                                 }
                             }
                             $('.ttspeakerDiv').addClass('ttsOff');
-                        } 
+                        }
                         else {
-                            if(_ttsInterface && _ttsInterface==="webapi"){
+                            if (_ttsInterface && _ttsInterface === "webapi") {
                                 _ttsConnection = speakWithWebAPI();
- 
-                            }else if(_ttsInterface &&_ttsInterface === 'awspolly'){
+
+                            } else if (_ttsInterface && _ttsInterface === 'awspolly') {
                                 gainNode.gain.value = 1
-                            }else{
+                            } else {
                                 _ttsConnection = createSocketForTTS();
                             }
                             isTTSOn = true;
@@ -3164,7 +3164,7 @@
                         }
                     }
                 });
-                
+
                 bot.on("open", function (response) {
                     accessToken = me.config.botOptions.accessToken;
                     var _chatInput = _chatContainer.find('.kore-chat-footer .chatInputBox');
@@ -3176,11 +3176,11 @@
                             $('.disableFooter').removeClass('disableFooter');
                         });
                     }
-                    if(!me.config.botOptions._reconnecting){
-                       // me.defaultWelcomeMsg();
+                    if (!me.config.botOptions._reconnecting) {
+                        // me.defaultWelcomeMsg();
                     }
                 });
-                bot.on('reconnected', function(response) {
+                bot.on('reconnected', function (response) {
                     if (me.config.syncMessages.onReconnect.enable && response.reconnected) {
                         me.bot.getHistory({ forHistorySync: true, limit: me.config.syncMessages.onReconnect.batchSize });
                     }
@@ -3206,16 +3206,16 @@
                             if (tempData.message[0].component && tempData.message[0].component.payload && tempData.message[0].component.payload.text) {
                                 tempData.message[0].cInfo.body = tempData.message[0].component.payload.text;
                             }
-                            if(tempData.message[0].component && tempData.message[0].component.payload && (tempData.message[0].component.payload.videoUrl || tempData.message[0].component.payload.audioUrl)){
+                            if (tempData.message[0].component && tempData.message[0].component.payload && (tempData.message[0].component.payload.videoUrl || tempData.message[0].component.payload.audioUrl)) {
                                 tempData.message[0].cInfo.body = tempData.message[0].component.payload.text || "";
                             }
                         }
                         if (tempData.message[0].component && tempData.message[0].component.payload && tempData.message[0].component.payload.text) {
                             tempData.message[0].cInfo.body = tempData.message[0].component.payload.text;
-                            if(tempData.message[0].cInfo.body.indexOf("###show_account_values###")>-1){
+                            if (tempData.message[0].cInfo.body.indexOf("###show_account_values###") > -1) {
                                 console.log("11111111111", tempData.message[0].component.payload.buttons);
-                                var  dataItems={
-                                   "radioOptions":tempData.message[0].component.payload.buttons/*[
+                                var dataItems = {
+                                    "radioOptions": tempData.message[0].component.payload.buttons/*[
                                        {
                                            "title":"Shanmuga",
                                            "value":"1234 4567 5678 6789",
@@ -3258,42 +3258,42 @@
                                        },
                                    ]*/
                                 }
-                                korePicker.showradioOptionsPicker(dataItems); 
+                                korePicker.showradioOptionsPicker(dataItems);
                             }
-                           if(tempData.message[0].component.payload.template_type=="daterange"){
+                            if (tempData.message[0].component.payload.template_type == "daterange") {
                                 tempData.message[0].cInfo.body = tempData.message[0].component.payload.text_message;
-                                korePicker.pickerSubconfig.dateRangeConfig.format=tempData.message[0].component.payload.format;
-                                korePicker.pickerSubconfig.dateRangeConfig.startDate=tempData.message[0].component.payload.startDate;
-                                korePicker.pickerSubconfig.dateRangeConfig.endDate=tempData.message[0].component.payload.endDate;
-                                if(tempData.message[0].component.payload.title){
-                                    korePicker.pickerSubconfig.daterangepicker.title=tempData.message[0].component.payload.title;
+                                korePicker.pickerSubconfig.dateRangeConfig.format = tempData.message[0].component.payload.format;
+                                korePicker.pickerSubconfig.dateRangeConfig.startDate = tempData.message[0].component.payload.startDate;
+                                korePicker.pickerSubconfig.dateRangeConfig.endDate = tempData.message[0].component.payload.endDate;
+                                if (tempData.message[0].component.payload.title) {
+                                    korePicker.pickerSubconfig.daterangepicker.title = tempData.message[0].component.payload.title;
                                 }
                                 $('.typingIndicatorContent').css('display', 'block');
                                 korePicker.showDateRangePicker(korePicker.mainConfig);
                             }
-                            if(tempData.message[0].component.payload.template_type=="dateTemplate"){
+                            if (tempData.message[0].component.payload.template_type == "dateTemplate") {
                                 tempData.message[0].cInfo.body = tempData.message[0].component.payload.text_message;
-                                korePicker.pickerSubconfig.dateConfig.format=tempData.message[0].component.payload.format;
-                                korePicker.pickerSubconfig.dateConfig.startDate=tempData.message[0].component.payload.startDate;
-                                korePicker.pickerSubconfig.dateConfig.showdueDate=tempData.message[0].component.payload.showdueDate;
-                                korePicker.pickerSubconfig.dateConfig.endDate=tempData.message[0].component.payload.endDate;
-                                korePicker.pickerSubconfig.dateConfig.selectedDate="Selected Date";
-                                if(tempData.message[0].component.payload.showdueDate){
-                                
-                                    korePicker.pickerSubconfig.dateConfig.paymentDue="Payment Due Date";
-                                    if(tempData.message[0].component.payload.paymentDue){
-                                        korePicker.pickerSubconfig.dateConfig.paymentDue=tempData.message[0].component.payload.paymentDue;
+                                korePicker.pickerSubconfig.dateConfig.format = tempData.message[0].component.payload.format;
+                                korePicker.pickerSubconfig.dateConfig.startDate = tempData.message[0].component.payload.startDate;
+                                korePicker.pickerSubconfig.dateConfig.showdueDate = tempData.message[0].component.payload.showdueDate;
+                                korePicker.pickerSubconfig.dateConfig.endDate = tempData.message[0].component.payload.endDate;
+                                korePicker.pickerSubconfig.dateConfig.selectedDate = "Selected Date";
+                                if (tempData.message[0].component.payload.showdueDate) {
+
+                                    korePicker.pickerSubconfig.dateConfig.paymentDue = "Payment Due Date";
+                                    if (tempData.message[0].component.payload.paymentDue) {
+                                        korePicker.pickerSubconfig.dateConfig.paymentDue = tempData.message[0].component.payload.paymentDue;
                                     }
                                 }
-                                
-                                if(tempData.message[0].component.payload.title){
-                                    korePicker.pickerSubconfig.datepicker.title=tempData.message[0].component.payload.title;
+
+                                if (tempData.message[0].component.payload.title) {
+                                    korePicker.pickerSubconfig.datepicker.title = tempData.message[0].component.payload.title;
                                 }
-                                
+
                                 $('.typingIndicatorContent').css('display', 'block');
                                 korePicker.showDatePicker(korePicker.mainConfig);
                             }
-                            if(tempData.message[0].cInfo.body.indexOf('clockPicker')>-1){
+                            if (tempData.message[0].cInfo.body.indexOf('clockPicker') > -1) {
                                 korePicker.showClockPicker(korePicker.mainConfig);
                             }
                         }
@@ -3390,7 +3390,7 @@
                 me.bindEvents();
             };
 
-            chatWindow.prototype.defaultWelcomeMsg = function (renderMsg,data) {
+            chatWindow.prototype.defaultWelcomeMsg = function (renderMsg, data) {
                 var me = this;
                 me.config.botOptions._reconnecting = true;
                 var _bodyContainer = $(me.config.chatContainer).find('.kore-chat-body');
@@ -3417,8 +3417,8 @@
                     messageToBot["message"] = { body: "BotNotifications" };
                 }
                 messageToBot["resourceid"] = '/bot.message';
-                if(renderMsg && typeof renderMsg==='string'){
-                    messageToBot["message"].renderMsg=renderMsg;
+                if (renderMsg && typeof renderMsg === 'string') {
+                    messageToBot["message"].renderMsg = renderMsg;
                 }
                 if (data && data.customdata) {
                     messageToBot["message"].customdata = data.customdata;
@@ -3426,30 +3426,30 @@
                 if (data && data.nlmeta) {
                     messageToBot["message"].nlmeta = data.nlmeta;
                 }
-                if($('.isDebugConsolePanelOpen').length > 0) {
+                if ($('.isDebugConsolePanelOpen').length > 0) {
                     messageToBot["isDebugging"] = true;
                 }
-                else{
+                else {
                     messageToBot["isDebugging"] = false;
                 }
                 attachmentInfo = {};
                 bot.sendMessage(messageToBot, function messageSent(err) {
                     if (err && err.message) {
                         setTimeout(function () {
-                            $('#msg_' + clientMessageId).find('.messageBubble').append('<div class="errorMsg">'+i18n.i18nString('sendFailed_please_resend')+'</div>');
+                            $('#msg_' + clientMessageId).find('.messageBubble').append('<div class="errorMsg">' + i18n.i18nString('sendFailed_please_resend') + '</div>');
                         }, 350);
                     }
                 });
             }
 
-            chatWindow.prototype.sendMessage = function (chatInput, renderMsg,msgObject,isMessageTobeHidden) {
+            chatWindow.prototype.sendMessage = function (chatInput, renderMsg, msgObject, isMessageTobeHidden) {
                 var me = this;
                 if (chatInput.text().trim() === "" && $('.attachment').html().trim().length == 0) {
                     return;
                 }
-                if(msgObject && msgObject.message && msgObject.message.length && msgObject.message[0]&& msgObject.message[0].component&& msgObject.message[0].component.payload && msgObject.message[0].component.payload.ignoreCheckMark){
-                    var ignoreCheckMark=msgObject.message[0].component.payload.ignoreCheckMark;
-                    }
+                if (msgObject && msgObject.message && msgObject.message.length && msgObject.message[0] && msgObject.message[0].component && msgObject.message[0].component.payload && msgObject.message[0].component.payload.ignoreCheckMark) {
+                    var ignoreCheckMark = msgObject.message[0].component.payload.ignoreCheckMark;
+                }
                 if (me.config.allowLocation) {
                     bot.fetchUserLocation();
                 }
@@ -3504,21 +3504,21 @@
                 if (renderMsg && typeof renderMsg === 'string') {
                     messageToBot["message"].renderMsg = renderMsg;
                 }
-                if(msgObject && msgObject.customdata){
-                    messageToBot["message"].customdata=msgObject.customdata;
+                if (msgObject && msgObject.customdata) {
+                    messageToBot["message"].customdata = msgObject.customdata;
                 }
-                if(msgObject && msgObject.nlmeta){
-                    messageToBot["message"].nlmeta=msgObject.nlmeta;
+                if (msgObject && msgObject.nlmeta) {
+                    messageToBot["message"].nlmeta = msgObject.nlmeta;
                 }
                 attachmentInfo = {};
                 bot.sendMessage(messageToBot, function messageSent(err) {
                     if (err && err.message) {
                         setTimeout(function () {
-                            $('.kore-chat-window [data-time="'+clientMessageId+'"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
+                            $('.kore-chat-window [data-time="' + clientMessageId + '"]').find('.messageBubble').append('<div class="errorMsg">Send Failed. Please resend.</div>');
                         }, 350);
                     }
                 });
-                $('.kore-chat-body ul li').css({'pointer-events': 'none','opacity':'0.8'});
+                $('.kore-chat-body ul li').css({ 'pointer-events': 'none', 'opacity': '0.8' });
                 chatInput.html("");
                 $('.sendButton').addClass('disabled');
                 _bodyContainer.css('bottom', _footerContainer.outerHeight());
@@ -3528,18 +3528,18 @@
                     $('.typingIndicatorContent').css('display', 'none');
                 }, 10000);
                 if (renderMsg && typeof renderMsg === 'string') {
-                   //msgData.message[0].cInfo.body = messageToBot["message"].body;
-		   msgData.message[0].cInfo.body = renderMsg;
+                    //msgData.message[0].cInfo.body = messageToBot["message"].body;
+                    msgData.message[0].cInfo.body = renderMsg;
                 }
-                msgData.message[0].cInfo.ignoreCheckMark=ignoreCheckMark;
-                if(!isMessageTobeHidden){
+                msgData.message[0].cInfo.ignoreCheckMark = ignoreCheckMark;
+                if (!isMessageTobeHidden) {
                     me.renderMessage(msgData);
                 }
             };
 
             chatWindow.prototype.renderMessage = function (msgData) {
                 var me = this, messageHtml = '', extension = '', _extractedFileName = '';
-                msgData.createdOnTimemillis=new Date(msgData.createdOn).valueOf();
+                msgData.createdOnTimemillis = new Date(msgData.createdOn).valueOf();
                 customTemplateObj.helpers = helpers;
                 customTemplateObj.extension = extension;
                 graphLibGlob = me.config.graphLib || "d3";
@@ -3570,7 +3570,16 @@
                 /* checking for matched custom template */
                 messageHtml = customTemplateObj.renderMessage(msgData);
                 if (messageHtml === '' && msgData && msgData.message && msgData.message[0]) {
-                    $('.kore-chat-body ul li').css({'pointer-events': 'none','opacity':'0.8'});
+                    $('.kore-chat-body ul li').css({ 'pointer-events': 'none', 'opacity': '0.8' });
+                    var islinkAvailable = $('.kore-chat-body ul li').find("#linkEvent");
+                    if (islinkAvailable.length) {
+                        $(islinkAvailable).closest("li.fromOtherUsers, li.currentUsers").css({ "pointer-events": "auto", "opacity": "unset" });
+                    }
+                    var isSeeMoreAvailable = $('.kore-chat-body ul li').find(".seeMore");
+                    if (isSeeMoreAvailable.length) {
+                        $(isSeeMoreAvailable).css({ "pointer-events": "auto", "opacity": "unset" });
+                        $(isSeeMoreAvailable).closest("li.fromOtherUsers, li.currentUsers").css({ "pointer-events": "auto", "opacity": "unset" });
+                    }
                     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
                         messageHtml = $(me.getChatTemplate("templatequickreply")).tmpl({
                             'msgData': msgData,
@@ -4120,30 +4129,30 @@
                             handleChartOnClick();
                         }, 200);
                     }
-                    else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData && msgData.message[0].component.payload.formData.renderType==='inline'){
+                    else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.formData && msgData.message[0].component.payload.formData.renderType === 'inline') {
                         msgData.renderType = 'inline';
-                        messageHtml = me.renderWebForm(msgData,true);
-                    } 
+                        messageHtml = me.renderWebForm(msgData, true);
+                    }
                     else if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "iframe") {
                         var popupHtml = $(me.getChatTemplate("iframe")).tmpl({
                             'msgData': msgData,
                             'helpers': helpers,
-                            "link_url": msgData.message[0].component.link_url    
+                            "link_url": msgData.message[0].component.link_url
                         });
-                        popupHtml[0].onload = function(iFrameEvent){
+                        popupHtml[0].onload = function (iFrameEvent) {
                             console.log(iFrameEvent);
                         }
-                        openModal(popupHtml[0],true);
-                        setTimeout(function(){
+                        openModal(popupHtml[0], true);
+                        setTimeout(function () {
                             var iframe = document.getElementById("iframeModal");
                             var elemt = iframe.contentWindow.document.getElementsByClassName('x-unblu-launcher-button');
                             elemt[0].click();
-                        },7000);
-                    } 
+                        }, 7000);
+                    }
                     else {
-                        if(KoreSDK.chatConfig.masking){
+                        if (KoreSDK.chatConfig.masking) {
                             KoreSDK.chatConfig.masking = false;
-                            if(msgData.type !== "bot_response"){
+                            if (msgData.type !== "bot_response") {
                                 msgData.message[0].cInfo.body = msgData.message[0].cInfo.body.replace(/\w/g, "*");
                             }
                         }
@@ -4153,22 +4162,22 @@
                             'extension': extension
                         });
                     }
-                    if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.masking){
+                    if (msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.masking) {
                         KoreSDK.chatConfig.masking = true;
-                        if(msgData.message[0].component.payload.piiReductionChar){
-                            KoreSDK.chatConfig.piiReductionChar =  msgData.message[0].component.payload.piiReductionChar;
+                        if (msgData.message[0].component.payload.piiReductionChar) {
+                            KoreSDK.chatConfig.piiReductionChar = msgData.message[0].component.payload.piiReductionChar;
                         }
                         $('.text-as-password').removeClass('hide');
                         $('.text-as-password').focus();
-                        $('.chatInputBox').css('display','none');
+                        $('.chatInputBox').css('display', 'none');
                     }
                 }
-                _chatContainer.find('li').attr('aria-live','off');
-                _chatContainer.find('li').attr('aria-hidden','true');//for mac voiceover bug with aria-live
-   
-                if(msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.sliderView && !msgData.message[0].component.payload.fromHistory){
-                    bottomSliderAction('show',messageHtml);
-                }else{
+                _chatContainer.find('li').attr('aria-live', 'off');
+                _chatContainer.find('li').attr('aria-hidden', 'true');//for mac voiceover bug with aria-live
+
+                if (msgData && msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.sliderView && !msgData.message[0].component.payload.fromHistory) {
+                    bottomSliderAction('show', messageHtml);
+                } else {
                     //ignore message(msgId) if it is already in viewport                     
                     if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
                         if (msgData.type === "bot_response" && msgData.fromHistorySync) {
@@ -4222,16 +4231,16 @@
                     if (msgData.message[0].component && msgData.message[0].component.payload.speech_hint) {
                         _txtToSpeak = msgData.message[0].component.payload.speech_hint;
                     }
-                    if (_ttsInterface&&_ttsInterface==="webapi") {
+                    if (_ttsInterface && _ttsInterface === "webapi") {
                         _ttsConnection = speakWithWebAPI(_txtToSpeak);
-                    }else if(_ttsInterface && _ttsInterface==="awspolly"){
-                        if(!window.speakTextWithAWSPolly){
+                    } else if (_ttsInterface && _ttsInterface === "awspolly") {
+                        if (!window.speakTextWithAWSPolly) {
                             console.warn("Please uncomment amazon polly files 'plugins/aws-sdk-2.668.0.min.js' and'plugins/kore-aws-polly.js' in index.html");
-                        }else{
+                        } else {
                             speakTextWithAWSPolly(_txtToSpeak);
                         }
 
-                    }else if (!_ttsConnection || (_ttsConnection.readyState && _ttsConnection.readyState !== 1)) {
+                    } else if (!_ttsConnection || (_ttsConnection.readyState && _ttsConnection.readyState !== 1)) {
                         try {
                             _ttsConnection = createSocketForTTS();
                         } catch (e) {
@@ -4242,22 +4251,22 @@
                         socketSendTTSMessage(_txtToSpeak);
                     }
                 }
-            };                   
-                                    
+            };
+
             chatWindow.prototype.pushTorenderMessagesQueue = function (msgItem) {
                 var me = this;
-                if( !me.renderMessagesQueue){
+                if (!me.renderMessagesQueue) {
                     me.renderMessagesQueue = [];
                 }
                 me.renderMessagesQueue.push(msgItem);
-                if(!me.renderEventLoop){
+                if (!me.renderEventLoop) {
                     me.startRenderEventLoop();
                 }
             }
             chatWindow.prototype.startRenderEventLoop = function () {
                 var me = this;
                 me.msgRenderingProgress = false;
-                me.renderEventLoop=setInterval(function () {
+                me.renderEventLoop = setInterval(function () {
                     console.log("Running Event loop")
                     me.checkForMsgQueue();
                 }, 500);
@@ -4276,11 +4285,11 @@
                         me.msgRenderingProgress = false;
                     }, delay);
                 }
-                if(!me.renderMessagesQueue.length && !me.msgRenderingProgress && me.renderEventLoop){
+                if (!me.renderMessagesQueue.length && !me.msgRenderingProgress && me.renderEventLoop) {
                     clearTimeout(me.renderEventLoop);
-                    me.renderEventLoop=false;
+                    me.renderEventLoop = false;
                 }
-            };    
+            };
 
             chatWindow.prototype.formatMessages = function (msgContainer) {
                 /*adding target to a tags */
@@ -4303,7 +4312,7 @@
                 }
                 $('.dropdown-contentWidgt.show').not($(obj).next()).removeClass('show');
             }; // Close the dropdown if the user clicks outside of it
-            chatWindow.prototype.sendCloseForceClosureEvent = function (renderMsg,data) {
+            chatWindow.prototype.sendCloseForceClosureEvent = function (renderMsg, data) {
                 var me = this;
                 //me.config.botOptions._reconnecting = true;
                 var _bodyContainer = $(me.config.chatContainer).find('.kore-chat-body');
@@ -4311,64 +4320,64 @@
                 var clientMessageId = new Date().getTime();
                 var msgData = {};
                 msgData = {
-                'type': "currentUser",
-                "message": [{
-                'type': 'text',
-                'cInfo': { 'body': "forceClosure" },
-                'clientMessageId': clientMessageId
-                }],
-                "createdOn": clientMessageId
+                    'type': "currentUser",
+                    "message": [{
+                        'type': 'text',
+                        'cInfo': { 'body': "forceClosure" },
+                        'clientMessageId': clientMessageId
+                    }],
+                    "createdOn": clientMessageId
                 };
                 var messageToBot = {};
                 messageToBot["clientMessageId"] = clientMessageId;
                 if (Object.keys(attachmentInfo).length > 0 && chatInput.text().trim().length) {
-                messageToBot["message"] = { body: chatInput.text().trim(), attachments: [attachmentInfo] };
+                    messageToBot["message"] = { body: chatInput.text().trim(), attachments: [attachmentInfo] };
                 } else if (Object.keys(attachmentInfo).length > 0) {
-                messageToBot["message"] = { attachments: [attachmentInfo] };
+                    messageToBot["message"] = { attachments: [attachmentInfo] };
                 }
                 else {
-                messageToBot["clientEvent"] = { body: "forceClosure" };
-                messageToBot["message"] = { body: "forceClosure" };
+                    messageToBot["clientEvent"] = { body: "forceClosure" };
+                    messageToBot["message"] = { body: "forceClosure" };
                 }
                 messageToBot["resourceid"] = '/bot.message';
-                if(renderMsg && typeof renderMsg==='string'){
-                messageToBot["message"].renderMsg=renderMsg;
+                if (renderMsg && typeof renderMsg === 'string') {
+                    messageToBot["message"].renderMsg = renderMsg;
                 }
                 if (data && data.customdata) {
-                messageToBot["message"].customdata = data.customdata;
+                    messageToBot["message"].customdata = data.customdata;
                 }
                 if (data && data.nlmeta) {
-                messageToBot["message"].nlmeta = data.nlmeta;
+                    messageToBot["message"].nlmeta = data.nlmeta;
                 }
-                if($('.isDebugConsolePanelOpen').length > 0) {
-                messageToBot["isDebugging"] = true;
+                if ($('.isDebugConsolePanelOpen').length > 0) {
+                    messageToBot["isDebugging"] = true;
                 }
-                else{
-                messageToBot["isDebugging"] = false;
+                else {
+                    messageToBot["isDebugging"] = false;
                 }
                 attachmentInfo = {};
                 bot.sendMessage(messageToBot, function messageSent(err) {
-                if (err && err.message) {
-                setTimeout(function () {
-                $('#msg_' + clientMessageId).find('.messageBubble').append('<div class="errorMsg">'+i18n.i18nString('sendFailed_please_resend')+'</div>');
-                }, 350);
-                }
+                    if (err && err.message) {
+                        setTimeout(function () {
+                            $('#msg_' + clientMessageId).find('.messageBubble').append('<div class="errorMsg">' + i18n.i18nString('sendFailed_please_resend') + '</div>');
+                        }, 350);
+                    }
                 });
-                };
+            };
             (function () {
                 window.onclick = function (event) {
-                  if (!event.target.matches('.dropbtnWidgt')) {
-                    var dropdowns = document.getElementsByClassName("dropdown-contentWidgt");
-                    var i;
-          
-                    for (i = 0; i < dropdowns.length; i++) {
-                      var openDropdown = dropdowns[i];
-          
-                      if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                      }
+                    if (!event.target.matches('.dropbtnWidgt')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-contentWidgt");
+                        var i;
+
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
                     }
-                  }
                 };
             })();
 
@@ -4985,7 +4994,7 @@
                     {{/if}}\
                 </script>';
 
-                var NotificationTemplate='<script id="notification_tmpl" type="tet/x-jqury-tmpl">\
+                var NotificationTemplate = '<script id="notification_tmpl" type="tet/x-jqury-tmpl">\
                     {{if msgData.message}}\
                         <li {{if msgData.type !== "bot_response"}}id="msg_${msgItem.clientMessageId}"{{/if}} class="{{if msgData.type === "bot_response"}}fromOtherUsers{{else}}fromCurrentUser{{/if}} with-icon notification"> \
                             <div class="notificationTemplate">\
@@ -5045,7 +5054,7 @@
                     return listActionSheetTemplate;
                 } else if (tempType === "iframe") {
                     return iframe;
-                } else if(tempType ==="NotificationTmpl"){
+                } else if (tempType === "NotificationTmpl") {
                     return NotificationTemplate;
                 } else {
                     return chatWindowTemplate;
@@ -5190,30 +5199,30 @@
                 if ($('body').find('.kore-chat-window').length > 0) {
                     return false;
                 }
-                cfg.chatHistory=this.chatHistory;
-                cfg.handleError=this.showError;
-                if(cfg.widgetSDKInstace){
+                cfg.chatHistory = this.chatHistory;
+                cfg.handleError = this.showError;
+                if (cfg.widgetSDKInstace) {
                     this.addWidgetEvents(cfg);
                 };
                 chatInitialize = new chatWindow(cfg);
-                customTemplateObj = new customTemplate(cfg,chatInitialize,bot);
-                
+                customTemplateObj = new customTemplate(cfg, chatInitialize, bot);
+
                 return this;
             };
-            
+
             this.addWidgetEvents = function (cfg) {
                 if (cfg) {
                     var wizSDK = cfg.widgetSDKInstace;
                     wizSDK.events.onPostback = function (data) {
-                            $('.chatInputBox').text(data.payload);
-                            chatInitialize.sendMessage($('.chatInputBox'), data.utterance, data);
+                        $('.chatInputBox').text(data.payload);
+                        chatInitialize.sendMessage($('.chatInputBox'), data.utterance, data);
                     };
                 }
             };
-            
-            this.setWidgetInstance=function(widgetSDKInstace){
-                if(widgetSDKInstace){
-                    chatInitialize.config.widgetSDKInstace=widgetSDKInstace;
+
+            this.setWidgetInstance = function (widgetSDKInstace) {
+                if (widgetSDKInstace) {
+                    chatInitialize.config.widgetSDKInstace = widgetSDKInstace;
                     this.addWidgetEvents(chatInitialize.config);
                 }
             }
@@ -5228,14 +5237,14 @@
                 }
                 window.removeEventListener('online', updateOnlineStatus);
                 window.removeEventListener('offline', updateOnlineStatus);
-                if(chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')){
+                if (chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')) {
                     chatInitialize.config.chatContainer.find('.chat-container').empty()
-                    }
+                }
             };
             this.initToken = function (options) {
                 assertionToken = "bearer " + options.accessToken;
             };
-                      
+
             this.hideError = function () {
                 $('.errorMsgBlock').removeClass('showError');
             }
@@ -5252,8 +5261,8 @@
                 }
             }
             this.botDetails = function (response, botInfo) {
-                if(response){
-                    if(response.botName !== ""){
+                if (response) {
+                    if (response.botName !== "") {
                         chatContainerConfig.config.chatTitle = response.botName;
                         $('.kore-chat-header .header-title').html(chatContainerConfig.config.chatTitle).attr('title', chatContainerConfig.config.chatTitle);
                     } else {
@@ -5262,88 +5271,88 @@
                     }
                     var cssPrefix = "--custom-";
                     var cssBrandingVariables = {
-                        "botchatBgColor":"bot-chat-bubble-background-color",
-                        "botchatTextColor":"bot-chat-bubble-text-color",
-                        "buttonActiveBgColor":"button-active-background-color",
-                        "buttonActiveTextColor":"button-active-text-color",
-                        "buttonInactiveBgColor":"button-inactive-background-color",
-                        "buttonInactiveTextColor":"button-inactive-text-color",
-                        "userchatBgColor":"user-chat-bubble-background-color",
-                        "userchatTextColor":"user-chat-bubble-text-color",
-                        "widgetBodyColor":"widget-body-color",
-                        "widgetFooterColor":"widget-footer-color",
-                        "widgetHeaderColor":"widget-header-color",
-                        "widgetTextColor":"widget-text-color",
-                        "widgetBorderColor":"widget-border-color",
-                        "widgetDividerColor":"widget-divider-color",
-			"buttonOutlineColor": "button-outline-color",
+                        "botchatBgColor": "bot-chat-bubble-background-color",
+                        "botchatTextColor": "bot-chat-bubble-text-color",
+                        "buttonActiveBgColor": "button-active-background-color",
+                        "buttonActiveTextColor": "button-active-text-color",
+                        "buttonInactiveBgColor": "button-inactive-background-color",
+                        "buttonInactiveTextColor": "button-inactive-text-color",
+                        "userchatBgColor": "user-chat-bubble-background-color",
+                        "userchatTextColor": "user-chat-bubble-text-color",
+                        "widgetBodyColor": "widget-body-color",
+                        "widgetFooterColor": "widget-footer-color",
+                        "widgetHeaderColor": "widget-header-color",
+                        "widgetTextColor": "widget-text-color",
+                        "widgetBorderColor": "widget-border-color",
+                        "widgetDividerColor": "widget-divider-color",
+                        "buttonOutlineColor": "button-outline-color",
                     };
                     var cssVariable = "";
                     for (var key in response) {
-                        if(key == 'bankLogo' && response[key] !== ""){
-                             $(".logo-icon").css("background-image", "url(" + response['bankLogo'] + ")");
-                        } else if(key !== "theme" && key !== 'widgetBgImage'){
+                        if (key == 'bankLogo' && response[key] !== "") {
+                            $(".logo-icon").css("background-image", "url(" + response['bankLogo'] + ")");
+                        } else if (key !== "theme" && key !== 'widgetBgImage') {
                             cssVariable = cssPrefix + cssBrandingVariables[key];
-                            document.documentElement.style.setProperty(cssVariable,response[key]);
-                        } else if(key == 'widgetBgImage' && response[key] !== ""){
+                            document.documentElement.style.setProperty(cssVariable, response[key]);
+                        } else if (key == 'widgetBgImage' && response[key] !== "") {
                             // setTimeout(function(){
-                                $(".kore-chat-body").css("background-image", "url(" + response['widgetBgImage'] + ")");
-                                $(".kore-chat-body").css("background-repeat", "no-repeat");
-                                $(".kore-chat-body").css("background-position", "center"); 
+                            $(".kore-chat-body").css("background-image", "url(" + response['widgetBgImage'] + ")");
+                            $(".kore-chat-body").css("background-repeat", "no-repeat");
+                            $(".kore-chat-body").css("background-position", "center");
                             // },1000);
-                           
-                        } else if(key == 'widgetBgImage' && response[key] == ""){
-				$(".kore-chat-body").css("background-image", "url(" + response['widgetBgImage'] + ")");
-				$(".kore-chat-body").css("background-repeat", "no-repeat");
-				$(".kore-chat-body").css("background-position", "center");
-			}
+
+                        } else if (key == 'widgetBgImage' && response[key] == "") {
+                            $(".kore-chat-body").css("background-image", "url(" + response['widgetBgImage'] + ")");
+                            $(".kore-chat-body").css("background-repeat", "no-repeat");
+                            $(".kore-chat-body").css("background-position", "center");
+                        }
                     }
                     $(".kore-chat-window").addClass('customBranding-theme');
                 }
-                
+
                 /* Remove hide class for tts and speech if sppech not enabled for this bot */
                 /*setTimeout(function () {
                     fetchBotDetails(response,botInfo);
                 }, 50);*/
             }
             this.chatHistory = function (res) {
-                
+
                 var me = window.chatContainerConfig;
-                if(res[2]==='historysync'){
+                if (res[2] === 'historysync') {
                     //setTimeout(function () {
-                        if (res && res[1] && res[1].messages.length > 0) {
-                            res[1].messages.forEach(function (msgData, index) {
-                                setTimeout(function () {
-                                    if (msgData.type === "outgoing" || msgData.type === "bot_response") {
-                                        //if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
-                                            msgData.fromHistorySync=true;
-                                                                                        
-                                            try {
-                                                msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
-                                                if (msgData.message[0].cInfo.body && msgData.message[0].cInfo.body.text) {
-                                                    msgData.message[0].cInfo.body = msgData.message[0].cInfo.body.text;
-                                                }
-                                                msgData.message[0].component = msgData.message[0].cInfo.body;
-                                                if (msgData.message[0].component.payload.template_type === 'dropdown_template') {
-                                                    msgData.message[0].component.selectedValue=res[1].messages[index+1].message[0].cInfo.body;                                    
-                                                }
-                                                if (msgData.message[0].component.payload.template_type === 'feedbackTemplate') {
-                                                    msgData.message[0].cInfo.body="Rate this chat session";
-                                                }
-                                                if(msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)){
-                                                    msgData.message[0].cInfo.body = "";
-                                                }
-                                                me.renderMessage(msgData);
-                                            } catch (e) {
-                                                me.renderMessage(msgData);
-                                            }
-                                        //}
+                    if (res && res[1] && res[1].messages.length > 0) {
+                        res[1].messages.forEach(function (msgData, index) {
+                            setTimeout(function () {
+                                if (msgData.type === "outgoing" || msgData.type === "bot_response") {
+                                    //if ($('.kore-chat-window .chat-container li#' + msgData.messageId).length < 1) {
+                                    msgData.fromHistorySync = true;
+
+                                    try {
+                                        msgData.message[0].cInfo.body = JSON.parse(msgData.message[0].cInfo.body);
+                                        if (msgData.message[0].cInfo.body && msgData.message[0].cInfo.body.text) {
+                                            msgData.message[0].cInfo.body = msgData.message[0].cInfo.body.text;
+                                        }
+                                        msgData.message[0].component = msgData.message[0].cInfo.body;
+                                        if (msgData.message[0].component.payload.template_type === 'dropdown_template') {
+                                            msgData.message[0].component.selectedValue = res[1].messages[index + 1].message[0].cInfo.body;
+                                        }
+                                        if (msgData.message[0].component.payload.template_type === 'feedbackTemplate') {
+                                            msgData.message[0].cInfo.body = "Rate this chat session";
+                                        }
+                                        if (msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)) {
+                                            msgData.message[0].cInfo.body = "";
+                                        }
+                                        me.renderMessage(msgData);
+                                    } catch (e) {
+                                        me.renderMessage(msgData);
                                     }
-                                }, index * 100);
-                            });
-                        }
+                                    //}
+                                }
+                            }, index * 100);
+                        });
+                    }
                     //}, 4000);//sync history messages after sockeet messages gets into viewport
-                }else  if (loadHistory) {   
+                } else if (loadHistory) {
                     historyLoading = true;
                     if (res && res[1] && res[1].messages.length > 0) {
                         $('.chat-container').hide();
@@ -5370,7 +5379,7 @@
                                         msgData.message[0].component = msgData.message[0].cInfo.body;
                                         if (msgData.message[0].component.payload.template_type === 'dropdown_template') {
                                             msgData.message[0].component.payload.fromHistory = true;
-                                            msgData.message[0].component.selectedValue=res[1].messages[index+1].message[0].cInfo.body;                                    
+                                            msgData.message[0].component.selectedValue = res[1].messages[index + 1].message[0].cInfo.body;
                                         }
                                         if (msgData.message[0].component.payload.template_type === 'multi_select' || msgData.message[0].component.payload.template_type === 'advanced_multi_select') {
                                             msgData.message[0].component.payload.fromHistory = true;
@@ -5386,9 +5395,9 @@
                                         }
                                         if (msgData.message[0].component.payload.template_type === 'feedbackTemplate') {
                                             msgData.message[0].component.payload.fromHistory = true;
-                                            msgData.message[0].cInfo.body="Rate this chat session";
+                                            msgData.message[0].cInfo.body = "Rate this chat session";
                                         }
-                                        if(msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)){
+                                        if (msgData.message[0].component && msgData.message[0].component.payload && (msgData.message[0].component.payload.videoUrl || msgData.message[0].component.payload.audioUrl)) {
                                             msgData.message[0].cInfo.body = "";
                                         }
                                         me.renderMessage(msgData);
@@ -5404,29 +5413,29 @@
                                         }, 2500);
                                         $('.historyLoadingDiv').removeClass('showMsg');
                                         $('.chat-container').append("<div class='endChatContainer' aria-live='off' aria-hidden='true' ><span class='endChatContainerText'>End of chat history</span></div>");
-                                        if(messagesQueue.length){
-                                            messagesQueue.forEach(function(msg, currIndex){
+                                        if (messagesQueue.length) {
+                                            messagesQueue.forEach(function (msg, currIndex) {
                                                 me.renderMessage(msg);
-                                                if(messagesQueue.length-1 ===  currIndex) {
+                                                if (messagesQueue.length - 1 === currIndex) {
                                                     messagesQueue = [];
-                                                    setTimeout(function(){
+                                                    setTimeout(function () {
                                                         $('.chatInputBox').focus();
                                                         $('.disableFooter').removeClass('disableFooter');
                                                         historyLoading = false;
                                                     });
                                                 }
                                             });
-                                        }else{
-                                            setTimeout(function(){
+                                        } else {
+                                            setTimeout(function () {
                                                 $('.chatInputBox').focus();
                                                 $('.disableFooter').removeClass('disableFooter');
                                                 historyLoading = false;
                                             });
                                         }
-        
-                                    },500,messagesQueue);
+
+                                    }, 500, messagesQueue);
                                 }
-                            }, index * 100,messagesQueue);
+                            }, index * 100, messagesQueue);
                         });
                     }
                     else {
@@ -5443,16 +5452,16 @@
             var recognizing = false;
             var recognition = null;
             var prevStr = "";
-            setTimeout(function(){
-                if(allowGoogleSpeech) {
-                    if(window.initGapi){
+            setTimeout(function () {
+                if (allowGoogleSpeech) {
+                    if (window.initGapi) {
                         initGapi();
-                    }else{
+                    } else {
                         console.warn("Please uncomment Google Speech files('speech/app.js','speech/key.js' and 'client_api.js' in index.html")
                     }
-        
+
                 }
-            },2000);
+            }, 2000);
             function isChrome() {
                 var isChromium = window.chrome,
                     winNav = window.navigator,
@@ -5581,8 +5590,8 @@
             }
 
             function getSIDToken() {
-                if(allowGoogleSpeech) {
-                    if(recognition) { // using webkit speech recognition
+                if (allowGoogleSpeech) {
+                    if (recognition) { // using webkit speech recognition
                         startGoogleWebKitRecognization();
                     }
                     else { // using google cloud speech API
@@ -5590,14 +5599,14 @@
                     }
                 }
                 else {
-                    if(!speechPrefixURL){
+                    if (!speechPrefixURL) {
                         console.warn("Please provide speech socket url");
                         return false;
                     }
                     $.ajax({
-                        url: speechPrefixURL+"asr/wss/start?email="+userIdentity,
+                        url: speechPrefixURL + "asr/wss/start?email=" + userIdentity,
                         type: 'post',
-                         headers: {"Authorization": (bearerToken) ? bearerToken : assertionToken},
+                        headers: { "Authorization": (bearerToken) ? bearerToken : assertionToken },
                         dataType: 'json',
                         success: function (data) {
                             sidToken = data.link;
@@ -5872,24 +5881,24 @@
             /*************************************    TTS code start here         **************************************/
 
             function speakWithWebAPI(_txtToSpeak) {
-                if('speechSynthesis' in window){
+                if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     // Create a new instance of SpeechSynthesisUtterance.
                     var msg = new SpeechSynthesisUtterance();
-                    msg.text =_txtToSpeak;
-                   //  msg.voice = speechSynthesis.getVoices().filter(function(voice) {        
-                   //      return voice.default===true;
-                   //     })[0];
-                   // Queue this utterance.
+                    msg.text = _txtToSpeak;
+                    //  msg.voice = speechSynthesis.getVoices().filter(function(voice) {        
+                    //      return voice.default===true;
+                    //     })[0];
+                    // Queue this utterance.
                     window.speechSynthesis.speak(msg);
-               }else{
-                   console.warn("KORE:Your browser doesn't support TTS(Speech Synthesiser)")
-               }
+                } else {
+                    console.warn("KORE:Your browser doesn't support TTS(Speech Synthesiser)")
+                }
             }
 
             function createSocketForTTS() {
 
-                if(!ttsServerUrl){
+                if (!ttsServerUrl) {
                     console.warn("Please provide tts socket url");
                     return false;
                 }
@@ -6183,12 +6192,12 @@
                         acceptAndUploadFile(_obj, _file, recState);
                     },
                     error: function (msg) {
-                        chatInitialize.config.botOptions._reconnecting=true;
+                        chatInitialize.config.botOptions._reconnecting = true;
                         _self.showError("Failed to upload file.Please try again");
-                        if(msg.responseJSON && msg.responseJSON.errors && msg.responseJSON.errors.length && msg.responseJSON.errors[0].httpStatus==="401"){
-                            setTimeout(function(){
+                        if (msg.responseJSON && msg.responseJSON.errors && msg.responseJSON.errors.length && msg.responseJSON.errors[0].httpStatus === "401") {
+                            setTimeout(function () {
                                 _self.hideError();
-                            },5000);
+                            }, 5000);
                             $(".kore-chat-window .reload-btn").trigger("click");
                         }
                         console.log("Oops, something went horribly wrong");
@@ -6332,10 +6341,10 @@
                 $('.chatInputBox').focus();
                 attachmentInfo.fileName = data.values.componentData.filename;
                 attachmentInfo.fileType = data.values.componentType;
-                if(data &&  data.values &&  data.values.componentFileId){
-                    attachmentInfo.fileId =  data.values.componentFileId;
+                if (data && data.values && data.values.componentFileId) {
+                    attachmentInfo.fileId = data.values.componentFileId;
                 }
-                
+
                 $('.sendButton').removeClass('disabled');
             };
             function acceptFileRecording(_this, _recState, ele) {
@@ -6774,11 +6783,11 @@
                 $.fn.uploader = old;
                 return this;
             };
-	    function toTitleCase(str) {
-		return str.replace(/(?:^|\s)\w/g, function(match) {
-			return match.toUpperCase();
-		});
-	    }
+            function toTitleCase(str) {
+                return str.replace(/(?:^|\s)\w/g, function (match) {
+                    return match.toUpperCase();
+                });
+            }
             /************************************************************************************************************************************************
             ********************************************** kore.ai framework file ******************************************************************************
             ************************************************************************************************************************************************/
@@ -6820,8 +6829,8 @@
                 showError: showError,
                 botDetails: botDetails,
                 chatHistory: chatHistory,
-                addWidgetEvents:addWidgetEvents,
-                setWidgetInstance:setWidgetInstance
+                addWidgetEvents: addWidgetEvents,
+                setWidgetInstance: setWidgetInstance
             };
 
             //Actual chatwindow.js koreBotChat function code end here
