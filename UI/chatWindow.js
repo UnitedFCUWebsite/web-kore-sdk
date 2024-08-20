@@ -2786,7 +2786,7 @@
                             if (_a_link.indexOf("http:") < 0 && _a_link.indexOf("https:") < 0) {
                                 _a_link = "http:////" + _a_link;
                             }
-                            var features = "width=400,height=450,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes";
+                            var features = "width=400,height=550,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes";
                             window.open(_a_link, "PopupWindow", features);
                             return;
                         }
