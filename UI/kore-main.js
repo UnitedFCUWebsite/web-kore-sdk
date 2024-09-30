@@ -3,7 +3,6 @@
     var _hash = (location.href.split("#")[1] || "");
     // var _hash = "eyJqd3QiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFlYUWlPakUyTVRBME16RTJNRGswTmpjc0ltVjRjQ0k2TVRZeE1EUXpNVFkyT1RRMk55d2lZWFZrSWpvaUlpd2lhWE56SWpvaVkzTXROMkUyTkdZelpUVXRZelkxTXkwMVpXUTNMVGt4T1RjdE9EUmpNR1UzTjJOak1qRmxJaXdpYzNWaUlqb2lZMkV5T1RJNFltSmxNV1kxTVRCaE9ERXhaRFU0Wm1Gak9XTXhZalprTmpNME1pSXNJbWx6UVc1dmJubHRiM1Z6SWpwbVlXeHpaWDAuOGRib3JwTEhWTm9BUE5OSVhzN1VhQ2hqNF9yS1o3bU1fRFdQTUxxa0txcyIsImJvdEluZm8iOnsibmFtZSI6IkJhbmtpbmcgQXNzaXN0IiwiX2lkIjoic3QtY2RlZmNlMGYtOWVlZC01NGM1LWIzZDctM2MxYjJmODNiOGVjIn0sImtvcmVBUElVcmwiOiJodHRwczovL2Jhbmtpbmdhc3Npc3RhbnQtcWEua29yZS5haTo0NDMvIiwiY2hhbm5lbCI6InJ0bSJ9"
     var hashObj = {};
-
     if (_hash) {
         try {
             _hash = _hash.substr(0, _hash.length);
@@ -166,7 +165,7 @@
             chatConfig.botOptions.botInfo = hashObj.botInfo;
         }
 
-        if (hashObj.koreAPIUrl) {
+        if (hashObj && hashObj.koreAPIUrl) {
             chatConfig.botOptions.koreAPIUrl = hashObj.koreAPIUrl + '/api/';
         }
 

@@ -2466,7 +2466,7 @@
             chatWindow.prototype.bot = bot;
             chatWindow.prototype.destroy = function () {
                 var me = this;
-                me.sendCloseForceClosureEvent();
+                 me.sendCloseForceClosureEvent();
                 $('.kore-chat-overlay').hide();
                 bot.close();
                 if (!me.config.minimizeMode) {
