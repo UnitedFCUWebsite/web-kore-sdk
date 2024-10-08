@@ -67,14 +67,23 @@
     botOptions.botInfo.customData.uniqueUserId = getCookie("uniqueUserId");
   } 
   else {
+    // botOptions.koreAPIUrl = "https://bankassist.kore.ai/workbench/api";
+    // botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop';
+    // botOptions.JWTUrl = "https://pars5e5beeeoc2gwucqyxpppbm0acdhr.lambda-url.us-east-1.on.aws/visifi-sts";
+    // botOptions.userIdentity = '';// Provide users email id here
+    // botOptions.botInfo = { name: "Mya", "_id": "st-f07347f1-d880-5bc3-b1cf-728214ccc813",customData:{"rtmType":"web","brandingId":"st-14e59eb1-6dd3-5602-8296-e6928aff1324", "environment":"test"}}; // bot name is case sensitive
+    // botOptions.accountId = "65f001c224df7166b7b5181b";
+    // botOptions.universalBotId ="st-14e59eb1-6dd3-5602-8296-e6928aff1324";
+    // botOptions.tenant="UFCU_Test"
+
     botOptions.koreAPIUrl = "https://bankassist.kore.ai/workbench/api";
     botOptions.brandingAPIUrl = botOptions.koreAPIUrl + '/workbench/sdkData?objectId=hamburgermenu&objectId=brandingwidgetdesktop';
-    botOptions.JWTUrl = "https://pars5e5beeeoc2gwucqyxpppbm0acdhr.lambda-url.us-east-1.on.aws/visifi-sts";
+    botOptions.JWTUrl = "https://integrations-finastra.kore.ai/visifi-sts";
     botOptions.userIdentity = '';// Provide users email id here
-    botOptions.botInfo = { name: "Mya", "_id": "st-f07347f1-d880-5bc3-b1cf-728214ccc813",customData:{"rtmType":"web","brandingId":"st-14e59eb1-6dd3-5602-8296-e6928aff1324", "environment":"test"}}; // bot name is case sensitive
-    botOptions.accountId = "65f001c224df7166b7b5181b";
-    botOptions.universalBotId ="st-14e59eb1-6dd3-5602-8296-e6928aff1324";
-    botOptions.tenant="UFCU_Test"
+    botOptions.botInfo = { name: "Mya", "_id": "st-009c0e1a-e3cc-5d35-b493-c7d332039690",customData:{rtmType: "web", brandingId: "st-2d0bc0d0-75e7-5d10-8864-712de89c65d9", environment: "test"}}; // bot name is case sensitive
+    botOptions.accountId = "65203af7391d718428c910f2";
+    botOptions.universalBotId ="st-2d0bc0d0-75e7-5d10-8864-712de89c65d9";
+    botOptions.tenant="UFCU"
  }
   // window._BAMya.accountId
   // window._BAMya.botId
