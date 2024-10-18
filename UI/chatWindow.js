@@ -2854,7 +2854,6 @@
                                 bottomSliderAction('hide');
                             }
                         }
-
                     }
                     if (e.currentTarget.classList && e.currentTarget.classList.length > 0 && e.currentTarget.classList[0] === 'quickReply') {
                         var _parentQuikReplyEle = e.currentTarget.parentElement.parentElement;
@@ -2874,13 +2873,12 @@
                         _chatInput.focus();
                     }, 600);
                 });
+//Close button features
 
                 _chatContainer.off('click', '.close-btn').on('click', '.close-btn', function (event) {
                     if (chatInitialize && chatInitialize.config && chatInitialize.config.chatContainer.find('.chat-container')) {
-                        chatInitialize.config.chatContainer.find('.chat-container').empty()
+                        // chatInitialize.config.chatContainer.find('.chat-container').empty()
                     }
-
-
                     //     var clientMessageId = new Date().getTime();
                     //     var messageToBot = {};
                     //     messageToBot["clientMessageId"] = clientMessageId;
@@ -2913,17 +2911,48 @@
 
                     //  me.closeAgentSession();
                     // me.closeConversationSession();
-                    $('.recordingMicrophone').trigger('click');
-                    if (ttsAudioSource) {
-                        ttsAudioSource.stop();
-                    }
-                    isTTSOn = false;
 
-                    me.destroy();
-                    if (_ttsContext) {
-                        _ttsContext.close();
-                        _ttsContext = null;
-                    }
+                    /* commented code */
+                    // $('.recordingMicrophone').trigger('click');
+                    // if (ttsAudioSource) {
+                    //     ttsAudioSource.stop();
+                    // }
+                    // isTTSOn = false;
+
+                    // me.destroy();
+                    // if (_ttsContext) {
+                    //     _ttsContext.close();
+                    //     _ttsContext = null;
+                    // }
+                    /* end of commented code */
+                    
+                    $(".ui-widget.ui-widget-content").show();
+                    $( "#closePopUp_windowContent" ).dialog({  
+                        autoOpen: true, 
+                        appendTo: ".kore-chat-window"    
+                     });  
+                     $( "#closePopup_window" ).click(function() {  
+                         location.reload();
+                         $(".ui-widget.ui-widget-content").addClass("hide");
+                         $('.recordingMicrophone').trigger('click');
+                         if (ttsAudioSource) {
+                            ttsAudioSource.stop();
+                        }
+                         me.isTTSOn = false;
+                         me.destroy();
+                         if (_ttsContext) {
+                             _ttsContext.close();
+                             _ttsContext = null;   
+                         }
+                         if(me.config.multiPageApp && me.config.multiPageApp.enable) {
+                             me.removeLocalStoreItem('kr-cw-state');
+                             me.removeLocalStoreItem('kr-cw-uid');
+                             me.config.botOptions.maintainContext = false;  
+                        }    
+                     });     
+                     $( "#notClosePopup_window" ).click(function() {  
+                         $(".ui-widget.ui-widget-content").hide();
+                     });
                 });
 
                 chatWindow.prototype.closeAgentSession = function () {
@@ -4323,7 +4352,7 @@
                     'type': "currentUser",
                     "message": [{
                         'type': 'text',
-                        'cInfo': { 'body': "forceClosure" },
+                        'cInfo': { 'body': "forceClosure" },//agentMessage
                         'clientMessageId': clientMessageId
                     }],
                     "createdOn": clientMessageId
@@ -4469,6 +4498,15 @@
                               <span class="closeImagePreview">&times;</span>\
                               <img class="modal-content-imagePreview" id="img01">\
                               <div id="caption"></div>\
+                        </div>\
+                        <div id="closePopUp_windowContent">\
+                            <h3 class="endchat_header">End Chat?</h3>\
+                            <div class="closePopUp_img"></div>\
+                            <p class="conf_para">Are you sure you want to close this chat window?</p>\
+                            <div class="confirmCloseBtn">\
+                                <button id="notClosePopup_window">No</button>\
+                                <button id="closePopup_window">Yes</button>\
+                            </div>\
                         </div>\
                         <div id="chatBodyModal" class="chatBodyModal animate-bottom">\
                         <span class="closeChatBodyModal "></span>\
