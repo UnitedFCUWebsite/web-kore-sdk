@@ -821,13 +821,14 @@
     background: var(--sdk-chat-widow-primary-blue-color);
     padding: 5px;
     border: 1px solid var(--sdk-chat-widow-primary-blue-color);
-    border-radius: 3px;
+    border-radius: 18px;
     color: var(--sdk-chat-widow-default-white);
     font-size: 12px;
     position: absolute;
     right: 10px;
-    bottom: 22px;
+    bottom: 10px;
     cursor: pointer;
+    padding: 8px 13px;
 }
 
 .kore-chat-window .kore-chat-footer .chatInputBox {
@@ -19417,3 +19418,11 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
     color:#fff;
 }
 /***End of Close Popup Window Style***/
+.kore-chat-window .quick_replies_btn_parent .quickReplyBtnEnabled{
+    pointer-events: all;
+    opacity: 1;
+}
+.kore-chat-window .quickRepliesCustomParent_class{
+    pointer-events: all;
+    opacity: 1 !important;
+}

@@ -3609,6 +3609,10 @@
                         $(isSeeMoreAvailable).css({ "pointer-events": "auto", "opacity": "unset" });
                         $(isSeeMoreAvailable).closest("li.fromOtherUsers, li.currentUsers").css({ "pointer-events": "auto", "opacity": "unset" });
                     }
+                    if ($('.kore-chat-window .quickReplies .quick_replies_btn_parent .buttonTmplContentChild span').hasClass('quickReplyBtnEnabled')) {
+                        $('.kore-chat-body ul li.quickReplies:last-child').addClass("quickRepliesCustomParent_class");
+                    }
+                    
                     if (msgData.message[0] && msgData.message[0].component && msgData.message[0].component.payload && msgData.message[0].component.payload.template_type == "button") {
                         messageHtml = $(me.getChatTemplate("templatequickreply")).tmpl({
                             'msgData': msgData,
@@ -4896,10 +4900,10 @@
                                         {{/if}} \
                                         {{if msgData.message[0].component.payload.buttons && msgData.message[0].component.payload.buttons.length}} \
                                             {{each(key, msgItem) msgData.message[0].component.payload.buttons}} \
-						<div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} actual-value="${msgItem.title}" class="buttonQuickReply {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem && msgItem.url}}url="${msgItem.url}"{{/if}}" {{if msgItem.renderType}}renderType ="${msgItem.renderType}"{{/if}}>\
-						{{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
-						</div> \
-					     {{/each}} \
+                                            <div class="buttonTmplContentChild quickReplyDiv displayInline"> <span {{if msgItem.payload}}value="${msgItem.payload}"{{/if}} actual-value="${msgItem.title}" class="buttonQuickReply {{if msgItem.enableBtn == "true"}}quickReplyBtnEnabled{{/if}} {{if msgItem.image_url}}with-img{{/if}}" type="${msgItem.type}" {{if msgItem && msgItem.url}}url="${msgItem.url}"{{/if}}" {{if msgItem.renderType}}renderType ="${msgItem.renderType}"{{/if}}>\
+                                            {{if msgItem.image_url}}<img src="${msgItem.image_url}">{{/if}} <span class="quickreplyText {{if msgItem.image_url}}with-img{{/if}}">${msgItem.title}</span></span>\
+                                            </div> \
+                                            {{/each}} \
                                         {{/if}} \
                                     </div>\
                                 </div>\

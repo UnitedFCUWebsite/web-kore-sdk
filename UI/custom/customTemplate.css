@@ -1311,15 +1311,18 @@
 }
 
 .kore-chat-window .buttonTmplContent .buttonTmplContentChild.quickReplyDiv.displayInline .quickReply {
-    border: 1px solid var(--sdk-chat-widow-primary-font-color);
+    border: 1px solid transparent;
     color: var(--sdk-chat-widow-chat-button-active-text-color);
     font-size: 12px;
-    border-radius: 6px;
+    border-radius: 17px;
 }
 .kore-chat-window .buttonTmplContent .buttonTmplContentChild.quickReplyDiv.displayInline .quickReply:hover{
-    background:var(--sdk-chat-widow-primary-font-color); 
+    /* background:var(--sdk-chat-widow-chat-button-active-color); 
     border: 1px solid var(--sdk-chat-widow-primary-font-color);
-    color: var(--sdk-chat-widow-default-white);
+    color: var(--sdk-chat-widow-default-white); */
+    border: 1.2px solid var(--sdk-chat-widow-chat-button-active-color);
+    background-color: var(--sdk-chat-widow-chat-button-hover-background-color);
+    color: var(--sdk-chat-widow-chat-button-active-color);
 }
 
 
