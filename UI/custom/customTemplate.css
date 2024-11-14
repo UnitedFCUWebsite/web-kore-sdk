@@ -3335,4 +3335,10 @@ ul.chat-container li.fromOtherUsers.listView {
 .read-only-wrap{
     pointer-events: none;
 }
+
+.kore-chat-window .listViewTmplContentBox .list-element .listViewTmplContentChild_enabled{
+    pointer-events: all !important;
+    opacity: 1 !important;
+}
 /*===== End Of the changes =========*/
+
