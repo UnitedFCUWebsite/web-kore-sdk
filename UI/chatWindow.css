@@ -547,6 +547,7 @@
     height: 36px;
     display: block;
     top:23px;
+    line-height: 0 !important;
 }
 
 .kore-chat-window .kore-chat-header .chat-box-controls button {
@@ -825,7 +826,7 @@
 }
 .kore-chat-window .sendBtnCnt .sendButton {
     /* background: var(--sdk-chat-widow-primary-blue-color); */
-    background-color: var(--sdk-chat-widow-primary-blue-color);
+    background-color: #3A5CAC;
     padding: 5px;
     border: 1px solid var(--sdk-chat-widow-primary-blue-color);
     border-radius: 18px;
@@ -837,6 +838,7 @@
     cursor: pointer;
     padding: 13px 13px;
     text-transform: lowercase;
+    line-height: 16.48px !important;
 }
 .kore-chat-window .kore-chat-footer .chatInputBox {
     width: 100%; 
@@ -3197,9 +3199,10 @@ background-image : url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbm
     font-size: 15px;
     padding: 3px 39px 0px;
     line-height: 17px;
-    color: auto;
+    color: #000000;
     font-family: inherit;
     font-weight: 600;
+    margin: 15px 0 !important;
 }
 .kore-chat-window #closePopUp_windowContent{display: none;}
 .kore-chat-window .ui-draggable .ui-dialog-titlebar {
