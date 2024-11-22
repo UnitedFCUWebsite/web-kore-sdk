@@ -822,13 +822,15 @@
 }
 .kore-chat-window .sendBtnCnt .sendButton.disabled {
     /* background: var(--sdk-chat-widow-primary-blue-color); */
+    
     background-color: #C2C7CC;
+    border: 1px solid #C2C7CC !important;
 }
 .kore-chat-window .sendBtnCnt .sendButton {
     /* background: var(--sdk-chat-widow-primary-blue-color); */
     background-color: #3A5CAC;
     padding: 5px;
-    border: 1px solid var(--sdk-chat-widow-primary-blue-color);
+    border: 1px solid #3A5CAC !important;
     border-radius: 18px;
     color: var(--sdk-chat-widow-default-white);
     font-size: 12px;
